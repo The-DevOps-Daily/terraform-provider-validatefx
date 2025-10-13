@@ -53,12 +53,12 @@ locals {
     }
   ]
 
-  credit_card_results = [
-    for number in local.credit_cards : {
-      value = number
-      valid = validatefx_credit_card(number)
-    }
-  ]
+#  credit_card_results = [
+#    for number in local.credit_cards : {
+#      value = number
+#      valid = validatefx_credit_card(number)
+#    }
+#  ]
 }
 
 output "validatefx_email" {
@@ -73,6 +73,6 @@ output "validatefx_base64" {
   value = local.base64_results
 }
 
-output "validatefx_credit_card" {
-  value = local.credit_card_results
-}
+# output "validatefx_credit_card" {
+#  value = local.credit_card_results
+# }
