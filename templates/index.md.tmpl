@@ -1,0 +1,16 @@
+# {{ .RenderedProviderName | title }} Provider
+
+{{- if .Description }}
+{{ .Description }}
+{{- else }}
+ValidateFX exposes reusable validation helpers as Terraform functions so you can enforce input constraints inside configurations.
+{{- end }}
+
+{{- if .HasExample }}
+
+## Example Usage
+
+{{ tffile .ExampleFile }}
+{{- end }}
+
+{{ .SchemaMarkdown }}
