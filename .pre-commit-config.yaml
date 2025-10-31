@@ -2,28 +2,33 @@
 # It aligns with the tasks defined in the Makefile.
 
 repos:
-  
   - repo: https://github.com/antonbabenko/pre-commit-terraform
-    rev: v1.83.1 
+    rev: v1.83.1
     hooks:
       - id: terraform_fmt
         args:
           - --args=-recursive
 
- 
   - repo: local
     hooks:
-      
       - id: gofmt
         name: gofmt
-        entry: go fmt
+        entry: gofmt
         language: system
         types: [go]
+        args:
+          - -w
 
-      
+      - id: goimports
+        name: goimports
+        entry: goimports
+        language: system
+        types: [go]
+        args:
+          - -w
+
       - id: golangci-lint
         name: golangci-lint
         entry: make lint
         language: system
-        types: [go]
-        pass_filenames: false # 'make lint' runs on the whole project
+        pass_filenames: false
