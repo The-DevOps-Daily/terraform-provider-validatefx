@@ -78,6 +78,7 @@ Example usage in `examples/basic/main.tf`.
 | `email` | Validate that a string is an RFC 5322 compliant email address. |
 | `ip` | Validate that a string is a valid IPv4 or IPv6 address. |
 | `json` | Validate that a string decodes to a JSON object. |
+| `mac_address` | Validate that a string is a MAC address in colon, dash, or compact format. |
 | `matches_regex` | Validate that a string matches a provided regular expression. |
 | `phone` | Validate that a string is an E.164 compliant phone number. |
 | `semver` | Validate that a string follows Semantic Versioning (SemVer 2.0.0). |
