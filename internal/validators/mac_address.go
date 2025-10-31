@@ -51,44 +51,16 @@ func normalizeMACAddress(value string) (string, error) {
 		return "", fmt.Errorf("value is empty after trimming whitespace")
 	}
 
-	var separator rune
-	if strings.Contains(trimmed, ":") {
-		separator = ':'
-	}
-	if strings.Contains(trimmed, "-") {
-		if separator != 0 {
-			return "", fmt.Errorf("mixed separators are not permitted")
-		}
-		separator = '-'
+	separator, err := detectMACSeparator(trimmed)
+	if err != nil {
+		return "", err
 	}
 
 	if separator != 0 {
-		parts := strings.Split(trimmed, string(separator))
-		if len(parts) != 6 {
-			return "", fmt.Errorf("expected exactly 6 octets separated by %q", string(separator))
-		}
-
-		for i, part := range parts {
-			if len(part) != 2 {
-				return "", fmt.Errorf("octet %d must be exactly 2 hexadecimal characters", i+1)
-			}
-			if !isHexadecimal(part) {
-				return "", fmt.Errorf("octet %d contains non-hexadecimal characters", i+1)
-			}
-		}
-
-		return strings.ToUpper(strings.Join(parts, "")), nil
+		return normalizeSeparatedMAC(trimmed, separator)
 	}
 
-	if len(trimmed) != 12 {
-		return "", fmt.Errorf("expected exactly 12 hexadecimal characters for compact format")
-	}
-
-	if !isHexadecimal(trimmed) {
-		return "", fmt.Errorf("value contains non-hexadecimal characters")
-	}
-
-	return strings.ToUpper(trimmed), nil
+	return normalizeCompactMAC(trimmed)
 }
 
 func isHexadecimal(value string) bool {
@@ -98,4 +70,50 @@ func isHexadecimal(value string) bool {
 		}
 	}
 	return true
+}
+
+func detectMACSeparator(value string) (rune, error) {
+	hasColon := strings.Contains(value, ":")
+	hasDash := strings.Contains(value, "-")
+
+	switch {
+	case hasColon && hasDash:
+		return 0, fmt.Errorf("mixed separators are not permitted")
+	case hasColon:
+		return ':', nil
+	case hasDash:
+		return '-', nil
+	default:
+		return 0, nil
+	}
+}
+
+func normalizeSeparatedMAC(value string, separator rune) (string, error) {
+	parts := strings.Split(value, string(separator))
+	if len(parts) != 6 {
+		return "", fmt.Errorf("expected exactly 6 octets separated by %q", string(separator))
+	}
+
+	for i, part := range parts {
+		if len(part) != 2 {
+			return "", fmt.Errorf("octet %d must be exactly 2 hexadecimal characters", i+1)
+		}
+		if !isHexadecimal(part) {
+			return "", fmt.Errorf("octet %d contains non-hexadecimal characters", i+1)
+		}
+	}
+
+	return strings.ToUpper(strings.Join(parts, "")), nil
+}
+
+func normalizeCompactMAC(value string) (string, error) {
+	if len(value) != 12 {
+		return "", fmt.Errorf("expected exactly 12 hexadecimal characters for compact format")
+	}
+
+	if !isHexadecimal(value) {
+		return "", fmt.Errorf("value contains non-hexadecimal characters")
+	}
+
+	return strings.ToUpper(value), nil
 }
