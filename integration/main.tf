@@ -35,6 +35,13 @@ locals {
     "14155552671",
   ]
 
+  mac_addresses = [
+    "00:1A:2B:3C:4D:5E",
+    "00-1A-2B-3C-4D-5E",
+    "001A2B3C4D5E",
+    "AA:BB:CC:DD:EE",
+  ]
+
   url_values = [
     "https://example.com",
     "ftp://example.com",
@@ -164,6 +171,13 @@ locals {
     }
   ]
 
+  mac_address_results = [
+    for value in local.mac_addresses : {
+      value = value
+      valid = provider::validatefx::mac_address(value)
+    }
+  ]
+
   url_results = [
     for value in local.url_values : {
       value = value
@@ -264,6 +278,10 @@ output "validatefx_matches_regex" {
 
 output "validatefx_phone" {
   value = local.phone_results
+}
+
+output "validatefx_mac_address" {
+  value = local.mac_address_results
 }
 
 output "validatefx_url" {
