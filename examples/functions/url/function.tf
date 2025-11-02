@@ -1,7 +1,7 @@
 terraform {
   required_providers {
     validatefx = {
-      source  = "The-DevOps-Daily/validatefx"
+      source = "The-DevOps-Daily/validatefx"
     }
   }
 }

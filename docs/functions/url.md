@@ -16,7 +16,7 @@ Returns true when the input string is a valid HTTP or HTTPS URL including scheme
 terraform {
   required_providers {
     validatefx = {
-      source  = "The-DevOps-Daily/validatefx"
+      source = "The-DevOps-Daily/validatefx"
     }
   }
 }

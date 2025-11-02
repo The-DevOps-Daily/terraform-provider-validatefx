@@ -5,7 +5,7 @@ COMPOSE ?= docker compose
 GOLANGCI_LINT ?= golangci-lint
 TFPLUGINDOCS ?= $(shell go env GOPATH)/bin/tfplugindocs
 
-.PHONY: help deps tidy fmt build test lint docs integration docker-build clean
+.PHONY: help deps tidy fmt build test lint docs integration docker-build clean validate
 
 help: ## Show available targets and short descriptions
 	@awk 'BEGIN {FS = ":.*##"} /^[a-zA-Z_-]+:.*##/ {printf "%-18s %s\n", $$1, $$2}' $(MAKEFILE_LIST)
@@ -58,3 +58,9 @@ clean: ## Remove build artifacts and local Terraform state
 	$(COMPOSE) down -v 2>/dev/null || true
 	rm -rf integration/.terraform
 	rm -rf .terraform .terraform.lock.hcl
+
+validate: ## Run local pre-flight checks before pushing
+	go fmt ./...
+	terraform fmt -recursive
+	$(MAKE) docs
+	go run ./scripts/check-function-coverage.go examples integration
