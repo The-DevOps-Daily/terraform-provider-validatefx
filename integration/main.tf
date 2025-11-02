@@ -178,6 +178,27 @@ locals {
     },
   ]
 
+  between_checks = [
+    {
+      label = "within"
+      value = "7.5"
+      min   = "5"
+      max   = "10"
+    },
+    {
+      label = "too-low"
+      value = "2"
+      min   = "5"
+      max   = "10"
+    },
+    {
+      label = "too-high"
+      value = "11"
+      min   = "5"
+      max   = "10"
+    },
+  ]
+
   phone_results = [
     for value in local.phone_numbers : {
       value = value
@@ -210,6 +231,14 @@ locals {
     for item in local.string_length_values : {
       value = item.value
       valid = provider::validatefx::string_length(item.value, item.min_length, item.max_length)
+    }
+  ]
+
+  between_results = [
+    for sample in local.between_checks : {
+      label = sample.label
+      value = sample.value
+      valid = provider::validatefx::between(sample.value, sample.min, sample.max)
     }
   ]
 
@@ -312,6 +341,10 @@ output "validatefx_cidr" {
 
 output "validatefx_string_length" {
   value = local.string_length_results
+}
+
+output "validatefx_between" {
+  value = local.between_results
 }
 
 output "validatefx_all_valid" {
