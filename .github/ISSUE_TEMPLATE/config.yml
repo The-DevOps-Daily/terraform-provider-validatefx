@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Documentation
+    url: https://github.com/The-DevOps-Daily/terraform-provider-validatefx/tree/main/docs
+    about: Review existing docs, examples, and troubleshooting guides.
+  - name: Contributor Guide
+    url: https://github.com/The-DevOps-Daily/terraform-provider-validatefx/blob/main/CONTRIBUTING.md
+    about: Read our contributing guidelines before opening an issue.
