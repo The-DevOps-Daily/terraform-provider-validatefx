@@ -71,6 +71,21 @@ locals {
     "1.0",
   ]
 
+  datetime_values = [
+    {
+      value   = "2025-11-02T15:04:05Z"
+      layouts = []
+    },
+    {
+      value   = "2025-13-02T15:04:05Z"
+      layouts = []
+    },
+    {
+      value   = "2025-11-02 15:04:05"
+      layouts = ["2006-01-02 15:04:05"]
+    },
+  ]
+
   ip_values = [
     "127.0.0.1",
     "::1",
@@ -147,6 +162,14 @@ locals {
     for value in local.semver_values : {
       value = value
       valid = provider::validatefx::semver(value)
+    }
+  ]
+
+  datetime_results = [
+    for item in local.datetime_values : {
+      value   = item.value
+      layouts = item.layouts
+      valid   = provider::validatefx::datetime(item.value, item.layouts)
     }
   ]
 
@@ -284,6 +307,10 @@ output "validatefx_json" {
 
 output "validatefx_semver" {
   value = local.semver_results
+}
+
+output "validatefx_datetime" {
+  value = local.datetime_results
 }
 
 output "validatefx_ip" {
