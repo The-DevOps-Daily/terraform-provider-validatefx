@@ -26,11 +26,11 @@ provider "validatefx" {}
 
 locals {
   versions = {
-    stable      = "1.2.3"
-    prefixed    = "v2.0.0"
-    prerelease  = "3.1.0-beta.1"
-    build       = "1.0.0+build.5"
-    invalid     = "1.0"
+    stable     = "1.2.3"
+    prefixed   = "v2.0.0"
+    prerelease = "3.1.0-beta.1"
+    build      = "1.0.0+build.5"
+    invalid    = "1.0"
   }
 
   results = {

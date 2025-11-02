@@ -204,7 +204,7 @@ locals {
       [true, true, true],
       [true, false],
       [true, null],
-    ] : {
+      ] : {
       checks = values
       result = provider::validatefx::all_valid(values)
     }
@@ -215,7 +215,7 @@ locals {
       [false, false],
       [false, true],
       [false, null, false],
-    ] : {
+      ] : {
       checks = values
       result = provider::validatefx::any_valid(values)
     }

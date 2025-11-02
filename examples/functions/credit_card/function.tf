@@ -11,14 +11,14 @@ provider "validatefx" {}
 
 locals {
   credit_cards = [
-    "4532015112830366",           # Valid Visa
-    "5555555555554444",           # Valid MasterCard
-    "378282246310005",            # Valid American Express
-    "4532 0151 1283 0366",        # Valid Visa with spaces
-    "4532-0151-1283-0366",        # Valid Visa with hyphens
-    "4532015112830367",           # Invalid (wrong checksum)
-    "123456789012",               # Invalid (too short)
-    "not-a-credit-card",          # Invalid (contains letters)
+    "4532015112830366",    # Valid Visa
+    "5555555555554444",    # Valid MasterCard
+    "378282246310005",     # Valid American Express
+    "4532 0151 1283 0366", # Valid Visa with spaces
+    "4532-0151-1283-0366", # Valid Visa with hyphens
+    "4532015112830367",    # Invalid (wrong checksum)
+    "123456789012",        # Invalid (too short)
+    "not-a-credit-card",   # Invalid (contains letters)
   ]
 
   checked = [
