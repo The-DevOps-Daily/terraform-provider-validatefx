@@ -11,6 +11,27 @@
 - None.
 
 
+## [0.1.5] - 2025-11-02
+
+### Features
+
+- Add a MAC address validator and expose it via the `validatefx_mac_address` Terraform function with docs, examples, and tests (`1c26b93`, `5448c8c`, `acf160cc`).
+- Introduce an RFC 1123 compliant hostname validator and Terraform function coverage (`e25ef04`).
+
+### Improvements
+
+- Add a `make validate` pre-flight target that runs formatting, docs generation, and function coverage checks locally (`25988e3`, `d42e7d6`).
+
+### Documentation
+
+- Publish a Contributor Covenant code of conduct for community guidelines (`c494fe5`, `54f69a7`).
+
+### CI / Tooling
+
+- Refresh pre-commit hook configuration to pick up newer linters (`46e3237`, `f76098a`).
+- Update release drafter workflow configuration and token handling (`5a219a8`, `73431fb`, `7a1c0ec`, `7d1a28f`, `803780e`).
+
+
 ## [0.1.4] - 2025-10-30
 
 ### Features
