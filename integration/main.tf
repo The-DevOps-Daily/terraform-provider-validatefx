@@ -52,6 +52,13 @@ locals {
     "invalid..domain",
   ]
 
+  hostnames = [
+    "service.internal",
+    "xn--bcher-kva.example",
+    "example.com.",
+    "bad_name",
+  ]
+
   json_payloads = [
     "{\"key\": \"value\"}",
     "{\"invalid\":",
@@ -119,6 +126,13 @@ locals {
     for value in local.domains : {
       value = value
       valid = provider::validatefx::domain(value)
+    }
+  ]
+
+  hostname_results = [
+    for host in local.hostnames : {
+      hostname = host
+      valid    = provider::validatefx::hostname(host)
     }
   ]
 
@@ -258,6 +272,10 @@ output "validatefx_credit_card" {
 
 output "validatefx_domain" {
   value = local.domain_results
+}
+
+output "validatefx_hostname" {
+  value = local.hostname_results
 }
 
 output "validatefx_json" {

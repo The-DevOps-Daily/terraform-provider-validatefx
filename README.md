@@ -76,6 +76,7 @@ Example usage in `examples/basic/main.tf`.
 | `credit_card` | Validate that a string is a credit card number using the Luhn algorithm. |
 | `domain` | Validate that a string is a compliant domain name. |
 | `email` | Validate that a string is an RFC 5322 compliant email address. |
+| `hostname` | Validate that a string is a hostname compliant with RFC 1123. |
 | `ip` | Validate that a string is a valid IPv4 or IPv6 address. |
 | `json` | Validate that a string decodes to a JSON object. |
 | `mac_address` | Validate that a string is a MAC address in colon, dash, or compact format. |
