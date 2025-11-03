@@ -5,8 +5,6 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/function"
-	"github.com/hashicorp/terraform-plugin-framework/path"
-	frameworkvalidator "github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 
@@ -17,7 +15,6 @@ type betweenFunction struct{}
 
 var _ function.Function = (*betweenFunction)(nil)
 
-// NewBetweenFunction exposes the between validator as a Terraform function.
 func NewBetweenFunction() function.Function {
 	return &betweenFunction{}
 }
@@ -54,9 +51,11 @@ func (betweenFunction) Definition(_ context.Context, _ function.DefinitionReques
 }
 
 func (betweenFunction) Run(ctx context.Context, req function.RunRequest, resp *function.RunResponse) {
-	var value types.String
-	var min types.String
-	var max types.String
+	var (
+		value types.String
+		min   types.String
+		max   types.String
+	)
 
 	if err := req.Arguments.GetArgument(ctx, 0, &value); err != nil {
 		resp.Error = err
@@ -78,30 +77,29 @@ func (betweenFunction) Run(ctx context.Context, req function.RunRequest, resp *f
 		return
 	}
 
-	minStr := stringValue(min)
-	maxStr := stringValue(max)
-
-	validator := validators.Between(minStr, maxStr)
-
-	validation := frameworkvalidator.StringResponse{}
-	validator.ValidateString(ctx, frameworkvalidator.StringRequest{
-		ConfigValue: value,
-		Path:        path.Root("value"),
-	}, &validation)
-
-	if validation.Diagnostics.HasError() {
+	valid, boundsDiag, valueDiag := validators.EvaluateBetween(value.ValueString(), stringFrom(min), stringFrom(max))
+	if boundsDiag != nil {
 		diags := diag.Diagnostics{}
-		diags.Append(validation.Diagnostics...)
+		diags.AddError(boundsDiag.Summary, boundsDiag.Detail)
 		resp.Error = function.FuncErrorFromDiags(ctx, diags)
 		return
 	}
 
-	resp.Result = function.NewResultData(basetypes.NewBoolValue(true))
+	if valueDiag != nil {
+		diags := diag.Diagnostics{}
+		diags.AddError(valueDiag.Summary, valueDiag.Detail)
+		resp.Error = function.FuncErrorFromDiags(ctx, diags)
+		return
+	}
+
+	resp.Result = function.NewResultData(basetypes.NewBoolValue(valid))
+
 }
 
-func stringValue(v types.String) string {
+func stringFrom(v types.String) string {
 	if v.IsNull() || v.IsUnknown() {
 		return ""
 	}
+
 	return v.ValueString()
 }

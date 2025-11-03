@@ -258,22 +258,11 @@ locals {
   ]
 
   between_results = [
-    for sample in local.between_checks : merge(
-      {
-        label = sample.label
-        value = sample.value
-      },
-      try(
-        {
-          valid = provider::validatefx::between(sample.value, sample.min, sample.max)
-          error = null
-        },
-        {
-          valid = false
-          error = "out_of_range"
-        },
-      )
-    )
+    for sample in local.between_checks : {
+      label = sample.label
+      value = sample.value
+      valid = provider::validatefx::between(sample.value, sample.min, sample.max)
+    }
   ]
 
   all_valid_results = [
