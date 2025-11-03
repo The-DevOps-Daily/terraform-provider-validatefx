@@ -3,6 +3,7 @@ package functions
 import (
 	"context"
 
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/function"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	frameworkvalidator "github.com/hashicorp/terraform-plugin-framework/schema/validator"
@@ -82,7 +83,9 @@ func (stringLengthFunction) Run(ctx context.Context, req function.RunRequest, re
 	validateStringLength(ctx, value, min, max, &validation)
 
 	if validation.Diagnostics.HasError() {
-		resp.Result = function.NewResultData(basetypes.NewBoolValue(false))
+		diags := diag.Diagnostics{}
+		diags.Append(validation.Diagnostics...)
+		resp.Error = function.FuncErrorFromDiags(ctx, diags)
 		return
 	}
 
