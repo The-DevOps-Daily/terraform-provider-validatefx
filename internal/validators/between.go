@@ -6,7 +6,6 @@ import (
 	"math/big"
 	"strings"
 
-	"github.com/hashicorp/terraform-plugin-framework/path"
 	frameworkvalidator "github.com/hashicorp/terraform-plugin-framework/schema/validator"
 )
 
@@ -43,64 +42,87 @@ func (v *betweenValidator) ValidateString(_ context.Context, req frameworkvalida
 		return
 	}
 
-	min, minSet := parseBound(resp, req.Path, "Invalid Minimum", v.min)
-	if resp.Diagnostics.HasError() {
+	valid, boundsDiag, valueDiag := EvaluateBetween(value, v.min, v.max)
+	if boundsDiag != nil {
+		resp.Diagnostics.AddAttributeError(req.Path, boundsDiag.Summary, boundsDiag.Detail)
 		return
 	}
 
-	max, maxSet := parseBound(resp, req.Path, "Invalid Maximum", v.max)
-	if resp.Diagnostics.HasError() {
+	if valueDiag != nil {
+		resp.Diagnostics.AddAttributeError(req.Path, valueDiag.Summary, valueDiag.Detail)
 		return
 	}
 
-	if err := validateBounds(min, max, minSet, maxSet, v.min, v.max, req.Path, resp); err != nil {
-		return
-	}
-
-	if err := validateValueWithin(value, min, max, minSet, maxSet, req.Path, resp); err != nil {
+	if !valid {
 		return
 	}
 }
 
-func parseBound(resp *frameworkvalidator.StringResponse, p path.Path, summary, bound string) (*big.Float, bool) {
-	trimmed := strings.TrimSpace(bound)
-	if trimmed == "" {
-		return nil, false
+func EvaluateBetween(value, minRaw, maxRaw string) (bool, *BetweenDiagnostic, *BetweenDiagnostic) {
+	value = strings.TrimSpace(value)
+	minRaw = strings.TrimSpace(minRaw)
+	maxRaw = strings.TrimSpace(maxRaw)
+
+	min, minSet, diag := parseBound("Invalid Minimum", minRaw)
+	if diag != nil {
+		return false, diag, nil
 	}
 
-	num, ok := new(big.Float).SetString(trimmed)
-	if !ok {
-		resp.Diagnostics.AddAttributeError(p, summary, fmt.Sprintf("%q is not a valid decimal", bound))
-		return nil, false
+	max, maxSet, diag := parseBound("Invalid Maximum", maxRaw)
+	if diag != nil {
+		return false, diag, nil
 	}
 
-	return num, true
-}
-
-func validateBounds(min, max *big.Float, minSet, maxSet bool, minRaw, maxRaw string, p path.Path, resp *frameworkvalidator.StringResponse) error {
 	if minSet && maxSet && min.Cmp(max) == 1 {
-		resp.Diagnostics.AddAttributeError(p, "Invalid Range", fmt.Sprintf("minimum %s cannot be greater than maximum %s", minRaw, maxRaw))
-		return fmt.Errorf("invalid range")
+		return false, nil, &BetweenDiagnostic{
+			Summary: "Invalid Range",
+			Detail:  fmt.Sprintf("minimum %s cannot be greater than maximum %s", minRaw, maxRaw),
+		}
 	}
-	return nil
-}
 
-func validateValueWithin(value string, min, max *big.Float, minSet, maxSet bool, p path.Path, resp *frameworkvalidator.StringResponse) error {
 	num, ok := new(big.Float).SetString(value)
 	if !ok {
-		resp.Diagnostics.AddAttributeError(p, "Invalid Number", fmt.Sprintf("Value %q is not a valid decimal", value))
-		return fmt.Errorf("invalid number")
+		return false, nil, &BetweenDiagnostic{
+			Summary: "Invalid Number",
+			Detail:  fmt.Sprintf("Value %q is not a valid decimal", value),
+		}
 	}
 
 	if minSet && num.Cmp(min) == -1 {
-		resp.Diagnostics.AddAttributeError(p, "Value Too Small", fmt.Sprintf("Value %q is less than minimum %s", value, min.Text('g', -1)))
-		return fmt.Errorf("too small")
+		return false, nil, &BetweenDiagnostic{
+			Summary: "Value Too Small",
+			Detail:  fmt.Sprintf("Value %q is less than minimum %s", value, min.Text('g', -1)),
+		}
 	}
 
 	if maxSet && num.Cmp(max) == 1 {
-		resp.Diagnostics.AddAttributeError(p, "Value Too Large", fmt.Sprintf("Value %q is greater than maximum %s", value, max.Text('g', -1)))
-		return fmt.Errorf("too large")
+		return false, nil, &BetweenDiagnostic{
+			Summary: "Value Too Large",
+			Detail:  fmt.Sprintf("Value %q is greater than maximum %s", value, max.Text('g', -1)),
+		}
 	}
 
-	return nil
+	return true, nil, nil
+}
+
+func parseBound(summary, raw string) (*big.Float, bool, *BetweenDiagnostic) {
+	if raw == "" {
+		return nil, false, nil
+	}
+
+	num, ok := new(big.Float).SetString(raw)
+	if !ok {
+		return nil, false, &BetweenDiagnostic{
+			Summary: summary,
+			Detail:  fmt.Sprintf("%q is not a valid decimal", raw),
+		}
+	}
+
+	return num, true, nil
+}
+
+// BetweenDiagnostic captures validation errors for invalid bounds or values.
+type BetweenDiagnostic struct {
+	Summary string
+	Detail  string
 }
