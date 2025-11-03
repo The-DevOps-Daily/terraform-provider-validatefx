@@ -63,46 +63,17 @@ func EvaluateBetween(value, minRaw, maxRaw string) (bool, *BetweenDiagnostic, *B
 	minRaw = strings.TrimSpace(minRaw)
 	maxRaw = strings.TrimSpace(maxRaw)
 
-	min, minSet, diag := parseBound("Invalid Minimum", minRaw)
-	if diag != nil {
-		return false, diag, nil
+	min, minSet, max, maxSet, boundsDiag := normalizeBounds(minRaw, maxRaw)
+	if boundsDiag != nil {
+		return false, boundsDiag, nil
 	}
 
-	max, maxSet, diag := parseBound("Invalid Maximum", maxRaw)
-	if diag != nil {
-		return false, diag, nil
+	valid, valueDiag := validateNumberWithinBounds(value, min, minSet, max, maxSet)
+	if valueDiag != nil {
+		return false, nil, valueDiag
 	}
 
-	if minSet && maxSet && min.Cmp(max) == 1 {
-		return false, nil, &BetweenDiagnostic{
-			Summary: "Invalid Range",
-			Detail:  fmt.Sprintf("minimum %s cannot be greater than maximum %s", minRaw, maxRaw),
-		}
-	}
-
-	num, ok := new(big.Float).SetString(value)
-	if !ok {
-		return false, nil, &BetweenDiagnostic{
-			Summary: "Invalid Number",
-			Detail:  fmt.Sprintf("Value %q is not a valid decimal", value),
-		}
-	}
-
-	if minSet && num.Cmp(min) == -1 {
-		return false, nil, &BetweenDiagnostic{
-			Summary: "Value Too Small",
-			Detail:  fmt.Sprintf("Value %q is less than minimum %s", value, min.Text('g', -1)),
-		}
-	}
-
-	if maxSet && num.Cmp(max) == 1 {
-		return false, nil, &BetweenDiagnostic{
-			Summary: "Value Too Large",
-			Detail:  fmt.Sprintf("Value %q is greater than maximum %s", value, max.Text('g', -1)),
-		}
-	}
-
-	return true, nil, nil
+	return valid, nil, nil
 }
 
 func parseBound(summary, raw string) (*big.Float, bool, *BetweenDiagnostic) {
@@ -119,6 +90,53 @@ func parseBound(summary, raw string) (*big.Float, bool, *BetweenDiagnostic) {
 	}
 
 	return num, true, nil
+}
+
+func normalizeBounds(minRaw, maxRaw string) (*big.Float, bool, *big.Float, bool, *BetweenDiagnostic) {
+	min, minSet, diag := parseBound("Invalid Minimum", minRaw)
+	if diag != nil {
+		return nil, false, nil, false, diag
+	}
+
+	max, maxSet, diag := parseBound("Invalid Maximum", maxRaw)
+	if diag != nil {
+		return nil, false, nil, false, diag
+	}
+
+	if minSet && maxSet && min.Cmp(max) == 1 {
+		return nil, false, nil, false, &BetweenDiagnostic{
+			Summary: "Invalid Range",
+			Detail:  fmt.Sprintf("minimum %s cannot be greater than maximum %s", minRaw, maxRaw),
+		}
+	}
+
+	return min, minSet, max, maxSet, nil
+}
+
+func validateNumberWithinBounds(value string, min *big.Float, minSet bool, max *big.Float, maxSet bool) (bool, *BetweenDiagnostic) {
+	num, ok := new(big.Float).SetString(value)
+	if !ok {
+		return false, &BetweenDiagnostic{
+			Summary: "Invalid Number",
+			Detail:  fmt.Sprintf("Value %q is not a valid decimal", value),
+		}
+	}
+
+	if minSet && num.Cmp(min) == -1 {
+		return false, &BetweenDiagnostic{
+			Summary: "Value Too Small",
+			Detail:  fmt.Sprintf("Value %q is less than minimum %s", value, min.Text('g', -1)),
+		}
+	}
+
+	if maxSet && num.Cmp(max) == 1 {
+		return false, &BetweenDiagnostic{
+			Summary: "Value Too Large",
+			Detail:  fmt.Sprintf("Value %q is greater than maximum %s", value, max.Text('g', -1)),
+		}
+	}
+
+	return true, nil
 }
 
 // BetweenDiagnostic captures validation errors for invalid bounds or values.
