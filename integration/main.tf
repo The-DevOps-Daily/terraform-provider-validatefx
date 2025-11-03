@@ -164,6 +164,23 @@ locals {
     }
   ]
 
+  in_list_checks = [
+    {
+      label       = "valid"
+      value       = "draft"
+      allowed     = ["draft", "review", "published"]
+      ignore_case = false
+      valid       = provider::validatefx::in_list("draft", ["draft", "review", "published"], false)
+    },
+    {
+      label       = "case-insensitive"
+      value       = "Published"
+      allowed     = ["draft", "review", "published"]
+      ignore_case = true
+      valid       = provider::validatefx::in_list("Published", ["draft", "review", "published"], true)
+    }
+  ]
+
   string_length_values = [
     {
       value      = "short"
@@ -307,6 +324,10 @@ output "validatefx_ip" {
 
 output "validatefx_matches_regex" {
   value = local.matches_regex_results
+}
+
+output "validatefx_in_list" {
+  value = local.in_list_checks
 }
 
 output "validatefx_phone" {
