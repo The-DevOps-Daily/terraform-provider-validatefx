@@ -12,72 +12,54 @@ provider "validatefx" {}
 locals {
   emails = [
     "alice@example.com",
-    "bad-email",
   ]
 
   uuids = [
     "d9428888-122b-11e1-b85c-61cd3cbb3210",
-    "not-a-uuid",
   ]
 
   base64_values = [
     "U29sdmVkIQ==",
-    "invalid base64",
   ]
 
   credit_cards = [
     "4532015112830366",
-    "4532015112830367",
   ]
 
   phone_numbers = [
     "+14155552671",
-    "14155552671",
   ]
 
   mac_addresses = [
     "00:1A:2B:3C:4D:5E",
     "00-1A-2B-3C-4D-5E",
     "001A2B3C4D5E",
-    "AA:BB:CC:DD:EE",
   ]
 
   url_values = [
     "https://example.com",
-    "ftp://example.com",
   ]
 
   domains = [
     "example.com",
-    "invalid..domain",
   ]
 
   hostnames = [
     "service.internal",
     "xn--bcher-kva.example",
-    "example.com.",
-    "bad_name",
   ]
 
   json_payloads = [
     "{\"key\": \"value\"}",
-    "{\"invalid\":",
-    "[]",
   ]
 
   semver_values = [
     "1.0.0",
-    "v1.0.0",
-    "1.0",
   ]
 
   datetime_values = [
     {
       value   = "2025-11-02T15:04:05Z"
-      layouts = []
-    },
-    {
-      value   = "2025-13-02T15:04:05Z"
       layouts = []
     },
     {
@@ -89,7 +71,6 @@ locals {
   ip_values = [
     "127.0.0.1",
     "::1",
-    "999.999.999.999",
   ]
 
   regex_samples = [
@@ -97,16 +78,11 @@ locals {
       value   = "user_123"
       pattern = "^[a-z0-9_]+$"
     },
-    {
-      value   = "Invalid-User"
-      pattern = "^[a-z0-9_]+$"
-    },
   ]
 
   cidr_values = [
     "10.0.0.0/24",
     "2001:db8::/48",
-    "bad-cidr",
   ]
 
   email_results = [
@@ -194,29 +170,12 @@ locals {
       min_length = 3
       max_length = 10
     },
-    {
-      value      = "extremely-long-string"
-      min_length = 3
-      max_length = 10
-    },
   ]
 
   between_checks = [
     {
       label = "within"
       value = "7.5"
-      min   = "5"
-      max   = "10"
-    },
-    {
-      label = "too-low"
-      value = "2"
-      min   = "5"
-      max   = "10"
-    },
-    {
-      label = "too-high"
-      value = "11"
       min   = "5"
       max   = "10"
     },

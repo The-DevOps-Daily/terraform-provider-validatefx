@@ -93,7 +93,6 @@ func (betweenFunction) Run(ctx context.Context, req function.RunRequest, resp *f
 	}
 
 	resp.Result = function.NewResultData(basetypes.NewBoolValue(valid))
-
 }
 
 func stringFrom(v types.String) string {

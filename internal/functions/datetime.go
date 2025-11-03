@@ -83,7 +83,9 @@ func (dateTimeFunction) Run(ctx context.Context, req function.RunRequest, resp *
 	}, &validation)
 
 	if validation.Diagnostics.HasError() {
-		resp.Result = function.NewResultData(basetypes.NewBoolValue(false))
+		diags := diag.Diagnostics{}
+		diags.Append(validation.Diagnostics...)
+		resp.Error = function.FuncErrorFromDiags(ctx, diags)
 		return
 	}
 
