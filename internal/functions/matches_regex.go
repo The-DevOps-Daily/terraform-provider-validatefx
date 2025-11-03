@@ -78,6 +78,16 @@ func (matchesRegexFunction) Run(ctx context.Context, req function.RunRequest, re
 		return
 	}
 
-	matched := reCompiled.MatchString(value.ValueString())
-	resp.Result = function.NewResultData(basetypes.NewBoolValue(matched))
+	if !reCompiled.MatchString(value.ValueString()) {
+		diags := diag.Diagnostics{}
+		diags.AddAttributeError(
+			path.Root("value"),
+			"Pattern Mismatch",
+			"Value must match the provided regular expression pattern.",
+		)
+		resp.Error = function.FuncErrorFromDiags(ctx, diags)
+		return
+	}
+
+	resp.Result = function.NewResultData(basetypes.NewBoolValue(true))
 }
