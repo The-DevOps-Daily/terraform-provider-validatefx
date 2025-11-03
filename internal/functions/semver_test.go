@@ -10,66 +10,37 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 )
 
-func TestDateTimeFunction(t *testing.T) {
+func TestSemVerFunction(t *testing.T) {
 	t.Parallel()
 
-	fn := NewDateTimeFunction()
+	fn := NewSemVerFunction()
 	ctx := context.Background()
-
-	noLayouts := basetypes.NewListNull(basetypes.StringType{})
-	customLayouts := basetypes.NewListValueMust(
-		basetypes.StringType{},
-		[]attr.Value{types.StringValue("2006-01-02 15:04:05")},
-	)
 
 	cases := []struct {
 		name          string
-		args          []attr.Value
+		value         attr.Value
 		expectError   bool
 		expectUnknown bool
 		expectTrue    bool
 	}{
 		{
-			name: "rfc3339",
-			args: []attr.Value{
-				types.StringValue("2025-11-02T15:04:05Z"),
-				noLayouts,
-			},
+			name:       "valid semver",
+			value:      types.StringValue("1.2.3"),
 			expectTrue: true,
 		},
 		{
-			name: "custom layout",
-			args: []attr.Value{
-				types.StringValue("2025-11-02 15:04:05"),
-				customLayouts,
-			},
-			expectTrue: true,
-		},
-		{
-			name: "invalid date",
-			args: []attr.Value{
-				types.StringValue("2025-13-02T15:04:05Z"),
-				noLayouts,
-			},
+			name:        "invalid semver",
+			value:       types.StringValue("10"),
 			expectError: true,
 		},
 		{
-			name: "invalid layouts",
-			args: []attr.Value{
-				types.StringValue("2025-11-02T15:04:05Z"),
-				types.ListValueMust(
-					types.BoolType,
-					[]attr.Value{types.BoolValue(true)},
-				),
-			},
-			expectError: true,
+			name:          "null input",
+			value:         types.StringNull(),
+			expectUnknown: true,
 		},
 		{
-			name: "unknown value",
-			args: []attr.Value{
-				types.StringUnknown(),
-				noLayouts,
-			},
+			name:          "unknown input",
+			value:         types.StringUnknown(),
 			expectUnknown: true,
 		},
 	}
@@ -80,7 +51,7 @@ func TestDateTimeFunction(t *testing.T) {
 			t.Parallel()
 
 			resp := &function.RunResponse{}
-			fn.Run(ctx, function.RunRequest{Arguments: function.NewArgumentsData(tc.args)}, resp)
+			fn.Run(ctx, function.RunRequest{Arguments: function.NewArgumentsData([]attr.Value{tc.value})}, resp)
 
 			if tc.expectError {
 				if resp.Error == nil {
