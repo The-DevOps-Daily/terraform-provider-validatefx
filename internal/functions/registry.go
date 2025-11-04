@@ -28,6 +28,7 @@ func ProviderFunctionFactories() []func() function.Function {
 		NewMACAddressFunction,
 		NewURLFunction,
 		NewBetweenFunction,
+		NewInListFunction,
 		NewAllValidFunction,
 		NewAnyValidFunction,
 		NewVersionFunction,
