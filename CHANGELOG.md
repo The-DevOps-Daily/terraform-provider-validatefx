@@ -11,6 +11,27 @@
 - None.
 
 
+## [0.1.6] - 2025-11-04
+
+### Features
+
+- Add the `in_list` validator and Terraform function with documentation, examples, and integration coverage (`0a06356`).
+- Expand validation coverage with new helper validators and composite list utilities (`287d1e6`, `2d02eb4`, `b19056f`).
+
+### Improvements
+
+- Increase unit test coverage across validator functions and composites (`330e481`, `5cb498d`, `7cebb5a`).
+- Optimize the Docker build pipeline by removing redundant lint stages and caching Go modules (`0c673f7`).
+
+### Documentation
+
+- Document the `in_list` function and add examples demonstrating module usage (`0a06356`).
+
+### CI / Tooling
+
+- Add GitHub issue templates, release drafter updates, and coverage-focused workflows (`4c9af37`, `18306e0`, `ecfd7e8`).
+
+
 ## [0.1.5] - 2025-11-02
 
 ### Features
