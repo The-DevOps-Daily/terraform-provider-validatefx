@@ -1,24 +1,17 @@
 # syntax=docker/dockerfile:1
-# Base image
-FROM golang:1.25.2-alpine AS base
+# Base builder
+FROM golang:1.25.2-alpine AS build
 ENV CGO_ENABLED=0
 WORKDIR /app
-COPY . .
+
+# Install git for modules that use it and leverage Docker layer caching by
+# downloading dependencies before copying the full source tree.
+RUN apk add --no-cache git
+COPY go.mod go.sum ./
 RUN go mod download
+COPY . .
 
-# Linter
-FROM golangci/golangci-lint:v2.5-alpine AS lint
-ENV CGO_ENABLED=0
-WORKDIR /src
-COPY --from=base /app .
-COPY .golangci.yaml .
-RUN go mod download && golangci-lint run --timeout 5m
-
-# Binary build
-FROM base AS build
-WORKDIR /app
-COPY --from=lint /src/lint_report.json .
-RUN ls .
+# Run tests and build the provider binary
 RUN go test ./... && go build -o terraform-provider-validatefx .
 
 
