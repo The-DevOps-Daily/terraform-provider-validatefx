@@ -181,6 +181,30 @@ locals {
     }
   ]
 
+  exactly_one_valid_checks = {
+    valid_when_one_true = provider::validatefx::exactly_one_valid([
+      provider::validatefx::all_valid([true, true]),
+      provider::validatefx::any_valid([false, false]),
+      false,
+    ])
+
+    false_when_multiple_true = provider::validatefx::exactly_one_valid([
+      provider::validatefx::all_valid([true, true]),
+      provider::validatefx::any_valid([true]),
+    ])
+
+    false_when_none_true = provider::validatefx::exactly_one_valid([
+      provider::validatefx::any_valid([]),
+      provider::validatefx::all_valid([true, false]),
+      false,
+    ])
+
+    unknown_when_unknown_present = provider::validatefx::exactly_one_valid([
+      provider::validatefx::email(var.integration_unknown_email),
+      false,
+    ])
+  }
+
   in_list_integration_checks = [
     {
       label       = "valid"
@@ -343,6 +367,16 @@ output "validatefx_matches_regex" {
 
 output "validatefx_in_list" {
   value = local.in_list_checks
+}
+
+output "validatefx_exactly_one_valid" {
+  value = local.exactly_one_valid_checks
+}
+
+variable "integration_unknown_email" {
+  description = "Optional email value for exactly_one_valid integration tests"
+  type        = string
+  default     = null
 }
 
 output "validatefx_in_list_integration" {
