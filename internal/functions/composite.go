@@ -234,42 +234,18 @@ func (exactlyOneValidFunction) Run(ctx context.Context, req function.RunRequest,
 		return
 	}
 
-	trueCount := 0
-	unknownEncountered := false
+	eval := evaluateExactlyOne(bools)
 
-	for _, value := range bools {
-		if value.IsNull() {
-			continue
-		}
-
-		if value.IsUnknown() {
-			if trueCount > 0 {
-				resp.Result = function.NewResultData(basetypes.NewBoolValue(false))
-				return
-			}
-
-			unknownEncountered = true
-			continue
-		}
-
-		if value.ValueBool() {
-			trueCount++
-			if trueCount > 1 {
-				resp.Result = function.NewResultData(basetypes.NewBoolValue(false))
-				return
-			}
-		}
-	}
-
-	if trueCount == 1 {
+	switch {
+	case eval.trueCount > 1:
+		resp.Result = function.NewResultData(basetypes.NewBoolValue(false))
+	case eval.trueCount == 1 && !eval.unknown:
 		resp.Result = function.NewResultData(basetypes.NewBoolValue(true))
-		return
-	}
-
-	if unknownEncountered {
+	case eval.trueCount == 1 && eval.unknown:
+		resp.Result = function.NewResultData(basetypes.NewBoolValue(false))
+	case eval.trueCount == 0 && eval.unknown:
 		resp.Result = function.NewResultData(types.BoolUnknown())
-		return
+	default:
+		resp.Result = function.NewResultData(basetypes.NewBoolValue(false))
 	}
-
-	resp.Result = function.NewResultData(basetypes.NewBoolValue(false))
 }
