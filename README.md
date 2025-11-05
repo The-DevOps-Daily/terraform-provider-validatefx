@@ -97,7 +97,7 @@ Example usage in `examples/basic/main.tf`.
 
 ## 💡 Contributing
 
-Open to PRs! Good first issues include adding new validators like `is_hostname`, `cidr`, or `mac_address`.
+Open to PRs! Browse our [good first issues](https://github.com/The-DevOps-Daily/terraform-provider-validatefx/issues?q=is%3Aopen+label%3A"good+first+issue") to get started.
 
 ---
 
@@ -108,4 +108,3 @@ MIT © 2025 [DevOps Daily](https://github.com/The-DevOps-Daily)
 ## Thanks to all contributors ❤
 
 [![Contributors](https://contrib.rocks/image?repo=The-DevOps-Daily/terraform-provider-validatefx)](https://github.com/The-DevOps-Daily/terraform-provider-validatefx/graphs/contributors)
-
