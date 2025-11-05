@@ -122,3 +122,67 @@ func TestAnyValidFunction(t *testing.T) {
 		}
 	})
 }
+
+func TestExactlyOneValidFunction(t *testing.T) {
+	t.Parallel()
+
+	fn := NewExactlyOneValidFunction()
+
+	t.Run("one true", func(t *testing.T) {
+		t.Parallel()
+
+		res := runComposite(t, fn, basetypes.NewBoolValue(false), basetypes.NewBoolValue(true), basetypes.NewBoolValue(false))
+		if !res.ValueBool() {
+			t.Fatalf("expected true when exactly one value is true")
+		}
+	})
+
+	t.Run("multiple true", func(t *testing.T) {
+		t.Parallel()
+
+		res := runComposite(t, fn, basetypes.NewBoolValue(true), basetypes.NewBoolValue(true))
+		if res.ValueBool() {
+			t.Fatalf("expected false when more than one value is true")
+		}
+	})
+
+	t.Run("no true", func(t *testing.T) {
+		t.Parallel()
+
+		res := runComposite(t, fn, basetypes.NewBoolValue(false), basetypes.NewBoolValue(false))
+		if res.ValueBool() {
+			t.Fatalf("expected false when no values are true")
+		}
+	})
+
+	t.Run("unknown only", func(t *testing.T) {
+		t.Parallel()
+
+		res := runComposite(t, fn, basetypes.NewBoolUnknown(), basetypes.NewBoolValue(false))
+		if !res.IsUnknown() {
+			t.Fatalf("expected unknown result when outcomes depend on unknown values")
+		}
+	})
+
+	t.Run("unknown with single true", func(t *testing.T) {
+		t.Parallel()
+
+		res := runComposite(t, fn, basetypes.NewBoolValue(true), basetypes.NewBoolUnknown(), basetypes.NewBoolValue(false))
+		if res.IsUnknown() {
+			t.Fatalf("expected deterministic result when exactly one value is true")
+		}
+
+		if res.ValueBool() {
+			t.Fatalf("expected false when exactly one true value and unknown present")
+		}
+	})
+
+	t.Run("empty list", func(t *testing.T) {
+		t.Parallel()
+
+		res := runComposite(t, fn)
+		if res.ValueBool() {
+			t.Fatalf("expected false for empty list")
+		}
+	})
+}

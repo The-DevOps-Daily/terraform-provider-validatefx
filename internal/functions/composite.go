@@ -129,6 +129,34 @@ func (f *compositeValidationFunction) resolveCompositeOutcome(eval boolEvaluatio
 	return basetypes.NewBoolValue(false)
 }
 
+type exactlyOneEvaluation struct {
+	trueCount int
+	unknown   bool
+}
+
+func evaluateExactlyOne(values []basetypes.BoolValue) exactlyOneEvaluation {
+	var eval exactlyOneEvaluation
+
+	for _, value := range values {
+		switch {
+		case value.IsUnknown():
+			eval.unknown = true
+			if eval.trueCount > 0 {
+				return eval
+			}
+		case value.IsNull():
+			continue
+		case value.ValueBool():
+			eval.trueCount++
+			if eval.trueCount > 1 {
+				return eval
+			}
+		}
+	}
+
+	return eval
+}
+
 func NewAllValidFunction() function.Function {
 	return newCompositeValidationFunction(
 		"all_valid",
@@ -145,4 +173,103 @@ func NewAnyValidFunction() function.Function {
 		"Accepts a list of boolean validation results and returns true when at least one element is true.",
 		false,
 	)
+}
+
+func NewExactlyOneValidFunction() function.Function {
+	return &exactlyOneValidFunction{}
+}
+
+type exactlyOneValidFunction struct{}
+
+var _ function.Function = (*exactlyOneValidFunction)(nil)
+
+func (exactlyOneValidFunction) Metadata(_ context.Context, _ function.MetadataRequest, resp *function.MetadataResponse) {
+	resp.Name = "exactly_one_valid"
+}
+
+func (exactlyOneValidFunction) Definition(_ context.Context, _ function.DefinitionRequest, resp *function.DefinitionResponse) {
+	resp.Definition = function.Definition{
+		Summary:             "Return true when exactly one validation check evaluates to true.",
+		MarkdownDescription: "Accepts a list of boolean validation results and returns true only when exactly one element is true.",
+		Return:              function.BoolReturn{},
+		Parameters: []function.Parameter{
+			function.ListParameter{
+				Name:                "checks",
+				AllowNullValue:      true,
+				AllowUnknownValues:  true,
+				ElementType:         basetypes.BoolType{},
+				Description:         "List of boolean validation results to evaluate.",
+				MarkdownDescription: "List of boolean validation results to evaluate.",
+			},
+		},
+	}
+}
+
+func (exactlyOneValidFunction) Run(ctx context.Context, req function.RunRequest, resp *function.RunResponse) {
+	var checks types.List
+
+	if err := req.Arguments.GetArgument(ctx, 0, &checks); err != nil {
+		resp.Error = err
+		return
+	}
+
+	if checks.IsNull() || checks.IsUnknown() {
+		resp.Result = function.NewResultData(types.BoolUnknown())
+		return
+	}
+
+	var bools []basetypes.BoolValue
+	if diags := checks.ElementsAs(ctx, &bools, false); diags.HasError() {
+		diags.AddAttributeError(
+			path.Root("checks"),
+			"Invalid Boolean",
+			"List elements must be boolean validation results.",
+		)
+		resp.Error = function.FuncErrorFromDiags(ctx, diags)
+		return
+	}
+
+	if len(bools) == 0 {
+		resp.Result = function.NewResultData(basetypes.NewBoolValue(false))
+		return
+	}
+
+	trueCount := 0
+	unknownEncountered := false
+
+	for _, value := range bools {
+		if value.IsNull() {
+			continue
+		}
+
+		if value.IsUnknown() {
+			if trueCount > 0 {
+				resp.Result = function.NewResultData(basetypes.NewBoolValue(false))
+				return
+			}
+
+			unknownEncountered = true
+			continue
+		}
+
+		if value.ValueBool() {
+			trueCount++
+			if trueCount > 1 {
+				resp.Result = function.NewResultData(basetypes.NewBoolValue(false))
+				return
+			}
+		}
+	}
+
+	if trueCount == 1 {
+		resp.Result = function.NewResultData(basetypes.NewBoolValue(true))
+		return
+	}
+
+	if unknownEncountered {
+		resp.Result = function.NewResultData(types.BoolUnknown())
+		return
+	}
+
+	resp.Result = function.NewResultData(basetypes.NewBoolValue(false))
 }
