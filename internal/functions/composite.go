@@ -206,16 +206,25 @@ func (exactlyOneValidFunction) Definition(_ context.Context, _ function.Definiti
 }
 
 func (exactlyOneValidFunction) Run(ctx context.Context, req function.RunRequest, resp *function.RunResponse) {
+	bools, ok := prepareExactlyOneChecks(ctx, req, resp)
+	if !ok {
+		return
+	}
+
+	resp.Result = function.NewResultData(resolveExactlyOne(bools))
+}
+
+func prepareExactlyOneChecks(ctx context.Context, req function.RunRequest, resp *function.RunResponse) ([]basetypes.BoolValue, bool) {
 	var checks types.List
 
 	if err := req.Arguments.GetArgument(ctx, 0, &checks); err != nil {
 		resp.Error = err
-		return
+		return nil, false
 	}
 
 	if checks.IsNull() || checks.IsUnknown() {
 		resp.Result = function.NewResultData(types.BoolUnknown())
-		return
+		return nil, false
 	}
 
 	var bools []basetypes.BoolValue
@@ -226,26 +235,30 @@ func (exactlyOneValidFunction) Run(ctx context.Context, req function.RunRequest,
 			"List elements must be boolean validation results.",
 		)
 		resp.Error = function.FuncErrorFromDiags(ctx, diags)
-		return
+		return nil, false
 	}
 
 	if len(bools) == 0 {
 		resp.Result = function.NewResultData(basetypes.NewBoolValue(false))
-		return
+		return nil, false
 	}
 
-	eval := evaluateExactlyOne(bools)
+	return bools, true
+}
+
+func resolveExactlyOne(values []basetypes.BoolValue) basetypes.BoolValue {
+	eval := evaluateExactlyOne(values)
 
 	switch {
 	case eval.trueCount > 1:
-		resp.Result = function.NewResultData(basetypes.NewBoolValue(false))
+		return basetypes.NewBoolValue(false)
 	case eval.trueCount == 1 && !eval.unknown:
-		resp.Result = function.NewResultData(basetypes.NewBoolValue(true))
+		return basetypes.NewBoolValue(true)
 	case eval.trueCount == 1 && eval.unknown:
-		resp.Result = function.NewResultData(basetypes.NewBoolValue(false))
+		return basetypes.NewBoolValue(false)
 	case eval.trueCount == 0 && eval.unknown:
-		resp.Result = function.NewResultData(types.BoolUnknown())
+		return basetypes.NewBoolUnknown()
 	default:
-		resp.Result = function.NewResultData(basetypes.NewBoolValue(false))
+		return basetypes.NewBoolValue(false)
 	}
 }
