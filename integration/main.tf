@@ -184,8 +184,8 @@ locals {
   exactly_one_valid_checks = {
     valid_when_one_true = provider::validatefx::exactly_one_valid([
       provider::validatefx::email("alice@example.com"),
-      provider::validatefx::email("invalid"),
-      provider::validatefx::email("bob@example.com"),
+      provider::validatefx::matches_regex("Alice123", "^[a-z]+$"),
+      provider::validatefx::matches_regex("bob", "^[a-z]+$"),
     ])
 
     false_when_multiple_true = provider::validatefx::exactly_one_valid([
@@ -194,14 +194,14 @@ locals {
     ])
 
     false_when_none_true = provider::validatefx::exactly_one_valid([
-      provider::validatefx::email("invalid"),
-      provider::validatefx::email("bad"),
+      provider::validatefx::matches_regex("Alice123", "^[a-z]+$"),
+      provider::validatefx::matches_regex("Bob456", "^[a-z]+$"),
     ])
 
     unknown_when_unknown_present = provider::validatefx::exactly_one_valid([
       provider::validatefx::email("alice@example.com"),
       provider::validatefx::email(var.integration_unknown_email),
-      provider::validatefx::email("invalid"),
+      provider::validatefx::matches_regex("Bob456", "^[a-z]+$"),
     ])
   }
 
@@ -374,7 +374,7 @@ output "validatefx_exactly_one_valid" {
 }
 
 variable "integration_unknown_email" {
-  description = "Optional email value for exactly_one_valid integration tests"
+  description = "Optional username value for exactly_one_valid integration tests"
   type        = string
   default     = null
 }
