@@ -31,6 +31,39 @@ make deps
 
 > **Tip:** The `make help` command lists all available targets and descriptions.
 
+## Adding a New Validator
+
+Use the following checklist when introducing a new validator so every layer stays in sync:
+
+1. **Author the core validator**
+   - Create or update `internal/validators/<name>.go` with the validation logic.
+   - Add comprehensive table-driven tests in `internal/validators/<name>_test.go` covering success, failure, and null/unknown inputs.
+2. **Expose the Terraform function**
+   - Implement the wrapper in `internal/functions/<name>.go` using `newStringValidationFunction` or the appropriate helper.
+   - Add a focused unit test file `internal/functions/<name>_test.go` validating success, failure diagnostics, and null/unknown propagation.
+   - Register the function in `internal/functions/registry.go` so Terraform can discover it.
+3. **Exercise real scenarios**
+   - Add or update example usage under `examples/functions/<name>/function.tf`.
+   - Extend the integration suite in `integration/main.tf` with passing scenarios that call the new function.
+4. **Document the addition**
+   - Generate a doc stub `docs/functions/<name>.md` (or update an existing one) so `tfplugindocs` has content to render.
+   - If the README lists available validators, update the relevant table or section.
+
+### Diagnostics and Edge Cases
+
+- Prefer `resp.Diagnostics.AddAttributeError` (or the helper plumbing already used in the project) so Terraform users receive actionable messages.
+- Treat null or unknown inputs as indeterminate: return `types.BoolUnknown()` from functions and bail out early in validators when `ConfigValue` is null or unknown.
+- Keep error wording consistent with existing validators—short summary plus a detail that includes the problematic value when safe.
+
+### Automation Checklist
+
+Run the project automation after making changes to guarantee consistency:
+
+- `go fmt ./...` — ensures Go sources stay formatted.
+- `go test ./...` — covers both validator and function unit tests.
+- `make docs` — refreshes `docs/functions/*.md` using `tfplugindocs` (required after schema/function changes).
+- `make validate` — runs the full validation pipeline (fmt, docs, and coverage checks) invoked by CI.
+
 ## Pull Request Checklist
 
 Before opening a PR, please ensure:
