@@ -220,6 +220,21 @@ locals {
     }
   ]
 
+  has_suffix_checks = [
+    {
+      label    = "yaml configuration"
+      value    = "config.yaml"
+      suffixes = [".yaml", ".yml"]
+      valid    = provider::validatefx::has_suffix("config.yaml", [".yaml", ".yml"])
+    },
+    {
+      label    = "text notes"
+      value    = "notes.txt"
+      suffixes = [".log", ".txt"]
+      valid    = provider::validatefx::has_suffix("notes.txt", [".log", ".txt"])
+    }
+  ]
+
   string_length_values = [
     {
       value      = "short"
@@ -425,4 +440,8 @@ output "validatefx_assert" {
 
 output "validatefx_version" {
   value = local.provider_version
+}
+
+output "validatefx_has_suffix" {
+  value = local.has_suffix_checks
 }
