@@ -1,7 +1,7 @@
 # 🧩 Terraform Provider - ValidateFX
 
 [![Go Version](https://img.shields.io/github/go-mod/go-version/The-DevOps-Daily/terraform-provider-validatefx?style=flat-square)](https://go.dev/)
-[![Build Status](https://img.shields.io/github/actions/workflow/status/The-DevOps-Daily/terraform-provider-validatefx/ci.yml?branch=main&style=flat-square)](https://github.com/The-DevOps-Daily/terraform-provider-validatefx/actions)
+[![CI](https://github.com/The-DevOps-Daily/terraform-provider-validatefx/actions/workflows/ci.yml/badge.svg)](https://github.com/The-DevOps-Daily/terraform-provider-validatefx/actions/workflows/ci.yml)
 [![License](https://img.shields.io/github/license/The-DevOps-Daily/terraform-provider-validatefx?style=flat-square)](https://github.com/The-DevOps-Daily/terraform-provider-validatefx/blob/main/LICENSE)
 [![Terraform Registry](https://img.shields.io/badge/terraform-registry-623CE4?style=flat-square&logo=terraform)](https://registry.terraform.io/providers/The-DevOps-Daily/validatefx/latest)
 
