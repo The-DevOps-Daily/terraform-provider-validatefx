@@ -88,7 +88,6 @@ Example usage in `examples/basic/main.tf`.
 | `matches_regex` | Validate that a string matches a provided regular expression. |
 | `phone` | Validate that a string is an E.164 compliant phone number. |
 | `semver` | Validate that a string follows Semantic Versioning (SemVer 2.0.0). |
-| `string_contains` | Validate that a string contains at least one of the provided substrings. |
 | `string_length` | Validate that a string length falls within optional minimum and maximum bounds. |
 | `url` | Validate that a string is an HTTP(S) URL. |
 | `uuid` | Validate that a string is an RFC 4122 UUID (versions 1-5). |
