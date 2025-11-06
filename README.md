@@ -59,8 +59,6 @@ make dev
 
 Example usage in `examples/basic/main.tf`.
 
-- [OS-specific installation & troubleshooting](docs/os-installation.md) — instructions for Windows, macOS (Intel/ARM), and Linux.
-
 
 ---
 
