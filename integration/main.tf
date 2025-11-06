@@ -80,6 +80,21 @@ locals {
     },
   ]
 
+  string_contains_samples = [
+    {
+      label       = "matches Terraform"
+      value       = "Hello Terraform"
+      substrings  = ["Terraform", "ValidateFX"]
+      ignore_case = false
+    },
+    {
+      label       = "matches ValidateFX case-insensitive"
+      value       = "I love validatefx"
+      substrings  = ["Terraform", "ValidateFX"]
+      ignore_case = true
+    }
+  ]
+
   cidr_values = [
     "10.0.0.0/24",
     "2001:db8::/48",
@@ -161,6 +176,16 @@ locals {
       value   = item.value
       pattern = item.pattern
       valid   = provider::validatefx::matches_regex(item.value, item.pattern)
+    }
+  ]
+
+  string_contains_results = [
+    for sample in local.string_contains_samples : {
+      label       = sample.label
+      value       = sample.value
+      substrings  = sample.substrings
+      ignore_case = sample.ignore_case
+      valid       = provider::validatefx::string_contains(sample.value, sample.substrings, sample.ignore_case)
     }
   ]
 
@@ -378,6 +403,10 @@ output "validatefx_ip" {
 
 output "validatefx_matches_regex" {
   value = local.matches_regex_results
+}
+
+output "validatefx_string_contains" {
+  value = local.string_contains_results
 }
 
 output "validatefx_in_list" {
