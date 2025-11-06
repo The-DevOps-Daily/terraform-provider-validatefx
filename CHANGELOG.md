@@ -11,6 +11,30 @@
 - None.
 
 
+## [0.1.7] - 2025-11-04
+
+### Features
+
+- Add string contains validator, Terraform function, example, integration scenario, and documentation coverage (#233, #234, #236, #238, #237, #235).
+- Add has_suffix string validator with supporting documentation (#176).
+- Add exactly_one_valid composite function (#172).
+
+### Improvements
+
+- Run lint as part of make validate (#174).
+
+### Documentation
+
+- Document workflow for adding validators (#173).
+- Link to good first issues in README (#175).
+- Document has_suffix usage adjustments (#183, #184).
+- Add SECURITY policy (#171).
+
+### Contributors
+
+- @bobbyonmagic
+- @shanaya-Gupta
+
 ## [0.1.6] - 2025-11-04
 
 ### Features
