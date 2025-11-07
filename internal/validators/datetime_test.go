@@ -3,6 +3,7 @@ package validators
 import (
 	"context"
 	"testing"
+	"time"
 
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	frameworkvalidator "github.com/hashicorp/terraform-plugin-framework/schema/validator"
@@ -131,5 +132,28 @@ func TestDateTimeValidatorHandlesNullUnknown(t *testing.T) {
 				t.Fatalf("expected no diagnostics for %s", name)
 			}
 		})
+	}
+}
+
+func TestDateTimeValidatorWithLocation(t *testing.T) {
+	t.Parallel()
+
+	location, err := time.LoadLocation("America/New_York")
+	if err != nil {
+		t.Fatalf("load location: %v", err)
+	}
+
+	validator := DateTimeWithLocation([]string{"2006-01-02 15:04"}, location)
+
+	req := frameworkvalidator.StringRequest{
+		Path:        path.Root("value"),
+		ConfigValue: types.StringValue("2025-11-02 07:30"),
+	}
+	resp := &frameworkvalidator.StringResponse{}
+
+	validator.ValidateString(context.Background(), req, resp)
+
+	if resp.Diagnostics.HasError() {
+		t.Fatalf("expected time to parse with location: %v", resp.Diagnostics)
 	}
 }

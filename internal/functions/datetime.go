@@ -77,7 +77,13 @@ func (dateTimeFunction) Run(ctx context.Context, req function.RunRequest, resp *
 	}
 
 	validation := frameworkvalidator.StringResponse{}
-	validators.DateTime(layoutStrings).ValidateString(ctx, frameworkvalidator.StringRequest{
+	validator := validators.DateTime(layoutStrings)
+	if len(layoutStrings) == 0 {
+		cfg := GetProviderConfiguration()
+		validator = validators.DateTimeWithLocation(cfg.DatetimeLayouts, cfg.Timezone)
+	}
+
+	validator.ValidateString(ctx, frameworkvalidator.StringRequest{
 		ConfigValue: value,
 		Path:        path.Root("value"),
 	}, &validation)

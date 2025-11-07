@@ -7,7 +7,9 @@ terraform {
   }
 }
 
-provider "validatefx" {}
+provider "validatefx" {
+  datetime_layouts = ["2006-01-02 15:04:05"]
+}
 
 locals {
   emails = [
@@ -58,14 +60,8 @@ locals {
   ]
 
   datetime_values = [
-    {
-      value   = "2025-11-02T15:04:05Z"
-      layouts = []
-    },
-    {
-      value   = "2025-11-02 15:04:05"
-      layouts = ["2006-01-02 15:04:05"]
-    },
+    "2025-11-02T15:04:05Z",
+    "2025-11-02 15:04:05",
   ]
 
   ip_values = [
@@ -157,10 +153,9 @@ locals {
   ]
 
   datetime_results = [
-    for item in local.datetime_values : {
-      value   = item.value
-      layouts = item.layouts
-      valid   = provider::validatefx::datetime(item.value, item.layouts)
+    for value in local.datetime_values : {
+      value = value
+      valid = provider::validatefx::datetime(value)
     }
   ]
 

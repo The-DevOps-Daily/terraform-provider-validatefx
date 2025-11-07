@@ -16,11 +16,21 @@ var _ frameworkvalidator.String = DateTime(nil)
 // DateTime returns a schema.String validator enforcing ISO 8601 / RFC 3339 datetimes.
 // Optional layouts may be provided to extend accepted formats.
 func DateTime(layouts []string) frameworkvalidator.String {
-	return &dateTimeValidator{layouts: normalizeLayouts(layouts)}
+	return DateTimeWithLocation(layouts, nil)
+}
+
+// DateTimeWithLocation returns a validator that accepts ISO 8601 / RFC 3339 datetimes and
+// optional layouts using the provided location when parsing.
+func DateTimeWithLocation(layouts []string, location *time.Location) frameworkvalidator.String {
+	return &dateTimeValidator{
+		layouts:  normalizeLayouts(layouts),
+		location: location,
+	}
 }
 
 type dateTimeValidator struct {
-	layouts []string
+	layouts  []string
+	location *time.Location
 }
 
 func (v *dateTimeValidator) Description(_ context.Context) string {
@@ -46,7 +56,7 @@ func (v *dateTimeValidator) ValidateString(_ context.Context, req frameworkvalid
 		layouts = []string{defaultDateTimeLayout}
 	}
 
-	if err := validateAgainstLayouts(value, layouts); err != nil {
+	if err := validateAgainstLayouts(value, layouts, v.location); err != nil {
 		resp.Diagnostics.AddAttributeError(req.Path, err.Summary, err.Detail)
 	}
 }
@@ -73,7 +83,7 @@ func normalizeLayouts(layouts []string) []string {
 	return uniq
 }
 
-func validateAgainstLayouts(value string, layouts []string) *dateTimeError {
+func validateAgainstLayouts(value string, layouts []string, location *time.Location) *dateTimeError {
 	var firstErr *dateTimeError
 
 	for _, layout := range layouts {
@@ -90,7 +100,7 @@ func validateAgainstLayouts(value string, layouts []string) *dateTimeError {
 			continue
 		}
 
-		if _, err := time.Parse(layout, value); err == nil {
+		if _, err := parseWithLocation(layout, value, location); err == nil {
 			return nil
 		} else if firstErr == nil {
 			firstErr = &dateTimeError{
@@ -147,6 +157,18 @@ func validateRFC3339(value string) *dateTimeError {
 		Summary: "Invalid Datetime",
 		Detail:  "invalid time component",
 	}
+}
+
+func parseWithLocation(layout, value string, location *time.Location) (time.Time, error) {
+	if location == nil {
+		return time.Parse(layout, value)
+	}
+
+	if strings.Contains(layout, "Z07:00") || strings.Contains(layout, "Z0700") {
+		return time.Parse(layout, value)
+	}
+
+	return time.ParseInLocation(layout, value, location)
 }
 
 type dateTimeError struct {

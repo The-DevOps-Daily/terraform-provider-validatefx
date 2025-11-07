@@ -22,25 +22,21 @@ terraform {
   }
 }
 
-provider "validatefx" {}
+provider "validatefx" {
+  datetime_layouts = ["2006-01-02 15:04:05"]
+}
 
 locals {
   inputs = {
     default_valid   = "2025-11-02T15:04:05Z"
     default_invalid = "2025-13-02T15:04:05Z"
-    custom_valid = {
-      value  = "2025-11-02 15:04:05"
-      layout = "2006-01-02 15:04:05"
-    }
+    custom_valid    = "2025-11-02 15:04:05"
   }
 
   default_check = provider::validatefx::datetime(local.inputs.default_valid)
   default_fail  = provider::validatefx::datetime(local.inputs.default_invalid)
 
-  custom_check = provider::validatefx::datetime(
-    local.inputs.custom_valid.value,
-    [local.inputs.custom_valid.layout],
-  )
+  custom_check = provider::validatefx::datetime(local.inputs.custom_valid)
 }
 
 output "datetime_checks" {
