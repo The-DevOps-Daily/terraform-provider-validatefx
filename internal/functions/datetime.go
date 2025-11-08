@@ -61,8 +61,9 @@ func (dateTimeFunction) Run(ctx context.Context, req function.RunRequest, resp *
 	}
 
 	if err := req.Arguments.GetArgument(ctx, 1, &layouts); err != nil {
-		resp.Error = err
-		return
+		// If the optional layouts argument was not provided Terraform will surface an argument error.
+		// Treat that case as an empty list so provider defaults can apply.
+		layouts = basetypes.NewListNull(basetypes.StringType{})
 	}
 
 	if value.IsNull() || value.IsUnknown() {
