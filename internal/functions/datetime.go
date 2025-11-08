@@ -2,6 +2,7 @@ package functions
 
 import (
 	"context"
+	"errors"
 
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/function"
@@ -61,9 +62,13 @@ func (dateTimeFunction) Run(ctx context.Context, req function.RunRequest, resp *
 	}
 
 	if err := req.Arguments.GetArgument(ctx, 1, &layouts); err != nil {
-		// If the optional layouts argument was not provided Terraform will surface an argument error.
-		// Treat that case as an empty list so provider defaults can apply.
-		layouts = basetypes.NewListNull(basetypes.StringType{})
+		var funcErr *function.FuncError
+		if errors.As(err, &funcErr) && funcErr.FunctionArgument != nil && *funcErr.FunctionArgument == 1 {
+			layouts = basetypes.NewListNull(basetypes.StringType{})
+		} else {
+			resp.Error = err
+			return
+		}
 	}
 
 	if value.IsNull() || value.IsUnknown() {
