@@ -31,6 +31,7 @@ func ProviderFunctionFactories() []func() function.Function {
 		NewInListFunction,
 		NewStringContainsFunction,
 		NewStringSuffixFunction,
+		NewIsUsernameFunction,
 		NewAllValidFunction,
 		NewAnyValidFunction,
 		NewExactlyOneValidFunction,
