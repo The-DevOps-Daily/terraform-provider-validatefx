@@ -179,6 +179,18 @@ locals {
     }
   ]
 
+  username_values = [
+    "alice",
+    "bob_123",
+  ]
+
+  username_results = [
+    for value in local.username_values : {
+      value = value
+      valid = provider::validatefx::username(value)
+    }
+  ]
+
   string_contains_results = [
     for sample in local.string_contains_samples : {
       label       = sample.label
@@ -403,6 +415,10 @@ output "validatefx_ip" {
 
 output "validatefx_matches_regex" {
   value = local.matches_regex_results
+}
+
+output "validatefx_username" {
+  value = local.username_results
 }
 
 output "validatefx_string_contains" {

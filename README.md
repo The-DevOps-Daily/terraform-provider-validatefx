@@ -89,6 +89,7 @@ Example usage in `examples/basic/main.tf`.
 | `string_contains` | Validate that a string contains at least one of the provided substrings. |
 | `string_length` | Validate that a string length falls within optional minimum and maximum bounds. |
 | `url` | Validate that a string is an HTTP(S) URL. |
+| `username` | Validate that a string is a valid username. |
 | `uuid` | Validate that a string is an RFC 4122 UUID (versions 1-5). |
 | `version` | Return the provider version string. |
 
