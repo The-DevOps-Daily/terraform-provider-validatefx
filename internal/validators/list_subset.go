@@ -8,7 +8,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	frameworkvalidator "github.com/hashicorp/terraform-plugin-framework/schema/validator"
-	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
 var _ frameworkvalidator.List = (*listSubsetValidator)(nil)
@@ -66,18 +65,32 @@ func (v *listSubsetValidator) MarkdownDescription(ctx context.Context) string {
 }
 
 func (v *listSubsetValidator) ValidateList(ctx context.Context, req frameworkvalidator.ListRequest, resp *frameworkvalidator.ListResponse) {
-	v.validateCollection(ctx, req.ConfigValue, &resp.Diagnostics, req.Path)
-}
-
-func (v *listSubsetValidator) ValidateSet(ctx context.Context, req frameworkvalidator.SetRequest, resp *frameworkvalidator.SetResponse) {
-	v.validateCollection(ctx, req.ConfigValue, &resp.Diagnostics, req.Path)
-}
-
-func (v *listSubsetValidator) validateCollection(ctx context.Context, value types.List, diags *diag.Diagnostics, attrPath path.Path) {
-	if value.IsNull() || value.IsUnknown() {
+	if req.ConfigValue.IsNull() || req.ConfigValue.IsUnknown() {
 		return
 	}
 
+	values, ok := readStringElements(ctx, req.ConfigValue, &resp.Diagnostics)
+	if !ok {
+		return
+	}
+
+	v.validateValues(values, &resp.Diagnostics, req.Path)
+}
+
+func (v *listSubsetValidator) ValidateSet(ctx context.Context, req frameworkvalidator.SetRequest, resp *frameworkvalidator.SetResponse) {
+	if req.ConfigValue.IsNull() || req.ConfigValue.IsUnknown() {
+		return
+	}
+
+	values, ok := readStringElements(ctx, req.ConfigValue, &resp.Diagnostics)
+	if !ok {
+		return
+	}
+
+	v.validateValues(values, &resp.Diagnostics, req.Path)
+}
+
+func (v *listSubsetValidator) validateValues(values []string, diags *diag.Diagnostics, attrPath path.Path) {
 	if len(v.lookup) == 0 {
 		diags.AddAttributeError(
 			attrPath,
@@ -87,13 +100,7 @@ func (v *listSubsetValidator) validateCollection(ctx context.Context, value type
 		return
 	}
 
-	var elements []string
-	if d := value.ElementsAs(ctx, &elements, false); d.HasError() {
-		diags.Append(d...)
-		return
-	}
-
-	for _, element := range elements {
+	for _, element := range values {
 		if _, ok := v.lookup[element]; ok {
 			continue
 		}
@@ -104,4 +111,16 @@ func (v *listSubsetValidator) validateCollection(ctx context.Context, value type
 			fmt.Sprintf("Value %q is not part of the allowed set (%s)", element, strings.Join(v.allowed, ", ")),
 		)
 	}
+}
+
+func readStringElements(ctx context.Context, value interface {
+	ElementsAs(context.Context, interface{}, bool) diag.Diagnostics
+}, diags *diag.Diagnostics) ([]string, bool) {
+	var elements []string
+	if diagnostic := value.ElementsAs(ctx, &elements, false); diagnostic.HasError() {
+		diags.Append(diagnostic...)
+		return nil, false
+	}
+
+	return elements, true
 }
