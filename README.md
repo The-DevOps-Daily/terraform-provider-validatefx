@@ -77,6 +77,7 @@ Example usage in `examples/basic/main.tf`.
 | `domain` | Validate that a string is a compliant domain name. |
 | `email` | Validate that a string is an RFC 5322 compliant email address. |
 | `exactly_one_valid` | Return true when exactly one validation check evaluates to true. |
+| `has_prefix` | Validate that a string starts with one of the provided prefixes. |
 | `has_suffix` | Validate that a string ends with one of the provided suffixes. |
 | `hostname` | Validate that a string is a hostname compliant with RFC 1123. |
 | `in_list` | Validate that a string matches one of the allowed values. |

@@ -272,6 +272,23 @@ locals {
     }
   ]
 
+  has_prefix_checks = [
+    {
+      label       = "terraform prefix"
+      value       = "tf-backend"
+      prefixes    = ["tf-", "iac-"]
+      ignore_case = false
+      valid       = provider::validatefx::has_prefix("tf-backend", ["tf-", "iac-"], false)
+    },
+    {
+      label       = "case insensitive"
+      value       = "TF-service"
+      prefixes    = ["tf-", "iac-"]
+      ignore_case = true
+      valid       = provider::validatefx::has_prefix("TF-service", ["tf-", "iac-"], true)
+    }
+  ]
+
   string_length_values = [
     {
       value      = "short"
@@ -489,4 +506,8 @@ output "validatefx_version" {
 
 output "validatefx_has_suffix" {
   value = local.has_suffix_checks
+}
+
+output "validatefx_has_prefix" {
+  value = local.has_prefix_checks
 }
