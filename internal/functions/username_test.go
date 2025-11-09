@@ -10,10 +10,10 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 )
 
-func TestIsUsernameFunction(t *testing.T) {
+func TestUsernameFunction(t *testing.T) {
 	t.Parallel()
 
-	fn := NewIsUsernameFunction()
+	fn := NewUsernameFunction()
 	ctx := context.Background()
 
 	testCases := []struct {

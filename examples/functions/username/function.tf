@@ -19,12 +19,11 @@ locals {
   results = [
     for username in local.usernames : {
       value = username
-      valid = provider::validatefx::is_username(username)
+      valid = provider::validatefx::username(username)
     }
   ]
 }
 
-output "is_username_example" {
+output "username_example" {
   value = local.results
 }
-

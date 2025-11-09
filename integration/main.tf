@@ -187,7 +187,7 @@ locals {
   username_results = [
     for value in local.username_values : {
       value = value
-      valid = provider::validatefx::is_username(value)
+      valid = provider::validatefx::username(value)
     }
   ]
 
@@ -417,7 +417,7 @@ output "validatefx_matches_regex" {
   value = local.matches_regex_results
 }
 
-output "validatefx_is_username" {
+output "validatefx_username" {
   value = local.username_results
 }
 

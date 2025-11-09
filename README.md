@@ -81,7 +81,6 @@ Example usage in `examples/basic/main.tf`.
 | `hostname` | Validate that a string is a hostname compliant with RFC 1123. |
 | `in_list` | Validate that a string matches one of the allowed values. |
 | `ip` | Validate that a string is a valid IPv4 or IPv6 address. |
-| `is_username` | Validate that a string is a valid username. |
 | `json` | Validate that a string decodes to a JSON object. |
 | `mac_address` | Validate that a string is a MAC address in colon, dash, or compact format. |
 | `matches_regex` | Validate that a string matches a provided regular expression. |
@@ -90,6 +89,7 @@ Example usage in `examples/basic/main.tf`.
 | `string_contains` | Validate that a string contains at least one of the provided substrings. |
 | `string_length` | Validate that a string length falls within optional minimum and maximum bounds. |
 | `url` | Validate that a string is an HTTP(S) URL. |
+| `username` | Validate that a string is a valid username. |
 | `uuid` | Validate that a string is an RFC 4122 UUID (versions 1-5). |
 | `version` | Return the provider version string. |
 
