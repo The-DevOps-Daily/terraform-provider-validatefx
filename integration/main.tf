@@ -218,6 +218,23 @@ locals {
     }
   ]
 
+  not_in_list_checks = [
+    {
+      label       = "not disallowed"
+      value       = "green"
+      disallowed  = ["red", "blue"]
+      ignore_case = false
+      valid       = provider::validatefx::not_in_list("green", ["red", "blue"], false)
+    },
+    {
+      label       = "case-insensitive not in list"
+      value       = "Green"
+      disallowed  = ["red", "green"]
+      ignore_case = true
+      valid       = provider::validatefx::not_in_list("Green", ["red", "green"], true)
+    }
+  ]
+
   exactly_one_valid_checks = {
     valid_when_one_true = provider::validatefx::exactly_one_valid([
       provider::validatefx::all_valid([true, true]),
@@ -456,6 +473,10 @@ output "validatefx_string_contains" {
 
 output "validatefx_in_list" {
   value = local.in_list_checks
+}
+
+output "validatefx_not_in_list" {
+  value = local.not_in_list_checks
 }
 
 output "validatefx_exactly_one_valid" {
