@@ -2,14 +2,14 @@ package functions
 
 import (
 	"context"
-	"fmt"
-	"sort"
 
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/function"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
+
+	"github.com/The-DevOps-Daily/terraform-provider-validatefx/internal/validators"
 )
 
 type setEqualsFunction struct{}
@@ -50,7 +50,7 @@ func (setEqualsFunction) Definition(_ context.Context, _ function.DefinitionRequ
 }
 
 func (setEqualsFunction) Run(ctx context.Context, req function.RunRequest, resp *function.RunResponse) {
-	values, valuesState, ok := collectStringSet(ctx, req, resp, 0, "values")
+	values, valuesState, ok := collectStringList(ctx, req, resp, 0, "values")
 	if !ok {
 		return
 	}
@@ -60,7 +60,7 @@ func (setEqualsFunction) Run(ctx context.Context, req function.RunRequest, resp 
 		return
 	}
 
-	expected, expectedState, ok := collectStringSet(ctx, req, resp, 1, "expected")
+	expected, expectedState, ok := collectStringList(ctx, req, resp, 1, "expected")
 	if !ok {
 		return
 	}
@@ -70,12 +70,13 @@ func (setEqualsFunction) Run(ctx context.Context, req function.RunRequest, resp 
 		return
 	}
 
-	if len(values.items) != len(expected.items) || !setsEqual(values.items, expected.items) {
+	validator := validators.NewSetEquals(expected)
+	if err := validator.Validate(values); err != nil {
 		diags := diag.Diagnostics{}
 		diags.AddAttributeError(
 			path.Root("values"),
 			"Set Mismatch",
-			fmt.Sprintf("Values %v must match expected %v (order independent).", values.ordered, expected.ordered),
+			err.Error(),
 		)
 		resp.Error = function.FuncErrorFromDiags(ctx, diags)
 		return
@@ -84,20 +85,15 @@ func (setEqualsFunction) Run(ctx context.Context, req function.RunRequest, resp 
 	resp.Result = function.NewResultData(basetypes.NewBoolValue(true))
 }
 
-type stringSet struct {
-	items   map[string]struct{}
-	ordered []string
-}
-
-func collectStringSet(ctx context.Context, req function.RunRequest, resp *function.RunResponse, index int, name string) (stringSet, valueState, bool) {
+func collectStringList(ctx context.Context, req function.RunRequest, resp *function.RunResponse, index int, name string) ([]string, valueState, bool) {
 	var list types.List
 	if err := req.Arguments.GetArgument(ctx, index, &list); err != nil {
 		resp.Error = err
-		return stringSet{}, valueKnown, false
+		return nil, valueKnown, false
 	}
 
 	if list.IsUnknown() {
-		return stringSet{}, valueUnknown, true
+		return nil, valueUnknown, true
 	}
 
 	if list.IsNull() {
@@ -105,10 +101,10 @@ func collectStringSet(ctx context.Context, req function.RunRequest, resp *functi
 		diags.AddAttributeError(
 			path.Root(name),
 			"Missing List",
-			fmt.Sprintf("Parameter %q must be provided.", name),
+			"List must be provided.",
 		)
 		resp.Error = function.FuncErrorFromDiags(ctx, diags)
-		return stringSet{}, valueKnown, false
+		return nil, valueKnown, false
 	}
 
 	var elements []basetypes.StringValue
@@ -117,57 +113,29 @@ func collectStringSet(ctx context.Context, req function.RunRequest, resp *functi
 		diags.AddAttributeError(
 			path.Root(name),
 			"Invalid Elements",
-			fmt.Sprintf("Parameter %q must be a list of strings.", name),
+			"List must contain only strings.",
 		)
 		resp.Error = function.FuncErrorFromDiags(ctx, diags)
-		return stringSet{}, valueKnown, false
+		return nil, valueKnown, false
 	}
 
-	set := stringSet{
-		items:   make(map[string]struct{}, len(elements)),
-		ordered: make([]string, 0, len(elements)),
-	}
-
-	for _, element := range elements {
-		if element.IsUnknown() {
-			return stringSet{}, valueUnknown, true
+	values := make([]string, 0, len(elements))
+	for _, el := range elements {
+		if el.IsUnknown() {
+			return nil, valueUnknown, true
 		}
-
-		if element.IsNull() {
+		if el.IsNull() {
 			diags := diag.Diagnostics{}
 			diags.AddAttributeError(
 				path.Root(name),
 				"Null Element",
-				fmt.Sprintf("Parameter %q must not contain null values.", name),
+				"List must not contain null values.",
 			)
 			resp.Error = function.FuncErrorFromDiags(ctx, diags)
-			return stringSet{}, valueKnown, false
+			return nil, valueKnown, false
 		}
-
-		value := element.ValueString()
-		if _, exists := set.items[value]; !exists {
-			set.items[value] = struct{}{}
-			set.ordered = append(set.ordered, value)
-		}
+		values = append(values, el.ValueString())
 	}
 
-	sort.Strings(set.ordered)
-
-	return set, valueKnown, true
-}
-
-func setsEqual(left, right map[string]struct{}) bool {
-	for key := range left {
-		if _, ok := right[key]; !ok {
-			return false
-		}
-	}
-
-	for key := range right {
-		if _, ok := left[key]; !ok {
-			return false
-		}
-	}
-
-	return true
+	return values, valueKnown, true
 }
