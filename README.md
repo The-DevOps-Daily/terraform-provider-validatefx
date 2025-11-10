@@ -69,6 +69,7 @@ Example usage in `examples/basic/main.tf`.
 | `all_valid` | Return true when all provided validation checks evaluate to true. |
 | `any_valid` | Return true when any provided validation check evaluates to true. |
 | `assert` | Assert a condition with a custom error message. |
+| `base32` | Validate that a string is Base32 encoded. |
 | `base64` | Validate that a string is Base64 encoded. |
 | `between` | Validate that a numeric string falls between inclusive minimum and maximum bounds. |
 | `cidr` | Validate that a string is an IPv4 or IPv6 CIDR block. |
