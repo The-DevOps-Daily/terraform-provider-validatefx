@@ -29,6 +29,7 @@ func ProviderFunctionFactories() []func() function.Function {
 		NewURLFunction,
 		NewBetweenFunction,
 		NewInListFunction,
+		NewNotInListFunction,
 		NewStringContainsFunction,
 		NewStringSuffixFunction,
 		NewStringPrefixFunction,
