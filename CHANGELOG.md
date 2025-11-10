@@ -11,6 +11,34 @@
 - None.
 
 
+## [0.1.8] - 2025-11-10
+
+### Features
+
+- Add `not_in_list` validator and Terraform function with examples, docs, and integration coverage (PR #251, closes #158).
+- Add `has_prefix` validator and Terraform function with tests and docs (PR #248).
+- Add `set_equals` composite function for list set equality (PR #250).
+- Add `username` validator and function; align naming for consistency (PR #247).
+
+### Improvements
+
+- Refactor `set_equals` to follow the validator + function wrapper pattern for consistency (ed5b07c).
+- Ensure integration scenarios only include successful cases for new functions (4ebe84b).
+
+### Documentation
+
+- Update README CI badge to the unified GitHub Actions badge (PR #241).
+- Remove deprecated OS installation document to avoid duplication (PR #240).
+
+### CI / Tooling
+
+- Bump golangci-lint GitHub Action from v8 to v9 (dependabot; 1e90796).
+
+### Reverts
+
+- Revert earlier `list_subset` addition pending follow-up design and coverage (PRs #244, #246).
+
+
 ## [0.1.7] - 2025-11-04
 
 ### Features
