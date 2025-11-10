@@ -21,6 +21,7 @@ func ProviderFunctionFactories() []func() function.Function {
 		NewDateTimeFunction,
 		NewJSONFunction,
 		NewSemVerFunction,
+		NewHexFunction,
 		NewIPFunction,
 		NewMatchesRegexFunction,
 		NewStringLengthFunction,

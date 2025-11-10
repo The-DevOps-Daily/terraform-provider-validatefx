@@ -201,6 +201,19 @@ locals {
     }
   ]
 
+  hex_checks = [
+    {
+      label = "lowercase"
+      value = "deadbeef"
+      valid = provider::validatefx::hex("deadbeef")
+    },
+    {
+      label = "uppercase"
+      value = "CAFE1234"
+      valid = provider::validatefx::hex("CAFE1234")
+    }
+  ]
+
   in_list_checks = [
     {
       label       = "valid"
@@ -469,6 +482,10 @@ output "validatefx_username" {
 
 output "validatefx_string_contains" {
   value = local.string_contains_results
+}
+
+output "validatefx_hex" {
+  value = local.hex_checks
 }
 
 output "validatefx_in_list" {

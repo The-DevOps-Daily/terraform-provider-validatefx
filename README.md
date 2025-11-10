@@ -79,6 +79,7 @@ Example usage in `examples/basic/main.tf`.
 | `exactly_one_valid` | Return true when exactly one validation check evaluates to true. |
 | `has_prefix` | Validate that a string starts with one of the provided prefixes. |
 | `has_suffix` | Validate that a string ends with one of the provided suffixes. |
+| `hex` | Validate that a string contains only hexadecimal characters. |
 | `hostname` | Validate that a string is a hostname compliant with RFC 1123. |
 | `in_list` | Validate that a string matches one of the allowed values. |
 | `ip` | Validate that a string is a valid IPv4 or IPv6 address. |
