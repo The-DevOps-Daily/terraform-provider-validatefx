@@ -3,8 +3,9 @@ package functions
 import (
 	"context"
 
-	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/function"
+	"github.com/hashicorp/terraform-plugin-framework/path"
+	frameworkvalidator "github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 
@@ -77,22 +78,19 @@ func (betweenFunction) Run(ctx context.Context, req function.RunRequest, resp *f
 		return
 	}
 
-	valid, boundsDiag, valueDiag := validators.EvaluateBetween(value.ValueString(), stringFrom(min), stringFrom(max))
-	if boundsDiag != nil {
-		diags := diag.Diagnostics{}
-		diags.AddError(boundsDiag.Summary, boundsDiag.Detail)
-		resp.Error = function.FuncErrorFromDiags(ctx, diags)
+	validator := validators.Between(stringFrom(min), stringFrom(max))
+	validation := frameworkvalidator.StringResponse{}
+	validator.ValidateString(ctx, frameworkvalidator.StringRequest{
+		ConfigValue: value,
+		Path:        path.Root("value"),
+	}, &validation)
+
+	if validation.Diagnostics.HasError() {
+		resp.Error = function.FuncErrorFromDiags(ctx, validation.Diagnostics)
 		return
 	}
 
-	if valueDiag != nil {
-		diags := diag.Diagnostics{}
-		diags.AddError(valueDiag.Summary, valueDiag.Detail)
-		resp.Error = function.FuncErrorFromDiags(ctx, diags)
-		return
-	}
-
-	resp.Result = function.NewResultData(basetypes.NewBoolValue(valid))
+	resp.Result = function.NewResultData(basetypes.NewBoolValue(true))
 }
 
 func stringFrom(v types.String) string {
