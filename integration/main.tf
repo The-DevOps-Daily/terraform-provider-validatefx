@@ -214,6 +214,19 @@ locals {
     }
   ]
 
+  base32_checks = [
+    {
+      label = "hello"
+      value = "NBSWY3DP"
+      valid = provider::validatefx::base32("NBSWY3DP")
+    },
+    {
+      label = "validate"
+      value = "OZQWY2LEMF2GK==="
+      valid = provider::validatefx::base32("OZQWY2LEMF2GK===")
+    }
+  ]
+
   in_list_checks = [
     {
       label       = "valid"
@@ -486,6 +499,10 @@ output "validatefx_string_contains" {
 
 output "validatefx_hex" {
   value = local.hex_checks
+}
+
+output "validatefx_base32" {
+  value = local.base32_checks
 }
 
 output "validatefx_in_list" {
