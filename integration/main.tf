@@ -229,9 +229,9 @@ locals {
     {
       label       = "case-insensitive not in list"
       value       = "Green"
-      disallowed  = ["red", "green"]
+      disallowed  = ["red", "blue"]
       ignore_case = true
-      valid       = provider::validatefx::not_in_list("Green", ["red", "green"], true)
+      valid       = provider::validatefx::not_in_list("Green", ["red", "blue"], true)
     }
   ]
 
