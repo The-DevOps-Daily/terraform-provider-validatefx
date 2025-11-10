@@ -227,6 +227,14 @@ locals {
     }
   ]
 
+  ssh_public_key_checks = [
+    {
+      label = "ed25519"
+      value = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKJf0N0nH7kz5Zr4xkz0GWWJrPq9uO2m6sR3j0s8v2QG test@example"
+      valid = provider::validatefx::ssh_public_key("ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKJf0N0nH7kz5Zr4xkz0GWWJrPq9uO2m6sR3j0s8v2QG test@example")
+    }
+  ]
+
   in_list_checks = [
     {
       label       = "valid"
@@ -503,6 +511,10 @@ output "validatefx_hex" {
 
 output "validatefx_base32" {
   value = local.base32_checks
+}
+
+output "validatefx_ssh_public_key" {
+  value = local.ssh_public_key_checks
 }
 
 output "validatefx_in_list" {
