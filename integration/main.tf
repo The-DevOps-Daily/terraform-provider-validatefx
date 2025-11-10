@@ -289,6 +289,18 @@ locals {
     }
   ]
 
+  set_equals_checks = [
+    {
+      label    = "matching sets"
+      values   = ["feature_a", "feature_b", "feature_c"]
+      expected = ["feature_c", "feature_a", "feature_b"]
+      valid = provider::validatefx::set_equals(
+        ["feature_a", "feature_b", "feature_c"],
+        ["feature_c", "feature_a", "feature_b"],
+      )
+    }
+  ]
+
   string_length_values = [
     {
       value      = "short"
@@ -510,4 +522,8 @@ output "validatefx_has_suffix" {
 
 output "validatefx_has_prefix" {
   value = local.has_prefix_checks
+}
+
+output "validatefx_set_equals" {
+  value = local.set_equals_checks
 }

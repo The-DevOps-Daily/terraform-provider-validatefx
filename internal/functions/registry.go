@@ -33,6 +33,7 @@ func ProviderFunctionFactories() []func() function.Function {
 		NewStringSuffixFunction,
 		NewStringPrefixFunction,
 		NewUsernameFunction,
+		NewSetEqualsFunction,
 		NewAllValidFunction,
 		NewAnyValidFunction,
 		NewExactlyOneValidFunction,
