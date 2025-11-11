@@ -214,6 +214,29 @@ locals {
     }
   ]
 
+  integer_checks = [
+    {
+      label = "zero"
+      value = "0"
+      valid = provider::validatefx::integer("0")
+    },
+    {
+      label = "negative"
+      value = "-42"
+      valid = provider::validatefx::integer("-42")
+    },
+    {
+      label = "plus sign"
+      value = "+7"
+      valid = provider::validatefx::integer("+7")
+    },
+    {
+      label = "not integer"
+      value = "3.14"
+      valid = provider::validatefx::integer("3.14")
+    }
+  ]
+
   base32_checks = [
     {
       label = "hello"
@@ -511,6 +534,10 @@ output "validatefx_hex" {
 
 output "validatefx_base32" {
   value = local.base32_checks
+}
+
+output "validatefx_integer" {
+  value = local.integer_checks
 }
 
 output "validatefx_ssh_public_key" {
