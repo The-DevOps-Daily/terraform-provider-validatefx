@@ -40,6 +40,7 @@ func (p *validateFXProvider) Metadata(ctx context.Context, req provider.Metadata
 func (p *validateFXProvider) Schema(ctx context.Context, req provider.SchemaRequest, resp *provider.SchemaResponse) {
 	resp.Schema = schema.Schema{
 		MarkdownDescription: "The validatefx provider exposes a suite of reusable validation functions that can be invoked from Terraform expressions using the `provider::validatefx::<name>` syntax.",
+		// Non-intrusive: leave provider schema minimal for now.
 	}
 }
 
