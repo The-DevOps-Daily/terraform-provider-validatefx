@@ -2,7 +2,7 @@ terraform {
   required_providers {
     validatefx = {
       source  = "The-DevOps-Daily/validatefx"
-      version = "~> 0.1"
+      version = "~> 0.2"
     }
   }
 }
