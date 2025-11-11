@@ -135,6 +135,14 @@ locals {
     }
   ]
 
+  fqdn_checks = [
+    {
+      label = "valid fqdn"
+      value = "app.example.com"
+      valid = provider::validatefx::fqdn("app.example.com")
+    }
+  ]
+
   hostname_results = [
     for host in local.hostnames : {
       hostname = host
@@ -497,6 +505,10 @@ output "validatefx_credit_card" {
 
 output "validatefx_domain" {
   value = local.domain_results
+}
+
+output "validatefx_fqdn" {
+  value = local.fqdn_checks
 }
 
 output "validatefx_hostname" {
