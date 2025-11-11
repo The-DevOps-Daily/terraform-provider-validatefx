@@ -23,6 +23,7 @@ func ProviderFunctionFactories() []func() function.Function {
 		NewJSONFunction,
 		NewSemVerFunction,
 		NewHexFunction,
+		NewIntegerFunction,
 		NewSSHPublicKeyFunction,
 		NewIPFunction,
 		NewMatchesRegexFunction,
