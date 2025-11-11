@@ -2,11 +2,8 @@ package functions
 
 import (
 	"context"
-	"regexp"
 
-	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/function"
-	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 
@@ -57,17 +54,7 @@ func (matchesRegexFunction) Run(ctx context.Context, req function.RunRequest, re
 		return
 	}
 
-	// Validate the regex pattern and surface errors on the pattern attribute
-	if _, err := regexp.Compile(pattern.ValueString()); err != nil {
-		diags := diag.Diagnostics{}
-		diags.AddAttributeError(
-			path.Root("pattern"),
-			"Invalid Regex Pattern",
-			err.Error(),
-		)
-		resp.Error = function.FuncErrorFromDiags(ctx, diags)
-		return
-	}
+	// Let the validator handle pattern compilation/diagnostics for consistency
 
 	// Use the shared single-string validation wrapper with a dynamic validator
 	fn := newStringValidationFunction(
