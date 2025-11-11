@@ -49,6 +49,14 @@ locals {
     "xn--bcher-kva.example",
   ]
 
+  fqdn_idna_checks = [
+    {
+      label = "punycode label"
+      value = "xn--bcher-kva.example"
+      valid = provider::validatefx::fqdn("xn--bcher-kva.example")
+    }
+  ]
+
   json_payloads = [
     "{\"key\": \"value\"}",
   ]
@@ -513,6 +521,10 @@ output "validatefx_fqdn" {
 
 output "validatefx_hostname" {
   value = local.hostname_results
+}
+
+output "validatefx_fqdn_idna" {
+  value = local.fqdn_idna_checks
 }
 
 output "validatefx_json" {
