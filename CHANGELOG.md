@@ -38,6 +38,33 @@
 
 - Revert earlier `list_subset` addition pending follow-up design and coverage (PRs #244, #246).
 
+## [0.2.0] - 2025-11-11
+
+### Features
+
+- Integer validator and Terraform function with tests and examples (PR #322).
+- Provider-level datetime defaults scaffolding and wiring to datetime when layouts are null/empty (PR #321).
+- Base32 validator and Terraform function with tests, examples, and docs (PR #317).
+- SSH public key validator and Terraform function with tests, examples, and docs (PR #318).
+
+### Improvements
+
+- Align function wrappers to use validators consistently (PR #319).
+- Refactor matches_regex to rely on validators; remove inline regex logic (PR #320, closes #17).
+
+### Bug Fixes
+
+- Integer validator: trim whitespace and ignore empty-like input to match validator conventions (PR #323).
+
+### Documentation
+
+- Update docs for new validators and provider-level defaults (PRs #316, #317, #318, #321, #323).
+
+### Contributors
+
+- @Ak00005
+- @bobbyonmagic
+
 
 ## [0.1.7] - 2025-11-04
 
