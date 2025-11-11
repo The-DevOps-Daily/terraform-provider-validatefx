@@ -1,0 +1,24 @@
+---
+page_title: "{{ .ProviderShortName }} Provider"
+subcategory: ""
+description: |-
+  {{ .Description | plainmarkdown | trimspace | prefixlines "  " }}
+---
+
+# {{ .ProviderShortName }} Provider
+
+{{ .Description | trimspace }}
+
+{{ if .HasExample -}}
+## Example Usage
+
+{{ tffile .ExampleFile }}
+{{- end }}
+
+{{ .SchemaMarkdown | trimspace }}
+
+## Learn More
+
+For tutorials, articles, and updates from the maintainers, visit DevOps Daily:
+
+- https://devops-daily.com/
