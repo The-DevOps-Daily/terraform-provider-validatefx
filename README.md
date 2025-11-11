@@ -83,6 +83,7 @@ Example usage in `examples/basic/main.tf`.
 | `hex` | Validate that a string contains only hexadecimal characters. |
 | `hostname` | Validate that a string is a hostname compliant with RFC 1123. |
 | `in_list` | Validate that a string matches one of the allowed values. |
+| `integer` | Validate that a string represents a valid integer. |
 | `ip` | Validate that a string is a valid IPv4 or IPv6 address. |
 | `json` | Validate that a string decodes to a JSON object. |
 | `mac_address` | Validate that a string is a MAC address in colon, dash, or compact format. |
