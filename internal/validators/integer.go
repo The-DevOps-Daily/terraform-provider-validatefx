@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"regexp"
+	"strings"
 
 	frameworkvalidator "github.com/hashicorp/terraform-plugin-framework/schema/validator"
 )
@@ -28,7 +29,7 @@ func (v *integerValidator) ValidateString(_ context.Context, req frameworkvalida
 		return
 	}
 
-	value := req.ConfigValue.ValueString()
+	value := strings.TrimSpace(req.ConfigValue.ValueString())
 	if value == "" {
 		return
 	}
