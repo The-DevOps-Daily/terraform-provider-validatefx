@@ -63,6 +63,30 @@
 ### Contributors
 
 - @Ak00005
+
+
+## [0.2.1] - 2025-11-11
+
+### Features
+
+- Add fqdn validator and function; tests, examples, integration; closes #253 (PR #329).
+- Complete password_strength with framework-compliant function and validator; tests, examples, integration (PR #328).
+
+### Improvements
+
+- fqdn: support punycode (xn--) labels; tests updated; examples/integration unchanged (PR #330).
+
+### Documentation
+
+- docs: add DevOps Daily website reference to provider docs index template (PR #325).
+- docs: ensure index.md is generated from template; add DevOps Daily link via template (PR #327).
+
+### Contributors
+
+- @bobbyonmagic
+- @smitbhoir20
+- @nihalnayak45
+
 - @bobbyonmagic
 
 
