@@ -253,6 +253,14 @@ locals {
     }
   ]
 
+  password_strength_checks = [
+    {
+      label = "strong"
+      value = "Abc@1234"
+      valid = provider::validatefx::password_strength("Abc@1234")
+    }
+  ]
+
   in_list_checks = [
     {
       label       = "valid"
@@ -537,6 +545,10 @@ output "validatefx_integer" {
 
 output "validatefx_ssh_public_key" {
   value = local.ssh_public_key_checks
+}
+
+output "validatefx_password_strength" {
+  value = local.password_strength_checks
 }
 
 output "validatefx_in_list" {
