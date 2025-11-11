@@ -10,6 +10,55 @@
 
 - None.
 
+## [0.2.1] - 2025-11-11
+
+### Features
+
+- Add fqdn validator and function; tests, examples, integration; closes #253 (PR #329).
+- Complete password_strength with framework-compliant function and validator; tests, examples, integration (PR #328).
+
+### Improvements
+
+- fqdn: support punycode (xn--) labels; tests updated; examples/integration unchanged (PR #330).
+
+### Documentation
+
+- docs: add DevOps Daily website reference to provider docs index template (PR #325).
+- docs: ensure index.md is generated from template; add DevOps Daily link via template (PR #327).
+
+### Contributors
+
+- @bobbyonmagic
+- @smitbhoir20
+- @nihalnayak45
+
+- @bobbyonmagic
+
+## [0.2.0] - 2025-11-11
+
+### Features
+
+- Integer validator and Terraform function with tests and examples (PR #322).
+- Provider-level datetime defaults scaffolding and wiring to datetime when layouts are null/empty (PR #321).
+- Base32 validator and Terraform function with tests, examples, and docs (PR #317).
+- SSH public key validator and Terraform function with tests, examples, and docs (PR #318).
+
+### Improvements
+
+- Align function wrappers to use validators consistently (PR #319).
+- Refactor matches_regex to rely on validators; remove inline regex logic (PR #320, closes #17).
+
+### Bug Fixes
+
+- Integer validator: trim whitespace and ignore empty-like input to match validator conventions (PR #323).
+
+### Documentation
+
+- Update docs for new validators and provider-level defaults (PRs #316, #317, #318, #321, #323).
+
+### Contributors
+
+- @Ak00005
 
 ## [0.1.8] - 2025-11-10
 
@@ -37,34 +86,6 @@
 ### Reverts
 
 - Revert earlier `list_subset` addition pending follow-up design and coverage (PRs #244, #246).
-
-## [0.2.0] - 2025-11-11
-
-### Features
-
-- Integer validator and Terraform function with tests and examples (PR #322).
-- Provider-level datetime defaults scaffolding and wiring to datetime when layouts are null/empty (PR #321).
-- Base32 validator and Terraform function with tests, examples, and docs (PR #317).
-- SSH public key validator and Terraform function with tests, examples, and docs (PR #318).
-
-### Improvements
-
-- Align function wrappers to use validators consistently (PR #319).
-- Refactor matches_regex to rely on validators; remove inline regex logic (PR #320, closes #17).
-
-### Bug Fixes
-
-- Integer validator: trim whitespace and ignore empty-like input to match validator conventions (PR #323).
-
-### Documentation
-
-- Update docs for new validators and provider-level defaults (PRs #316, #317, #318, #321, #323).
-
-### Contributors
-
-- @Ak00005
-- @bobbyonmagic
-
 
 ## [0.1.7] - 2025-11-04
 
