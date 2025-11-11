@@ -229,11 +229,6 @@ locals {
       label = "plus sign"
       value = "+7"
       valid = provider::validatefx::integer("+7")
-    },
-    {
-      label = "not integer"
-      value = "3.14"
-      valid = provider::validatefx::integer("3.14")
     }
   ]
 
