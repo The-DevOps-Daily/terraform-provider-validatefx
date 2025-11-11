@@ -17,7 +17,8 @@ var _ frameworkvalidator.String = (*fqdnValidator)(nil)
 
 // RFC-like constraints: labels 1-63 chars, alnum and hyphen, no leading/trailing hyphen.
 var (
-	fqdnLabelRe = regexp.MustCompile(`^[A-Za-z0-9](?:[A-Za-z0-9-]{0,61}[A-Za-z0-9])?$`)
+	fqdnLabelASCII = regexp.MustCompile(`^[A-Za-z0-9](?:[A-Za-z0-9-]{0,61}[A-Za-z0-9])?$`)
+	fqdnLabelPuny  = regexp.MustCompile(`^xn--[A-Za-z0-9-]{1,59}$`)
 )
 
 func (fqdnValidator) Description(_ context.Context) string {
@@ -53,7 +54,7 @@ func (fqdnValidator) ValidateString(_ context.Context, req frameworkvalidator.St
 			resp.Diagnostics.AddAttributeError(req.Path, "Invalid FQDN", "FQDN must not contain empty labels")
 			return
 		}
-		if !fqdnLabelRe.MatchString(label) {
+		if !(fqdnLabelASCII.MatchString(label) || fqdnLabelPuny.MatchString(label)) {
 			resp.Diagnostics.AddAttributeError(req.Path, "Invalid FQDN", "Each label must start/end with alphanumeric and contain only letters, digits, or hyphens with length 1-63")
 			return
 		}

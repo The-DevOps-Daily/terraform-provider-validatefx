@@ -27,6 +27,7 @@ func TestFQDNValidator(t *testing.T) {
 	}{
 		{"valid simple", types.StringValue("example.com"), false},
 		{"valid multi-label", types.StringValue("app.prod.example.com"), false},
+		{"valid punycode", types.StringValue("xn--bcher-kva.example"), false},
 		{"invalid no dot", types.StringValue("localhost"), true},
 		{"invalid empty label", types.StringValue("example..com"), true},
 		{"invalid chars", types.StringValue("exa_mple.com"), true},
