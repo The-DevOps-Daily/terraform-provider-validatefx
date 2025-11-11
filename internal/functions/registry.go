@@ -45,6 +45,7 @@ func ProviderFunctionFactories() []func() function.Function {
 		NewVersionFunction,
 		NewCIDRFunction,
 		NewPasswordStrengthFunction,
+		NewFQDNFunction,
 	}
 }
 
