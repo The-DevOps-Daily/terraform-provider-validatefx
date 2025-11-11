@@ -77,6 +77,13 @@ func (dateTimeFunction) Run(ctx context.Context, req function.RunRequest, resp *
 	}
 
 	validation := frameworkvalidator.StringResponse{}
+	// If no layouts provided, consult provider-level defaults when set.
+	if len(layoutStrings) == 0 {
+		if cfg := GetProviderConfiguration(); len(cfg.DatetimeLayouts) > 0 {
+			layoutStrings = cfg.DatetimeLayouts
+		}
+	}
+
 	validators.DateTime(layoutStrings).ValidateString(ctx, frameworkvalidator.StringRequest{
 		ConfigValue: value,
 		Path:        path.Root("value"),
