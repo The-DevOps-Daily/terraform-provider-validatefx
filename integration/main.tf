@@ -269,6 +269,14 @@ locals {
     }
   ]
 
+  jwt_checks = [
+    {
+      label = "valid jwt"
+      value = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMjM0In0.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
+      valid = provider::validatefx::jwt("eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMjM0In0.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c")
+    }
+  ]
+
   password_strength_checks = [
     {
       label = "strong"
@@ -569,6 +577,10 @@ output "validatefx_integer" {
 
 output "validatefx_ssh_public_key" {
   value = local.ssh_public_key_checks
+}
+
+output "validatefx_jwt" {
+  value = local.jwt_checks
 }
 
 output "validatefx_password_strength" {

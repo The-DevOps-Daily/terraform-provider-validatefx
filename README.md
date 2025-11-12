@@ -87,6 +87,7 @@ Example usage in `examples/basic/main.tf`.
 | `integer` | Validate that a string represents a valid integer. |
 | `ip` | Validate that a string is a valid IPv4 or IPv6 address. |
 | `json` | Validate that a string decodes to a JSON object. |
+| `jwt` | Validate that a string is a well-formed JSON Web Token (JWT). |
 | `mac_address` | Validate that a string is a MAC address in colon, dash, or compact format. |
 | `matches_regex` | Validate that a string matches a provided regular expression. |
 | `not_in_list` | Validate that a string does not match any of the provided disallowed values. |
