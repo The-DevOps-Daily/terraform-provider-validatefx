@@ -115,3 +115,30 @@ func TestDateTimeFunction(t *testing.T) {
 		})
 	}
 }
+
+func TestDateTimeFunction_ProviderDefaults(t *testing.T) {
+	// Do not run in parallel: adjusts global provider configuration.
+	orig := GetProviderConfiguration()
+	t.Cleanup(func() { SetProviderConfiguration(orig) })
+	SetProviderConfiguration(ProviderConfiguration{DatetimeLayouts: []string{"2006-01-02 15:04"}})
+
+	fn := NewDateTimeFunction()
+	ctx := context.Background()
+
+	args := []attr.Value{
+		types.StringValue("2025-11-02 15:04"),
+		basetypes.NewListNull(basetypes.StringType{}),
+	}
+
+	resp := &function.RunResponse{}
+	fn.Run(ctx, function.RunRequest{Arguments: function.NewArgumentsData(args)}, resp)
+
+	if resp.Error != nil {
+		t.Fatalf("unexpected error: %s", resp.Error)
+	}
+
+	boolVal, ok := resp.Result.Value().(basetypes.BoolValue)
+	if !ok || boolVal.IsUnknown() || !boolVal.ValueBool() {
+		t.Fatalf("expected true result using provider defaults, got %v", resp.Result.Value())
+	}
+}
