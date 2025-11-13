@@ -11,9 +11,9 @@ provider "validatefx" {}
 
 locals {
   ranges = {
-    single_ge      = ">=1.2.3"
-    bounded_open   = ">=1.2.3, <2.0.0"
-    with_v_prefix  = ">=v1.0.0,<=v1.5.0"
+    single_ge     = ">=1.2.3"
+    bounded_open  = ">=1.2.3, <2.0.0"
+    with_v_prefix = ">=v1.0.0,<=v1.5.0"
   }
 
   results = {
