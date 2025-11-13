@@ -10,6 +10,23 @@
 
 - None.
 
+
+## [0.2.2] - 2025-11-11
+
+### Tests
+
+- tests(datetime): provider defaults path and config Get/Set coverage (PR #335).
+- tests(fqdn): add framework-level function tests (PR #334).
+- tests(jwt): add framework-level function tests (PR #333).
+
+### Documentation
+
+- Add jwt validator and function; tests, examples, integration; closes #269 (PR #332).
+
+### Contributors
+
+- @bobbyonmagic
+
 ## [0.2.1] - 2025-11-11
 
 ### Features
