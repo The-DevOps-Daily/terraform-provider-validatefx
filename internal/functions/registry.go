@@ -22,6 +22,7 @@ func ProviderFunctionFactories() []func() function.Function {
 		NewDateTimeFunction,
 		NewJSONFunction,
 		NewSemVerFunction,
+		NewSemVerRangeFunction,
 		NewHexFunction,
 		NewIntegerFunction,
 		NewSSHPublicKeyFunction,

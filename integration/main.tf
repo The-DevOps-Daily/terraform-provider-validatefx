@@ -65,6 +65,11 @@ locals {
     "1.0.0",
   ]
 
+  semver_range_values = [
+    ">=1.2.3",
+    ">=1.2.3, <2.0.0",
+  ]
+
   datetime_values = [
     {
       value   = "2025-11-02T15:04:05Z"
@@ -169,6 +174,13 @@ locals {
     for value in local.semver_values : {
       value = value
       valid = provider::validatefx::semver(value)
+    }
+  ]
+
+  semver_range_results = [
+    for expr in local.semver_range_values : {
+      value = expr
+      valid = provider::validatefx::semver_range(expr)
     }
   ]
 
@@ -541,6 +553,10 @@ output "validatefx_json" {
 
 output "validatefx_semver" {
   value = local.semver_results
+}
+
+output "validatefx_semver_range" {
+  value = local.semver_range_results
 }
 
 output "validatefx_datetime" {

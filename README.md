@@ -94,6 +94,7 @@ Example usage in `examples/basic/main.tf`.
 | `password_strength` | Checks if a password meets strength requirements |
 | `phone` | Validate that a string is an E.164 compliant phone number. |
 | `semver` | Validate that a string follows Semantic Versioning (SemVer 2.0.0). |
+| `semver_range` | Validate that a string is a valid semantic version range expression. |
 | `set_equals` | Validate that two string lists contain the same elements regardless of order. |
 | `ssh_public_key` | Validate that a string is a valid SSH public key. |
 | `string_contains` | Validate that a string contains at least one of the provided substrings. |
