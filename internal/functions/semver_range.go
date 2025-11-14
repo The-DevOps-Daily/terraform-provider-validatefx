@@ -17,7 +17,7 @@ func (semverRangeFunction) Metadata(_ context.Context, _ function.MetadataReques
 	resp.Name = "semver_range"
 }
 
-func (semverRangeFunction) Definition(_ context.Context, _ function.DefinitionRequest, resp *function.DefinitionResponse) {
+func (semverRangeFunction) Definition(ctx context.Context, req function.DefinitionRequest, resp *function.DefinitionResponse) {
 	// Reuse the common single-string function wrapper to keep consistency
 	fn := newStringValidationFunction(
 		"semver_range",
@@ -25,7 +25,7 @@ func (semverRangeFunction) Definition(_ context.Context, _ function.DefinitionRe
 		"Returns true when the input string represents a valid SemVer range, e.g., '>=1.0.0,<2.0.0'.",
 		validators.SemVerRange(),
 	)
-	fn.Definition(context.Background(), function.DefinitionRequest{}, resp)
+	fn.Definition(ctx, req, resp)
 }
 
 func (semverRangeFunction) Run(ctx context.Context, req function.RunRequest, resp *function.RunResponse) {
