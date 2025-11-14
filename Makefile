@@ -62,6 +62,9 @@ clean: ## Remove build artifacts and local Terraform state
 validate: ## Run local pre-flight checks before pushing
 	go fmt ./...
 	terraform fmt -recursive
+	go mod tidy
+	go vet ./...
 	$(MAKE) lint
+	go test ./...
 	$(MAKE) docs
 	go run ./scripts/check-function-coverage.go examples integration
