@@ -79,3 +79,13 @@ func (f *stringValidationFunction) Run(ctx context.Context, req function.RunRequ
 
 	resp.Result = function.NewResultData(basetypes.NewBoolValue(true))
 }
+
+// stringFrom safely converts a Terraform framework String to a plain string,
+// returning an empty string for null/unknown values. Useful for optional
+// parameters passed as strings.
+func stringFrom(v types.String) string {
+	if v.IsNull() || v.IsUnknown() {
+		return ""
+	}
+	return v.ValueString()
+}
