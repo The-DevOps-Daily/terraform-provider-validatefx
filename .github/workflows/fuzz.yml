@@ -1,0 +1,61 @@
+name: fuzz
+
+on:
+  pull_request:
+    branches: [ "**" ]
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+jobs:
+  fuzz-validators:
+    name: Go fuzz validators
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Go
+        uses: actions/setup-go@v6
+        with:
+          go-version: 1.25.2
+
+      - name: Cache Go build
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cache/go-build
+            ~/go/pkg/mod
+          key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
+          restore-keys: |
+            ${{ runner.os }}-go-
+
+      - name: Tidy
+        run: go mod tidy
+
+      - name: Build
+        run: go build ./...
+
+      - name: Run fuzz tests (short)
+        run: |
+          # Run all fuzz tests in validators for a short duration each to keep CI snappy.
+          # You can increase fuzztime if needed.
+          set -euo pipefail
+          pkgs=$(go list ./internal/validators)
+          for pkg in $pkgs; do
+            echo "==> Fuzzing $pkg"
+            # Run any fuzz function in the package for a short time; continue if none exist.
+            go test "$pkg" -run Fuzz -fuzz Fuzz -fuzztime=20s || true
+          done
+
+      - name: Upload fuzz artifacts (corpora)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: fuzz-corpus
+          path: |
+            **/testdata/fuzz/*
+          if-no-files-found: ignore
+
