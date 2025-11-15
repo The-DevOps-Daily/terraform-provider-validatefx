@@ -10,21 +10,28 @@
 
 - None.
 
-## [0.3.0] - Unreleased (draft)
+## [0.3.0] - 2025-11-15
 
-What's Changed (from draft release):
+### 🚀 Features
+- cidr_overlap: add validator and Terraform function to detect overlapping CIDR blocks; examples, tests, integration (PR #351, closes #260)
+- semver_range: add validator and function with examples, docs, integration (PR #337)
 
-- feat(validators): add cidr_overlap validator to detect overlapping CIDR blocks (#260) (PR #351)
-- test(fuzz): add fuzz tests for credit_card, phone, and hex validators (PR #348)
-- feat/more fuzz tests validators (PR #347)
-- feat/fuzz tests list validators 167 (PR #345, #344)
-- feat/fuzz tests validators 114 (PR #343)
-- feature/semver range validator (PR #337)
-- refactor: common string helper and semver_range shared wrapper (PR #340, #339)
-- chore: add fuzz-quick target and expand validate to include go vet/test/tidy (PR #349, #342)
-- ci: add separate PR fuzz workflow to run in parallel (PR #346)
+### 🧰 Maintenance
+- make: add fuzz-quick target for short local fuzz runs (PR #349)
+- functions: refactor to shared string helper; reuse in semver_range (PR #340, #339)
+- ci: add separate fuzz workflow running on PRs in parallel (PR #346)
+- validate target: include go vet/test/tidy (PR #342)
 
-Contributors: @bobbyonmagic
+### 🧪 Tests
+- Fuzz coverage expanded:
+  - email, URL, JSON (PR #343)
+  - in_list, not_in_list, set_equals (PR #344)
+  - uuid, hostname, password_strength (PR #345)
+  - ip, cidr, semver (PR #347)
+  - credit_card, phone, hex (PR #348)
+
+### Contributors
+- @bobbyonmagic
 
 
 ## [0.2.2] - 2025-11-11
