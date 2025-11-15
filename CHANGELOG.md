@@ -10,6 +10,25 @@
 
 - None.
 
+## [0.2.3] - 2025-11-15
+
+### Features
+
+- Add `cidr_overlap` validator and Terraform function to detect overlapping CIDR blocks; examples, tests, integration (PR #351, closes #260).
+
+### CI / Tooling
+
+- Add separate GitHub Actions workflow to run fuzz tests on PRs (ci/fuzz) running in parallel to main CI (PR #346).
+- Add `make fuzz-quick` to run short local fuzzing sessions across validators (PR #349).
+
+### Tests
+
+- Expand fuzz coverage across validators: email, URL, JSON (PR #343); in_list, not_in_list, set_equals (PR #344); uuid, hostname, password_strength (PR #345); ip, cidr, semver (PR #347); credit_card, phone, hex (PR #348).
+
+### Contributors
+
+- @bobbyonmagic
+
 
 ## [0.2.2] - 2025-11-11
 
