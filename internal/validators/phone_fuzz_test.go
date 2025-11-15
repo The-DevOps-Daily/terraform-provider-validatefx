@@ -2,7 +2,7 @@ package validators
 
 import (
 	"context"
-	"net"
+	"regexp"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-framework/path"
@@ -10,15 +10,18 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
-// FuzzIPValidator checks robustness and aligns with net.ParseIP for basic validity.
-func FuzzIPValidator(f *testing.F) {
-	for _, s := range []string{"", "127.0.0.1", "::1", "256.0.0.1", "2001:db8::1", "bad ip"} {
+// Simple E.164-like expectation: leading + and 8-15 digits
+var e164Like = regexp.MustCompile(`^\+[1-9][0-9]{7,14}$`)
+
+func FuzzPhoneValidator(f *testing.F) {
+	seeds := []string{"", "+12025550123", "+442071838750", "+8613800138000", "12345", "+000", "+1(202)555-0123"}
+	for _, s := range seeds {
 		f.Add(s)
 	}
-	v := IP()
+	v := Phone()
 	f.Fuzz(func(t *testing.T, s string) {
 		t.Parallel()
-		req := frameworkvalidator.StringRequest{Path: path.Root("ip"), ConfigValue: types.StringValue(s)}
+		req := frameworkvalidator.StringRequest{Path: path.Root("phone"), ConfigValue: types.StringValue(s)}
 		resp := &frameworkvalidator.StringResponse{}
 		v.ValidateString(context.Background(), req, resp)
 		if s == "" {
@@ -27,9 +30,9 @@ func FuzzIPValidator(f *testing.F) {
 			}
 			return
 		}
-		expect := net.ParseIP(s) != nil
+		expect := e164Like.MatchString(s)
 		if expect != !resp.Diagnostics.HasError() {
-			t.Fatalf("mismatch for %q: parse-ok=%v diagErr=%v", s, expect, resp.Diagnostics.HasError())
+			t.Fatalf("mismatch for %q: e164like=%v diagErr=%v", s, expect, resp.Diagnostics.HasError())
 		}
 	})
 }
