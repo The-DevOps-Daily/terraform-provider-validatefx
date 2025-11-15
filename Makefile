@@ -5,7 +5,7 @@ COMPOSE ?= docker compose
 GOLANGCI_LINT ?= golangci-lint
 TFPLUGINDOCS ?= $(shell go env GOPATH)/bin/tfplugindocs
 
-.PHONY: help deps tidy fmt build test lint docs integration docker-build clean validate
+.PHONY: help deps tidy fmt build test lint docs integration docker-build clean validate fuzz-quick
 
 help: ## Show available targets and short descriptions
 	@awk 'BEGIN {FS = ":.*##"} /^[a-zA-Z_-]+:.*##/ {printf "%-18s %s\n", $$1, $$2}' $(MAKEFILE_LIST)
@@ -68,3 +68,11 @@ validate: ## Run local pre-flight checks before pushing
 	go test ./...
 	$(MAKE) docs
 	go run ./scripts/check-function-coverage.go examples integration
+
+fuzz-quick: ## Run short fuzz sessions for validators (1m per package)
+	@echo "Running short fuzz sessions for internal/validators..."
+	@set -euo pipefail; \
+	for pkg in $$(go list ./internal/validators); do \
+	  echo "==> $$pkg"; \
+	  go test $$pkg -run Fuzz -fuzz Fuzz -fuzztime=1m || true; \
+	done
