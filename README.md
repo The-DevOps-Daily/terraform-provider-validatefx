@@ -111,6 +111,18 @@ Example usage in `examples/basic/main.tf`.
 
 Open to PRs! Browse our [good first issues](https://github.com/The-DevOps-Daily/terraform-provider-validatefx/issues?q=is%3Aopen+label%3A"good+first+issue") to get started.
 
+### Fuzz Tests
+
+Go ships with native fuzzing support. We include fuzz tests for core string validators (email, URL, JSON) to harden them against edge cases.
+
+- Run a targeted fuzz (10s) for email:
+  - `go test ./internal/validators -run FuzzEmailValidator -fuzz FuzzEmailValidator -fuzztime=10s`
+- For URL or JSON, replace the function name accordingly (e.g., `FuzzURLValidator`, `FuzzJSONValidator`).
+- To fuzz all in the package for 1 minute:
+  - `go test ./internal/validators -fuzz Fuzz -fuzztime=1m`
+
+When the fuzzer finds a failure, it writes a minimizing corpus entry that becomes part of future test runs.
+
 ---
 
 ## 📜 License
