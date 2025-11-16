@@ -73,6 +73,7 @@ Example usage in `examples/basic/main.tf`.
 | `base64` | Validate that a string is Base64 encoded. |
 | `between` | Validate that a numeric string falls between inclusive minimum and maximum bounds. |
 | `cidr` | Validate that a string is an IPv4 or IPv6 CIDR block. |
+| `cidr_overlap` | Validate that provided CIDR blocks do not overlap. |
 | `credit_card` | Validate that a string is a credit card number using the Luhn algorithm. |
 | `datetime` | Validate that a string is an ISO 8601 / RFC 3339 datetime. |
 | `domain` | Validate that a string is a compliant domain name. |
