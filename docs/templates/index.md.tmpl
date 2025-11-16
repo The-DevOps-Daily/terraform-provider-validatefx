@@ -1,0 +1,13 @@
+{{ .Header }}
+
+## Functions
+{{- if .HasFunctions }}
+{{- range .Functions }}
+- [{{ .Name }}](functions/{{ .Name }}.md)
+{{- end }}
+{{- end }}
+
+## Guides
+
+- [List Validators: Usage Patterns and Tips](guides/list-validators.md)
+
