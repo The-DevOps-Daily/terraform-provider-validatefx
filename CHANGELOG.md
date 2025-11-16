@@ -10,6 +10,33 @@
 
 - None.
 
+## [0.4.0] - 2025-11-16
+
+## What's Changed
+- test(fuzz): add fuzz test for cidr_overlap validator (#350) (#360) @bobbyonmagic
+- test/fuzz final four validators 350 (#359) @bobbyonmagic
+- test/fuzz next three validators 350 (#358) @bobbyonmagic
+- test/fuzz next three validators 350 (#357) @bobbyonmagic
+- test/fuzz next three validators 350 (#356) @bobbyonmagic
+- test/fuzz more three validators 350 (#355) @bobbyonmagic
+- test(fuzz): add fuzz tests for base64, jwt, and string_prefix validators (#350) (#354) @bobbyonmagic
+
+### 🚀 Features
+
+- feat(port_range): add port_range validator/function (#363) @bobbyonmagic
+
+### 🧰 Maintenance
+
+- chore/check fuzz coverage in validate (#362) @bobbyonmagic
+
+### 📚 Documentation
+
+- feat(port_range): add port_range validator/function (#363) @bobbyonmagic
+- test/fuzz final four validators 350 (#361) @bobbyonmagic
+
+### Contributors
+@bobbyonmagic
+
 ## [0.3.0] - 2025-11-15
 
 ### 🚀 Features
