@@ -49,6 +49,7 @@ func ProviderFunctionFactories() []func() function.Function {
 		NewFQDNFunction,
 		NewJWTFunction,
 		NewCIDROverlapFunction,
+		NewPortRangeFunction,
 	}
 }
 
