@@ -86,6 +86,19 @@ locals {
     "::1",
   ]
 
+  private_ip_checks = [
+    {
+      label = "rfc1918"
+      value = "10.0.0.1"
+      valid = provider::validatefx::private_ip("10.0.0.1")
+    },
+    {
+      label = "ipv6-ula"
+      value = "fd00::1"
+      valid = provider::validatefx::private_ip("fd00::1")
+    }
+  ]
+
   regex_samples = [
     {
       value   = "user_123"
@@ -592,6 +605,10 @@ output "validatefx_ip" {
 
 output "validatefx_matches_regex" {
   value = local.matches_regex_results
+}
+
+output "validatefx_private_ip" {
+  value = local.private_ip_checks
 }
 
 output "validatefx_username" {
