@@ -220,6 +220,19 @@ locals {
     }
   ]
 
+  uri_checks = [
+    {
+      label = "http"
+      value = "http://example.com"
+      valid = provider::validatefx::uri("http://example.com")
+    },
+    {
+      label = "urn"
+      value = "urn:isbn:0451450523"
+      valid = provider::validatefx::uri("urn:isbn:0451450523")
+    }
+  ]
+
   username_values = [
     "alice",
     "bob_123",
@@ -605,6 +618,10 @@ output "validatefx_ip" {
 
 output "validatefx_matches_regex" {
   value = local.matches_regex_results
+}
+
+output "validatefx_uri" {
+  value = local.uri_checks
 }
 
 output "validatefx_private_ip" {
