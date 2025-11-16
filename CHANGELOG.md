@@ -6,6 +6,15 @@
 
 - None.
 
+## [0.5.1] - 2025-11-16
+
+### 🧰 Maintenance
+
+- ci(dockerhub): fix Docker Hub publish workflow (#371) @bobbyonmagic
+
+### Contributors
+@bobbyonmagic
+
 ## [0.5.0] - 2025-11-16
 
 ## What's Changed
