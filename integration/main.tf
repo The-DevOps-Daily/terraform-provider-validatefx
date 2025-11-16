@@ -229,6 +229,19 @@ locals {
     }
   ]
 
+  port_range_checks = [
+    {
+      label = "common web range"
+      value = "80-8080"
+      valid = provider::validatefx::port_range("80-8080")
+    },
+    {
+      label = "full range"
+      value = "0-65535"
+      valid = provider::validatefx::port_range("0-65535")
+    }
+  ]
+
   hex_checks = [
     {
       label = "lowercase"
@@ -689,4 +702,8 @@ output "validatefx_has_prefix" {
 
 output "validatefx_set_equals" {
   value = local.set_equals_checks
+}
+
+output "validatefx_port_range" {
+  value = local.port_range_checks
 }
