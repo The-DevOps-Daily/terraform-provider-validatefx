@@ -68,6 +68,7 @@ validate: ## Run local pre-flight checks before pushing
 	go test ./...
 	$(MAKE) docs
 	go run ./scripts/check-function-coverage.go examples integration
+	go run ./scripts/check-fuzz-coverage.go
 
 fuzz-quick: ## Run short fuzz sessions for validators (1m per package)
 	@echo "Running short fuzz sessions for internal/validators..."
