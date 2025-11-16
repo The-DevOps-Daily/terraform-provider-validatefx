@@ -51,6 +51,7 @@ func ProviderFunctionFactories() []func() function.Function {
 		NewCIDROverlapFunction,
 		NewPortRangeFunction,
 		NewPrivateIPFunction,
+		NewURIFunction,
 	}
 }
 
