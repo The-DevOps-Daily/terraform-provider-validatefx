@@ -1,22 +1,17 @@
-name: Release Docker Image
+name: Publish Docker image
 
 on:
-  release:
-    types: [published]
+  push:
+    tags:
+      - 'v*'
   workflow_dispatch:
 
 jobs:
-  build-and-push:
-    name: Build and push Docker image
+  push_to_registry:
+    name: Push Docker image to Docker Hub
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
-
-    env:
-      IMAGE_NAME: ${{ secrets.DOCKERHUB_USERNAME }}/terraform-provider-validatefx
-
     steps:
-      - name: Checkout
+      - name: Check out the repo
         uses: actions/checkout@v4
 
       - name: Set up QEMU
@@ -31,33 +26,21 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Compute tags
-        id: vars
-        run: |
-          # Derive tag from release tag or fallback to commit SHA for manual dispatch
-          if [ "${{ github.event_name }}" = "release" ]; then
-            VERSION="${{ github.ref_name }}"
-          else
-            VERSION="manual-${GITHUB_SHA::7}"
-          fi
-          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
-          # latest only for semver releases
-          if [[ "$VERSION" =~ ^v?[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
-            echo "is_semver=true" >> "$GITHUB_OUTPUT"
-          else
-            echo "is_semver=false" >> "$GITHUB_OUTPUT"
-          fi
+      - name: Extract Docker metadata (tags, labels)
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ secrets.DOCKERHUB_USERNAME }}/terraform-provider-validatefx
+          tags: |
+            type=semver,pattern={{version}}
 
-      - name: Build and push
+      - name: Build and push Docker image
         uses: docker/build-push-action@v6
         with:
           context: .
-          file: ./Dockerfile
           platforms: linux/amd64,linux/arm64
           push: true
-          tags: |
-            ${ { steps.vars.outputs.is_semver == 'true' && format('{0}:{1}', env.IMAGE_NAME, steps.vars.outputs.version) || '' } }
-            ${ { steps.vars.outputs.is_semver == 'true' && format('{0}:latest', env.IMAGE_NAME) || format('{0}:{1}', env.IMAGE_NAME, steps.vars.outputs.version) } }
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
-
