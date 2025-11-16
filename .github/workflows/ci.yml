@@ -1,4 +1,4 @@
-name: CI
+name: CI – Lint, Unit Tests, Docs
 
 on:
   pull_request:

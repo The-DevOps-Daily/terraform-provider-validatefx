@@ -1,4 +1,4 @@
-name: Release
+name: Release – Build & Publish Provider
 
 on:
   push:

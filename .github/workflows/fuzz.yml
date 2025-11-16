@@ -1,4 +1,4 @@
-name: fuzz
+name: Fuzz – Validator Robustness
 
 on:
   pull_request:
@@ -58,4 +58,3 @@ jobs:
           path: |
             **/testdata/fuzz/*
           if-no-files-found: ignore
-
