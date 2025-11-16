@@ -50,6 +50,7 @@ func ProviderFunctionFactories() []func() function.Function {
 		NewJWTFunction,
 		NewCIDROverlapFunction,
 		NewPortRangeFunction,
+		NewPrivateIPFunction,
 	}
 }
 
