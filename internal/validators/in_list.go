@@ -12,6 +12,7 @@ type inListValidator struct {
 	allowed    []string
 	ignoreCase bool
 	lookup     map[string]struct{}
+	message    string
 }
 
 var _ frameworkvalidator.String = (*inListValidator)(nil)
@@ -47,6 +48,15 @@ func NewInListValidator(values []string, ignoreCase bool) frameworkvalidator.Str
 	}
 }
 
+// NewInListValidatorWithMessage constructs a validator that allows only the provided values
+// and returns a custom diagnostic message on validation failure. When message is empty,
+// the default diagnostic is used.
+func NewInListValidatorWithMessage(values []string, ignoreCase bool, message string) frameworkvalidator.String {
+	v := NewInListValidator(values, ignoreCase).(*inListValidator)
+	v.message = strings.TrimSpace(message)
+	return v
+}
+
 func (v *inListValidator) Description(_ context.Context) string {
 	return "value must match one of the allowed strings"
 }
@@ -74,9 +84,13 @@ func (v *inListValidator) ValidateString(_ context.Context, req frameworkvalidat
 		return
 	}
 
+	msg := v.message
+	if msg == "" {
+		msg = fmt.Sprintf("Value %q must be one of: %s", value, strings.Join(v.allowed, ", "))
+	}
 	resp.Diagnostics.AddAttributeError(
 		req.Path,
 		"Value Not Allowed",
-		fmt.Sprintf("Value %q must be one of: %s", value, strings.Join(v.allowed, ", ")),
+		msg,
 	)
 }

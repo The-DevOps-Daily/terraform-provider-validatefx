@@ -18,7 +18,8 @@ func TestInListFunction(t *testing.T) {
 
 	run := func(value attr.Value, allowed attr.Value, ignore attr.Value) *function.RunResponse {
 		resp := &function.RunResponse{}
-		args := function.NewArgumentsData([]attr.Value{value, allowed, ignore})
+		// Pass null for the optional custom message parameter by default.
+		args := function.NewArgumentsData([]attr.Value{value, allowed, ignore, types.StringNull()})
 		fn.Run(ctx, function.RunRequest{Arguments: args}, resp)
 		return resp
 	}

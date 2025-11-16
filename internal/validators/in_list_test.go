@@ -71,3 +71,20 @@ func TestInListValidatorIgnoreCase(t *testing.T) {
 		t.Fatalf("expected case-insensitive match, got %v", resp.Diagnostics)
 	}
 }
+
+func TestInListValidatorCustomMessage(t *testing.T) {
+	t.Parallel()
+
+	validator := NewInListValidatorWithMessage([]string{"alpha", "beta"}, false, "Custom error message")
+
+	req := frameworkvalidator.StringRequest{
+		Path:        path.Root("value"),
+		ConfigValue: types.StringValue("delta"),
+	}
+	resp := &frameworkvalidator.StringResponse{}
+	validator.ValidateString(context.Background(), req, resp)
+
+	if !resp.Diagnostics.HasError() {
+		t.Fatalf("expected diagnostics for custom message case")
+	}
+}
