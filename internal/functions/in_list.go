@@ -53,38 +53,40 @@ func (inListFunction) Definition(_ context.Context, _ function.DefinitionRequest
 				Description:         "Whether comparisons are case-insensitive.",
 				MarkdownDescription: "Whether comparisons are case-insensitive.",
 			},
+			function.StringParameter{
+				Name:                "message",
+				AllowNullValue:      true,
+				AllowUnknownValues:  true,
+				Description:         "Optional custom diagnostic message to surface on validation failure.",
+				MarkdownDescription: "Optional custom diagnostic message to surface on validation failure.",
+			},
 		},
 	}
 }
 
 func (inListFunction) Run(ctx context.Context, req function.RunRequest, resp *function.RunResponse) {
-	value, state, ok := stringArgument(ctx, req, resp, 0)
+	value, vState, ok := stringArgument(ctx, req, resp, 0)
 	if !ok {
 		return
 	}
 
-	if state == valueUnknown {
-		resp.Result = function.NewResultData(types.BoolUnknown())
-		return
-	}
-
-	allowedValues, state, ok := allowedList(ctx, req, resp, 1)
+	allowedValues, aState, ok := allowedList(ctx, req, resp, 1)
 	if !ok {
 		return
 	}
 
-	if state == valueUnknown {
-		resp.Result = function.NewResultData(types.BoolUnknown())
-		return
-	}
-
-	ignore, state, ok := ignoreCaseFlag(ctx, req, resp, 2)
+	ignore, iState, ok := ignoreCaseFlag(ctx, req, resp, 2)
 	if !ok {
 		return
 	}
 
-	if state == valueUnknown {
-		resp.Result = function.NewResultData(types.BoolUnknown())
+	// Optional custom message
+	message, mState, ok := messageArgument(ctx, req, resp, 3)
+	if !ok {
+		return
+	}
+
+	if unknownIf(resp, vState, aState, iState, mState) {
 		return
 	}
 
@@ -93,7 +95,7 @@ func (inListFunction) Run(ctx context.Context, req function.RunRequest, resp *fu
 		return
 	}
 
-	validator := validators.NewInListValidator(allowedValues, ignore)
+	validator := selectInListValidator(allowedValues, ignore, message)
 
 	validation := frameworkvalidator.StringResponse{}
 	validator.ValidateString(ctx, frameworkvalidator.StringRequest{
@@ -107,6 +109,13 @@ func (inListFunction) Run(ctx context.Context, req function.RunRequest, resp *fu
 	}
 
 	resp.Result = function.NewResultData(basetypes.NewBoolValue(true))
+}
+
+func selectInListValidator(allowed []string, ignore bool, message types.String) frameworkvalidator.String {
+	if message.IsNull() || message.IsUnknown() || message.ValueString() == "" {
+		return validators.NewInListValidator(allowed, ignore)
+	}
+	return validators.NewInListValidatorWithMessage(allowed, ignore, message.ValueString())
 }
 
 func stringArgument(ctx context.Context, req function.RunRequest, resp *function.RunResponse, index int) (types.String, valueState, bool) {
@@ -198,4 +207,28 @@ func prepareAllowedValues(ctx context.Context, list types.List) ([]string, value
 	}
 
 	return values, valueKnown, nil
+}
+
+// messageArgument fetches an optional string argument and returns its state.
+func messageArgument(ctx context.Context, req function.RunRequest, resp *function.RunResponse, index int) (types.String, valueState, bool) {
+	var msg types.String
+	if err := req.Arguments.GetArgument(ctx, index, &msg); err != nil {
+		resp.Error = function.NewFuncError(err.Error())
+		return types.String{}, valueKnown, false
+	}
+	if msg.IsUnknown() {
+		return msg, valueUnknown, true
+	}
+	return msg, valueKnown, true
+}
+
+// unknownIf returns unknown result when any provided state is unknown.
+func unknownIf(resp *function.RunResponse, states ...valueState) bool {
+	for _, s := range states {
+		if s == valueUnknown {
+			resp.Result = function.NewResultData(types.BoolUnknown())
+			return true
+		}
+	}
+	return false
 }

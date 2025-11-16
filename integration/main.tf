@@ -342,14 +342,14 @@ locals {
       value       = "draft"
       allowed     = ["draft", "review", "published"]
       ignore_case = false
-      valid       = provider::validatefx::in_list("draft", ["draft", "review", "published"], false)
+      valid       = provider::validatefx::in_list("draft", ["draft", "review", "published"], false, null)
     },
     {
       label       = "case-insensitive"
       value       = "Published"
       allowed     = ["draft", "review", "published"]
       ignore_case = true
-      valid       = provider::validatefx::in_list("Published", ["draft", "review", "published"], true)
+      valid       = provider::validatefx::in_list("Published", ["draft", "review", "published"], true, null)
     }
   ]
 
@@ -399,13 +399,13 @@ locals {
       label       = "valid"
       value       = "draft"
       ignore_case = false
-      valid       = provider::validatefx::in_list("draft", ["draft", "review", "published"], false)
+      valid       = provider::validatefx::in_list("draft", ["draft", "review", "published"], false, null)
     },
     {
       label       = "case-insensitive"
       value       = "Published"
       ignore_case = true
-      valid       = provider::validatefx::in_list("Published", ["draft", "review", "published"], true)
+      valid       = provider::validatefx::in_list("Published", ["draft", "review", "published"], true, null)
     }
   ]
 
