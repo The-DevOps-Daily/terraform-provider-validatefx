@@ -6,6 +6,26 @@
 
 - None.
 
+## [0.5.0] - 2025-11-16
+
+## What's Changed
+- docs(guides): list validators usage patterns (#368) @bobbyonmagic
+
+### 🚀 Features
+
+- feat(in_list): optional custom message (#367) @bobbyonmagic
+- feat(uri): add uri validator/function (#366) @bobbyonmagic
+- feat(private_ip): add private_ip validator/function (#365) @bobbyonmagic
+
+### 📚 Documentation
+
+- feat(in_list): optional custom message (#367) @bobbyonmagic
+- feat(uri): add uri validator/function (#366) @bobbyonmagic
+- feat(private_ip): add private_ip validator/function (#365) @bobbyonmagic
+
+### Contributors
+@bobbyonmagic
+
 ### Dependency Updates
 
 - None.
