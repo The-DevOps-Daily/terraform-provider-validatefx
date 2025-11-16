@@ -1,0 +1,85 @@
+# List Validators: Usage Patterns and Tips
+
+This guide explains how to choose and use the list-focused string validators exposed by the validatefx provider.
+
+Topics:
+- Single value membership vs. collection checks
+- Case-sensitivity and normalization
+- Worked HCL examples and troubleshooting
+
+## Single Value Membership
+
+Use `provider::validatefx::in_list` when validating a single string against a set of allowed values.
+
+Example:
+
+```terraform
+locals {
+  allowed = ["draft", "review", "published"]
+  status  = "Review"
+
+  # Case-insensitive check; pass null for custom message
+  status_ok = provider::validatefx::in_list(local.status, local.allowed, true, null)
+}
+
+output "status_valid" {
+  value = local.status_ok
+}
+```
+
+To customize the diagnostic message on failure, pass the optional 4th argument:
+
+```terraform
+locals {
+  allowed = ["red", "green", "blue"]
+  value   = "purple"
+
+  ok = provider::validatefx::in_list(local.value, local.allowed, false, "Unsupported color; choose: ${join(", ", local.allowed)}")
+}
+```
+
+## Negative Membership
+
+Use `provider::validatefx::not_in_list` to ensure a single string is NOT in a disallowed list. This is the inverse of `in_list` and accepts the same `ignore_case` boolean.
+
+Example:
+
+```terraform
+locals {
+  disallowed = ["admin", "root", "system"]
+  username   = "Alice"
+
+  safe = provider::validatefx::not_in_list(local.username, local.disallowed, true)
+}
+```
+
+## Collection Equality and Subset Checks
+
+When comparing collections rather than a single value, use the helpers designed for lists:
+
+- `provider::validatefx::set_equals(values, expected)` verifies two lists are equal as sets (order-insensitive, duplicates ignored).
+- `provider::validatefx::in_list` and `not_in_list` are not suitable for whole-list comparisons; they validate a single string.
+
+Example (set equality):
+
+```terraform
+locals {
+  desired_roles = ["reader", "writer"]
+  actual_roles  = ["writer", "reader"]
+
+  roles_match = provider::validatefx::set_equals(local.actual_roles, local.desired_roles)
+}
+```
+
+## Case Sensitivity Best Practices
+
+- Prefer `ignore_case = true` when values come from users or external systems with inconsistent casing.
+- Keep your allowed/disallowed lists normalized (e.g., all-lowercase) for readability.
+- For list equality, pre-normalize both sides if your semantics are case-insensitive.
+
+## Troubleshooting
+
+- "Invalid Argument Data Position" during function execution indicates a missing argument. Ensure you pass all required arguments. For functions with optional trailing parameters (e.g., `in_list` custom message), pass `null` when you don't supply a value.
+- "Invalid Allowed Values" errors indicate the list element type is not string. Ensure lists are `list(string)` and elements are not null/unknown.
+- Integration tests in this repo only include passing cases. If you want to see failing diagnostics locally, create a small Terraform module and run `terraform apply` to surface the errors.
+
