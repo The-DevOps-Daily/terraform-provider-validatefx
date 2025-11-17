@@ -95,6 +95,7 @@ Example usage in `examples/basic/main.tf`.
 | `not_in_list` | Validate that a string does not match any of the provided disallowed values. |
 | `password_strength` | Checks if a password meets strength requirements |
 | `phone` | Validate that a string is an E.164 compliant phone number. |
+| `port_number` | Validate that a string is a valid TCP/UDP port number (1..65535). |
 | `port_range` | Validate that a string is a valid port range (start-end). |
 | `private_ip` | Validate that an IP address is private (RFC1918 / IPv6 ULA). |
 | `semver` | Validate that a string follows Semantic Versioning (SemVer 2.0.0). |
