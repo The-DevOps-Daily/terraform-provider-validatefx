@@ -268,6 +268,14 @@ locals {
     }
   ]
 
+  port_number_checks = [
+    {
+      label = "https"
+      value = "443"
+      valid = provider::validatefx::port_number("443")
+    }
+  ]
+
   hex_checks = [
     {
       label = "lowercase"
@@ -753,4 +761,8 @@ output "validatefx_list_subset" {
 
 output "validatefx_port_range" {
   value = local.port_range_checks
+}
+
+output "validatefx_port_number" {
+  value = local.port_number_checks
 }
