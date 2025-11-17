@@ -6,6 +6,30 @@
 
 - None.
 
+## [0.6.0] - 2025-11-16
+
+### What's Changed
+
+### 🚀 Features
+
+- feat(public_ip): configurable flags (link-local/reserved) (#378) @bobbyonmagic
+- feat(public_ip): exclude link-local and reserved (#377) @bobbyonmagic
+- feat(public_ip): add public_ip validator/function (#376) @bobbyonmagic
+- feat(subnet): add subnet validator/function (#375) @bobbyonmagic
+- feat(port_number): add port_number validator/function (#374) @bobbyonmagic
+- feat(list_subset): add list_subset validator/function (#373) @bobbyonmagic
+
+### 📚 Documentation
+
+- feat(public_ip): configurable flags (link-local/reserved) (#378) @bobbyonmagic
+- feat(public_ip): add public_ip validator/function (#376) @bobbyonmagic
+- feat(subnet): add subnet validator/function (#375) @bobbyonmagic
+- feat(port_number): add port_number validator/function (#374) @bobbyonmagic
+- feat(list_subset): add list_subset validator/function (#373) @bobbyonmagic
+
+### Contributors
+@bobbyonmagic
+
 ## [0.5.1] - 2025-11-16
 
 ### 🧰 Maintenance
@@ -17,7 +41,8 @@
 
 ## [0.5.0] - 2025-11-16
 
-## What's Changed
+### What's Changed
+
 - docs(guides): list validators usage patterns (#368) @bobbyonmagic
 
 ### 🚀 Features
@@ -41,7 +66,8 @@
 
 ## [0.4.0] - 2025-11-16
 
-## What's Changed
+### What's Changed
+
 - test(fuzz): add fuzz test for cidr_overlap validator (#350) (#360) @bobbyonmagic
 - test/fuzz final four validators 350 (#359) @bobbyonmagic
 - test/fuzz next three validators 350 (#358) @bobbyonmagic
