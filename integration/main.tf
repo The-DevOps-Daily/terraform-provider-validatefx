@@ -224,7 +224,7 @@ locals {
     {
       label = "google"
       value = "8.8.8.8"
-      valid = provider::validatefx::public_ip("8.8.8.8")
+      valid = provider::validatefx::public_ip("8.8.8.8", false, false)
     }
   ]
 
