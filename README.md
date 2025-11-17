@@ -87,6 +87,7 @@ Example usage in `examples/basic/main.tf`.
 | `in_list` | Validate that a string matches one of the allowed values. |
 | `integer` | Validate that a string represents a valid integer. |
 | `ip` | Validate that a string is a valid IPv4 or IPv6 address. |
+| `ip_range_size` | Validate that a CIDR's prefix length falls within an allowed inclusive range. |
 | `json` | Validate that a string decodes to a JSON object. |
 | `jwt` | Validate that a string is a well-formed JSON Web Token (JWT). |
 | `list_subset` | Validate that all elements of a list/set are contained in a reference list. |
