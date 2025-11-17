@@ -98,6 +98,7 @@ Example usage in `examples/basic/main.tf`.
 | `port_number` | Validate that a string is a valid TCP/UDP port number (1..65535). |
 | `port_range` | Validate that a string is a valid port range (start-end). |
 | `private_ip` | Validate that an IP address is private (RFC1918 / IPv6 ULA). |
+| `public_ip` | Validate that an IP address is public (not private). |
 | `semver` | Validate that a string follows Semantic Versioning (SemVer 2.0.0). |
 | `semver_range` | Validate that a string is a valid semantic version range expression. |
 | `set_equals` | Validate that two string lists contain the same elements regardless of order. |

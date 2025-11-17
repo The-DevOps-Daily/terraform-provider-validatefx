@@ -220,6 +220,14 @@ locals {
     }
   ]
 
+  public_ip_checks = [
+    {
+      label = "google"
+      value = "8.8.8.8"
+      valid = provider::validatefx::public_ip("8.8.8.8")
+    }
+  ]
+
   matches_regex_results = [
     for item in local.regex_samples : {
       value   = item.value
@@ -643,6 +651,10 @@ output "validatefx_datetime" {
 
 output "validatefx_ip" {
   value = local.ip_results
+}
+
+output "validatefx_public_ip" {
+  value = local.public_ip_checks
 }
 
 output "validatefx_matches_regex" {
