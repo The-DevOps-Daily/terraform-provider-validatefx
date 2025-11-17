@@ -424,6 +424,15 @@ locals {
     }
   ]
 
+  list_subset_checks = [
+    {
+      label = "roles subset"
+      roles = ["reader", "writer"]
+      allow = ["reader", "writer", "admin"]
+      valid = provider::validatefx::list_subset(["reader", "writer"], ["reader", "writer", "admin"])
+    }
+  ]
+
   has_prefix_checks = [
     {
       label       = "terraform prefix"
@@ -736,6 +745,10 @@ output "validatefx_has_prefix" {
 
 output "validatefx_set_equals" {
   value = local.set_equals_checks
+}
+
+output "validatefx_list_subset" {
+  value = local.list_subset_checks
 }
 
 output "validatefx_port_range" {

@@ -52,6 +52,7 @@ func ProviderFunctionFactories() []func() function.Function {
 		NewPortRangeFunction,
 		NewPrivateIPFunction,
 		NewURIFunction,
+		NewListSubsetFunction,
 	}
 }
 
