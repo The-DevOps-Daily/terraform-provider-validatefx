@@ -40,4 +40,11 @@ func (v *publicIPValidator) ValidateString(_ context.Context, req frameworkvalid
 		resp.Diagnostics.AddAttributeError(req.Path, "Not a Public IP", fmt.Sprintf("Value %q is a private IP address.", s))
 		return
 	}
+
+	// Optionally treat link-local and reserved ranges as not public
+	// Future enhancement: make this configurable via function parameters.
+	if IsLinkLocalIP(ip) || IsReservedIP(ip) {
+		resp.Diagnostics.AddAttributeError(req.Path, "Not a Public IP", fmt.Sprintf("Value %q is not publicly routable (link-local/reserved).", s))
+		return
+	}
 }
