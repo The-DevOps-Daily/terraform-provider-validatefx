@@ -126,6 +126,14 @@ locals {
     "2001:db8::/48",
   ]
 
+  ip_range_size_checks = [
+    {
+      label = "within bounds"
+      value = "10.0.0.0/16"
+      valid = provider::validatefx::ip_range_size("10.0.0.0/16", 8, 28)
+    }
+  ]
+
   subnet_checks = [
     {
       label = "ipv4 subnet"
@@ -737,6 +745,10 @@ output "validatefx_url" {
 
 output "validatefx_cidr" {
   value = local.cidr_results
+}
+
+output "validatefx_ip_range_size" {
+  value = local.ip_range_size_checks
 }
 
 output "validatefx_string_length" {
