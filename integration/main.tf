@@ -126,6 +126,14 @@ locals {
     "2001:db8::/48",
   ]
 
+  subnet_checks = [
+    {
+      label = "ipv4 subnet"
+      value = "192.168.1.0/24"
+      valid = provider::validatefx::subnet("192.168.1.0/24")
+    }
+  ]
+
   email_results = [
     for value in local.emails : {
       value = value
@@ -579,6 +587,10 @@ locals {
 
 output "validatefx_cidr_overlap" {
   value = local.cidr_overlap_checks
+}
+
+output "validatefx_subnet" {
+  value = local.subnet_checks
 }
 
 output "validatefx_email" {
