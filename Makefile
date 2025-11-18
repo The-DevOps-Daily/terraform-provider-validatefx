@@ -77,3 +77,50 @@ fuzz-quick: ## Run short fuzz sessions for validators (1m per package)
 	  echo "==> $$pkg"; \
 	  go test $$pkg -run Fuzz -fuzz Fuzz -fuzztime=1m || true; \
 	done
+
+coverage: ## Generate and display test coverage report
+	@echo "Generating coverage report..."
+	@go test -coverprofile=coverage.out ./internal/functions ./internal/validators
+	@echo ""
+	@echo "Coverage by package:"
+	@go tool cover -func=coverage.out | grep -E '^(github|total:)' | tail -3
+	@echo ""
+	@echo "Detailed report saved to coverage.out"
+	@echo "View HTML report with: go tool cover -html=coverage.out"
+
+coverage-html: coverage ## Generate and open HTML coverage report
+	@echo "Opening coverage report in browser..."
+	@go tool cover -html=coverage.out
+
+pre-push: ## Complete pre-push checklist (format, test, lint, coverage, docs)
+	@echo "========================================"
+	@echo "Running pre-push checks..."
+	@echo "========================================"
+	@echo ""
+	@echo "[1/6] Formatting code..."
+	@$(MAKE) fmt >/dev/null 2>&1 || (echo "❌ Format failed" && exit 1)
+	@echo "✓ Format passed"
+	@echo ""
+	@echo "[2/6] Running tests..."
+	@$(MAKE) test || (echo "❌ Tests failed" && exit 1)
+	@echo "✓ Tests passed"
+	@echo ""
+	@echo "[3/6] Linting code..."
+	@$(MAKE) lint || (echo "❌ Lint failed" && exit 1)
+	@echo "✓ Lint passed"
+	@echo ""
+	@echo "[4/6] Checking coverage..."
+	@$(MAKE) coverage | tail -4
+	@echo ""
+	@echo "[5/6] Generating docs..."
+	@$(MAKE) docs >/dev/null 2>&1 || (echo "❌ Docs generation failed" && exit 1)
+	@echo "✓ Docs generated"
+	@echo ""
+	@echo "[6/6] Running validation checks..."
+	@go run ./scripts/check-function-coverage.go examples integration || (echo "❌ Function coverage check failed" && exit 1)
+	@go run ./scripts/check-fuzz-coverage.go || (echo "❌ Fuzz coverage check failed" && exit 1)
+	@echo "✓ Validation checks passed"
+	@echo ""
+	@echo "========================================"
+	@echo "✅ All pre-push checks passed!"
+	@echo "========================================"
