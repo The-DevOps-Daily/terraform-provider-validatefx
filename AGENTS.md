@@ -10,6 +10,7 @@
 ## Build, Test, and Development Commands
 - `go fmt ./...` — format Go sources across the repository; run before committing.
 - `go test ./...` — execute unit tests, ensuring validators and helper packages stay green.
+- `make lint-shell` — run shellcheck on bash scripts in scripts/ directory (requires shellcheck).
 - `make build` — compile the provider binary into `bin/terraform-provider-validatefx`.
 - `make install` — install the provider into the local Terraform plugin directory for manual validation.
 
@@ -17,12 +18,13 @@
 - Go 1.22+
 - Docker and Docker Compose
 - `golangci-lint` in PATH (`go install github.com/golangci/golangci-lint/cmd/golangci-lint@v1.61.0`)
+- `shellcheck` (optional, for shell script linting - https://github.com/koalaman/shellcheck#installing)
 - `tfplugindocs` in PATH (`go install github.com/hashicorp/terraform-plugin-docs/cmd/tfplugindocs@v0.19.2`)
 - GitHub CLI (`gh`) for PRs, issues and releases
 
 ### Developer workflow
 - Use feature branches with prefixes: `feat/`, `fix/`, `docs/`, `chore/`, `refactor/`, `test/`.
-- Before pushing, always run `make validate` (formats, vets, lints, tests, docs, function coverage, fuzz coverage).
+- Before pushing, always run `make validate` (formats, vets, lints, shell lints, tests, docs, function coverage, fuzz coverage).
 - Integration scenarios are expected to be success-only; remove or adjust any failing examples before committing.
 
 ## Coding Style & Naming Conventions

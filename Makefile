@@ -4,8 +4,9 @@ SHELL := /bin/bash
 COMPOSE ?= docker compose
 GOLANGCI_LINT ?= golangci-lint
 TFPLUGINDOCS ?= $(shell go env GOPATH)/bin/tfplugindocs
+SHELLCHECK ?= shellcheck
 
-.PHONY: help deps tidy fmt build test lint docs integration docker-build clean validate fuzz-quick
+.PHONY: help deps tidy fmt build test lint lint-shell docs integration docker-build clean validate fuzz-quick
 
 help: ## Show available targets and short descriptions
 	@awk 'BEGIN {FS = ":.*##"} /^[a-zA-Z_-]+:.*##/ {printf "%-18s %s\n", $$1, $$2}' $(MAKEFILE_LIST)
@@ -32,6 +33,16 @@ lint: ## Run golangci-lint (requires golangci-lint in PATH)
 		exit 1; \
 	fi
 	$(GOLANGCI_LINT) run ./...
+
+lint-shell: ## Lint shell scripts with shellcheck
+	@if ! command -v $(SHELLCHECK) >/dev/null 2>&1; then \
+		echo "⚠️  shellcheck not found. Install from: https://github.com/koalaman/shellcheck#installing" >&2; \
+		echo "Skipping shell linting..." >&2; \
+	else \
+		echo "Running shellcheck on scripts/*.sh..."; \
+		$(SHELLCHECK) scripts/*.sh || exit 1; \
+		echo "✓ Shell scripts passed shellcheck"; \
+	fi
 
 docs: ## Generate provider documentation using tfplugindocs
 	@if [ ! -x "$(TFPLUGINDOCS)" ]; then \
@@ -65,6 +76,7 @@ validate: ## Run local pre-flight checks before pushing
 	go mod tidy
 	go vet ./...
 	$(MAKE) lint
+	$(MAKE) lint-shell
 	go test ./...
 	$(MAKE) docs
 	go run ./scripts/check-function-coverage.go examples integration
@@ -107,6 +119,7 @@ pre-push: ## Complete pre-push checklist (format, test, lint, coverage, docs)
 	@echo ""
 	@echo "[3/6] Linting code..."
 	@$(MAKE) lint || (echo "❌ Lint failed" && exit 1)
+	@$(MAKE) lint-shell || (echo "❌ Shell lint failed" && exit 1)
 	@echo "✓ Lint passed"
 	@echo ""
 	@echo "[4/6] Checking coverage..."

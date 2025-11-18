@@ -74,6 +74,12 @@ jobs:
           cache: true
           cache-dependency-path: go.sum
       
+      - name: Lint shell scripts with ShellCheck
+        uses: ludeeus/action-shellcheck@2.0.0
+        with:
+          scandir: './scripts'
+          severity: warning
+      
       - name: Run golangci-lint
         uses: golangci/golangci-lint-action@v9
         with:
