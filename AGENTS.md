@@ -84,6 +84,20 @@
 9. Run `make validate` and address any failures (lint, coverage, docs).
 10. Commit and open a PR linking the parent issue and subtasks.
 
+## Adding a New Guide
+
+Provider guides appear on the Terraform Registry and help users understand usage patterns.
+
+1. Create guide file: `templates/guides/your-guide-name.md.tmpl`
+2. Add frontmatter with `page_title`, `subcategory: \"Guides\"`, and `description`
+3. Write guide content with examples and best practices
+4. Update `templates/index.md.tmpl` to link to your guide under `## Guides`
+5. Run `make docs` to generate `docs/guides/your-guide-name.md`
+6. Verify guide appears in `docs/index.md`
+7. Commit and open PR
+
+See `templates/guides/README.md` for detailed guide writing tips and conventions.
+
 ## Integration Tests Rules
 - Keep only passing scenarios in `integration/main.tf`; failures are covered by unit tests.
 - When a function requires extra parameters, pass `null` for optional ones.
