@@ -27,7 +27,8 @@ provider "validatefx" {}
 locals {
   emails = [
     "alice@example.com",
-    "bob_at_example.com",
+    "bob@example.org",
+    "charlie+tag@test.com",
   ]
 
   checked_emails = [
