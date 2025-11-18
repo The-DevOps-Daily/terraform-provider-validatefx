@@ -11,6 +11,14 @@ ValidateFX lets you write cleaner, more expressive validations using functions l
 
 ---
 
+Developer quickstart
+- Format: `go fmt ./...`
+- Lint: `golangci-lint run`
+- Tests: `go test ./...`
+- Full local checks: `make validate`
+
+---
+
 ## 🚀 Example
 
 ```hcl
