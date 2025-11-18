@@ -45,3 +45,7 @@ terraform-provider-validatefx
 
 # Terraform lock files
 .terraform.lock.hcl
+
+# Coverage reports
+coverage.out
+*.coverprofile
