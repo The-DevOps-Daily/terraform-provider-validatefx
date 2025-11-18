@@ -23,7 +23,7 @@ func (urlValidator) Description(context.Context) string {
 }
 
 func (urlValidator) MarkdownDescription(context.Context) string {
-	return "value must be a valid **URL** including scheme (e.g. `https`) and host"
+	return urlValidator{}.Description(nil)
 }
 
 func (urlValidator) ValidateString(_ context.Context, req frameworkvalidator.StringRequest, resp *frameworkvalidator.StringResponse) {

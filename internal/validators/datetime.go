@@ -28,7 +28,7 @@ func (v *dateTimeValidator) Description(_ context.Context) string {
 }
 
 func (v *dateTimeValidator) MarkdownDescription(_ context.Context) string {
-	return "value must be a valid datetime string"
+	return v.Description(nil)
 }
 
 func (v *dateTimeValidator) ValidateString(_ context.Context, req frameworkvalidator.StringRequest, resp *frameworkvalidator.StringResponse) {

@@ -15,10 +15,8 @@ var _ frameworkvalidator.String = (*base32Validator)(nil)
 // Base32Validator returns a validator that verifies a string is Base32-encoded.
 func Base32Validator() frameworkvalidator.String { return base32Validator{} }
 
-func (base32Validator) Description(_ context.Context) string { return "value must be a Base32 string" }
-func (base32Validator) MarkdownDescription(_ context.Context) string {
-	return "value must be a Base32 string"
-}
+func (base32Validator) Description(_ context.Context) string             { return "value must be a Base32 string" }
+func (v base32Validator) MarkdownDescription(ctx context.Context) string { return v.Description(ctx) }
 
 func (base32Validator) ValidateString(_ context.Context, req frameworkvalidator.StringRequest, resp *frameworkvalidator.StringResponse) {
 	if req.ConfigValue.IsNull() || req.ConfigValue.IsUnknown() || req.ConfigValue.ValueString() == "" {

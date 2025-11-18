@@ -20,9 +20,7 @@ func (base64Validator) Description(_ context.Context) string {
 	return "value must be a base 64 string"
 }
 
-func (base64Validator) MarkdownDescription(_ context.Context) string {
-	return "value must be a base 64 string"
-}
+func (v base64Validator) MarkdownDescription(ctx context.Context) string { return v.Description(ctx) }
 
 func (base64Validator) ValidateString(_ context.Context, req frameworkvalidator.StringRequest, resp *frameworkvalidator.StringResponse) {
 	if req.ConfigValue.IsNull() || req.ConfigValue.IsUnknown() || req.ConfigValue.ValueString() == "" {
