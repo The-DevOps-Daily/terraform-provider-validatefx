@@ -6,6 +6,36 @@
 
 - None.
 
+## [0.7.0] - 2025-11-18
+
+### What's Changed
+
+### 🚀 Features
+
+- feat: add coverage and pre-push make targets (#387) @bobbyonmagic
+- feat(arn): stricter, service‑aware ARN validation (#383) @bobbyonmagic
+- feat/arn validator (#382) @bobbyonmagic
+- feat(ip_range_size) (#380) @bobbyonmagic
+
+### 🧰 Maintenance
+
+- ci: add ShellCheck linting for bash scripts (#393) @bobbyonmagic
+- ci: consolidate workflow jobs and add coverage reporting (#389) @bobbyonmagic
+- test: improve test coverage for functions and validators (#385) @bobbyonmagic
+- refactor: standardize MarkdownDescription implementations (#392) @bobbyonmagic
+- perf: optimize Dockerfile build with caching and smaller binary (#391) @bobbyonmagic
+- refactor: extract common string list parsing logic (#386) @bobbyonmagic
+- chore: add Developer quickstart and .dockerignore (#381) @bobbyonmagic
+
+### 📚 Documentation
+
+- docs: fix provider guides generation for Terraform Registry (#394) @bobbyonmagic
+- docs: improve example consistency and add examples README (#388) @bobbyonmagic
+- docs(agents): expand contributors guide with workflow, testing, docs, CI and pitfalls (#384) @bobbyonmagic
+
+### Contributors
+@bobbyonmagic
+
 ## [0.6.0] - 2025-11-16
 
 ### What's Changed
