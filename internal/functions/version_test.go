@@ -4,6 +4,7 @@ import (
 	"context"
 	"testing"
 
+	"github.com/google/go-cmp/cmp"
 	"github.com/hashicorp/terraform-plugin-framework/function"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 )
@@ -47,5 +48,42 @@ func TestVersionFunctionRun(t *testing.T) {
 
 	if strVal.ValueString() != "9.9.9" {
 		t.Fatalf("expected version 9.9.9, got %s", strVal.ValueString())
+	}
+}
+
+func TestProviderVersionGetter(t *testing.T) {
+	// Test that ProviderVersion() returns the current version
+	original := providerVersion
+	defer func() { providerVersion = original }()
+
+	SetProviderVersion("1.0.0")
+	got := ProviderVersion()
+	expected := basetypes.NewStringValue("1.0.0")
+
+	if diff := cmp.Diff(expected, got); diff != "" {
+		t.Errorf("ProviderVersion mismatch (-expected +got): %s", diff)
+	}
+}
+
+func TestVersionFunctionMetadata(t *testing.T) {
+	fn := NewVersionFunction()
+	resp := &function.MetadataResponse{}
+	fn.Metadata(context.Background(), function.MetadataRequest{}, resp)
+
+	if resp.Name != "version" {
+		t.Errorf("expected name 'version', got %q", resp.Name)
+	}
+}
+
+func TestVersionFunctionDefinition(t *testing.T) {
+	fn := NewVersionFunction()
+	resp := &function.DefinitionResponse{}
+	fn.Definition(context.Background(), function.DefinitionRequest{}, resp)
+
+	if resp.Definition.Return == nil {
+		t.Fatal("expected return definition, got nil")
+	}
+	if resp.Definition.Summary == "" {
+		t.Error("expected non-empty summary")
 	}
 }
