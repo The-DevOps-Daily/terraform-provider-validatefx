@@ -16,6 +16,9 @@ func TestARNValidatorValid(t *testing.T) {
 		"arn:aws:iam::123456789012:role/Admin",
 		"arn:aws:s3:::my-bucket",
 		"arn:aws:lambda:us-east-1:123456789012:function:my-func",
+		// additional valid permutations
+		"arn:aws:iam::123456789012:user/alice",
+		"arn:aws:iam::123456789012:policy/ReadOnlyAccess",
 	}
 	for _, s := range cases {
 		req := frameworkvalidator.StringRequest{Path: path.Root("arn"), ConfigValue: types.StringValue(s)}
@@ -32,8 +35,13 @@ func TestARNValidatorInvalid(t *testing.T) {
 	v := ARN()
 	cases := []string{
 		"not-an-arn",
-		"arn:aws:ec2:us-east-1:abc:function:x", // bad account
+		"arn:aws:ec2:us-east-1:abc:function:x", // bad account digits
 		"arn:aws:::::",
+		"arn:aws:iam:us-east-1:123456789012:role/Admin", // iam must have empty region
+		"arn:aws:s3:us-east-1:123456789012:bucket",      // s3 must have empty region/account
+		"arn:aws:lambda::123456789012:function:x",       // lambda must have region
+		"arn:aws:lambda:us-east-1::function:x",          // lambda must have account
+		"arn:aws:lambda:us-east-1:123456789012:layer:x", // wrong resource prefix for lambda
 	}
 	for _, s := range cases {
 		req := frameworkvalidator.StringRequest{Path: path.Root("arn"), ConfigValue: types.StringValue(s)}
