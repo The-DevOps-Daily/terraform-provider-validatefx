@@ -22,7 +22,7 @@ func (v matchesRegexValidator) Description(_ context.Context) string {
 }
 
 func (v matchesRegexValidator) MarkdownDescription(_ context.Context) string {
-	return fmt.Sprintf("value must match regex pattern `%s`", v.pattern)
+	return v.Description(nil)
 }
 
 func (v matchesRegexValidator) ValidateString(_ context.Context, req frameworkvalidator.StringRequest, resp *frameworkvalidator.StringResponse) {

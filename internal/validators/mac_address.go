@@ -22,7 +22,7 @@ func (macAddressValidator) Description(_ context.Context) string {
 }
 
 func (macAddressValidator) MarkdownDescription(_ context.Context) string {
-	return "value must be a valid MAC address"
+	return macAddressValidator{}.Description(nil)
 }
 
 func (macAddressValidator) ValidateString(_ context.Context, req frameworkvalidator.StringRequest, resp *frameworkvalidator.StringResponse) {

@@ -22,7 +22,7 @@ func (emailValidator) Description(_ context.Context) string {
 }
 
 func (emailValidator) MarkdownDescription(_ context.Context) string {
-	return "value must be a valid email address"
+	return emailValidator{}.Description(nil)
 }
 
 func (emailValidator) ValidateString(_ context.Context, req frameworkvalidator.StringRequest, resp *frameworkvalidator.StringResponse) {

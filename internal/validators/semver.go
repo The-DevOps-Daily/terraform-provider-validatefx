@@ -24,7 +24,7 @@ func (semverValidator) Description(_ context.Context) string {
 }
 
 func (semverValidator) MarkdownDescription(_ context.Context) string {
-	return "value must be a Semantic Version (SemVer 2.0.0)"
+	return semverValidator{}.Description(nil)
 }
 
 func (semverValidator) ValidateString(_ context.Context, req frameworkvalidator.StringRequest, resp *frameworkvalidator.StringResponse) {
