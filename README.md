@@ -76,6 +76,7 @@ Example usage in `examples/basic/main.tf`.
 | -------------------------- | ------------------------------------------------ |
 | `all_valid` | Return true when all provided validation checks evaluate to true. |
 | `any_valid` | Return true when any provided validation check evaluates to true. |
+| `arn` | Validate that a string is an AWS ARN. |
 | `assert` | Assert a condition with a custom error message. |
 | `base32` | Validate that a string is Base32 encoded. |
 | `base64` | Validate that a string is Base64 encoded. |

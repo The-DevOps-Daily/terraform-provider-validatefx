@@ -257,6 +257,14 @@ locals {
     }
   ]
 
+  arn_checks = [
+    {
+      label = "iam role"
+      value = "arn:aws:iam::123456789012:role/Admin"
+      valid = provider::validatefx::arn("arn:aws:iam::123456789012:role/Admin")
+    }
+  ]
+
   username_values = [
     "alice",
     "bob_123",
@@ -671,6 +679,10 @@ output "validatefx_matches_regex" {
 
 output "validatefx_uri" {
   value = local.uri_checks
+}
+
+output "validatefx_arn" {
+  value = local.arn_checks
 }
 
 output "validatefx_private_ip" {
