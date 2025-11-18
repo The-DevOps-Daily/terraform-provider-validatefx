@@ -15,7 +15,9 @@ Developer quickstart
 - Format: `go fmt ./...`
 - Lint: `golangci-lint run`
 - Tests: `go test ./...`
+- Coverage: `make coverage`
 - Full local checks: `make validate`
+- Pre-push: `make pre-push`
 
 ---
 

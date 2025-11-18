@@ -27,6 +27,9 @@ make deps
 | `make lint` | Execute `golangci-lint` using the local installation. |
 | `make docs` | Regenerate the Markdown docs under `docs/` via `tfplugindocs`. |
 | `make integration` | Build the Docker image and run the Terraform integration scenario end-to-end. |
+| `make coverage` | Generate test coverage report for functions and validators. |
+| `make coverage-html` | Generate and open HTML coverage report in browser. |
+| `make pre-push` | Run complete pre-push checklist (format, test, lint, coverage, docs). |
 | `make clean` | Remove build artifacts and reset local integration state. |
 
 > **Tip:** The `make help` command lists all available targets and descriptions.
