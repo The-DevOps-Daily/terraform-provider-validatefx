@@ -1,33 +1,50 @@
 # syntax=docker/dockerfile:1
-# Base builder
-FROM golang:1.25.2-alpine AS build
-ENV CGO_ENABLED=0
-WORKDIR /app
+# Multi-stage build for terraform-provider-validatefx
 
-# Install git for modules that use it and leverage Docker layer caching by
-# downloading dependencies before copying the full source tree.
-RUN apk add --no-cache git
+# Stage 1: Build
+FROM golang:1.25.2-alpine AS build
+ENV CGO_ENABLED=0 \
+    GOOS=linux \
+    GOARCH=amd64
+
+WORKDIR /build
+
+# Install dependencies (git for go modules)
+RUN apk add --no-cache git ca-certificates
+
+# Leverage Docker cache layers - copy go.mod/go.sum first
 COPY go.mod go.sum ./
-RUN go mod download
+RUN go mod download && go mod verify
+
+# Copy source code
 COPY . .
 
-# Run tests and build the provider binary
-RUN go test ./... && go build -o terraform-provider-validatefx .
+# Run tests and build
+RUN --mount=type=cache,target=/root/.cache/go-build \
+    go test -v ./... && \
+    go build -ldflags="-w -s" -trimpath -o terraform-provider-validatefx .
 
-
-# Final image
+# Stage 2: Runtime
 FROM hashicorp/terraform:1.9.8
 
-# Copy provider binary for direct execution
-COPY --from=build /app/terraform-provider-validatefx /usr/local/bin/terraform-provider-validatefx
+# Copy CA certificates from build stage
+COPY --from=build /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
 
-# Install provider into Terraform override path
-ENV TF_PLUGIN_DIR="/root/.terraform.d/plugins"
-RUN mkdir -p ${TF_PLUGIN_DIR}/registry.terraform.io/the-devops-daily/validatefx/0.0.1/linux_amd64
-COPY --from=build /app/terraform-provider-validatefx ${TF_PLUGIN_DIR}/registry.terraform.io/the-devops-daily/validatefx/0.0.1/linux_amd64/terraform-provider-validatefx_v0.0.1
+# Copy provider binary
+COPY --from=build /build/terraform-provider-validatefx /usr/local/bin/terraform-provider-validatefx
 
-# Provide workspace for Terraform configuration
+# Install provider into Terraform plugin directory
+ENV TF_PLUGIN_DIR="/root/.terraform.d/plugins" \
+    PROVIDER_VERSION="0.0.1" \
+    PROVIDER_NAMESPACE="registry.terraform.io/the-devops-daily/validatefx"
+
+RUN mkdir -p ${TF_PLUGIN_DIR}/${PROVIDER_NAMESPACE}/${PROVIDER_VERSION}/linux_amd64 && \
+    ln -s /usr/local/bin/terraform-provider-validatefx \
+          ${TF_PLUGIN_DIR}/${PROVIDER_NAMESPACE}/${PROVIDER_VERSION}/linux_amd64/terraform-provider-validatefx_v${PROVIDER_VERSION}
+
+# Set up workspace
 WORKDIR /workspace
 
+# Use exec form for proper signal handling
 ENTRYPOINT []
 CMD ["/bin/sh"]
