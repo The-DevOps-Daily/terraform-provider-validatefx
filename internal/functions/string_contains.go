@@ -65,7 +65,7 @@ func (stringContainsFunction) Run(ctx context.Context, req function.RunRequest, 
 		return
 	}
 
-	substrings, substringsState, ok := substringsList(ctx, req, resp)
+	substrings, substringsState, ok := stringListArgument(ctx, req, resp, 1, "substrings")
 	if !ok {
 		return
 	}
@@ -103,52 +103,4 @@ func (stringContainsFunction) Run(ctx context.Context, req function.RunRequest, 
 	}
 
 	resp.Result = function.NewResultData(basetypes.NewBoolValue(true))
-}
-
-func substringsList(ctx context.Context, req function.RunRequest, resp *function.RunResponse) ([]string, valueState, bool) {
-	var substrings types.List
-	if err := req.Arguments.GetArgument(ctx, 1, &substrings); err != nil {
-		resp.Error = function.NewFuncError(err.Error())
-		return nil, valueKnown, false
-	}
-
-	values, state, funcErr := prepareSubstringValues(ctx, substrings)
-	if funcErr != nil {
-		resp.Error = funcErr
-		return nil, valueKnown, false
-	}
-
-	return values, state, true
-}
-
-func prepareSubstringValues(ctx context.Context, list types.List) ([]string, valueState, *function.FuncError) {
-	if list.IsUnknown() {
-		return nil, valueUnknown, nil
-	}
-
-	if list.IsNull() {
-		return nil, valueKnown, function.NewFuncError("substrings list must be provided")
-	}
-
-	var items []basetypes.StringValue
-	diags := list.ElementsAs(ctx, &items, false)
-	if diags.HasError() {
-		diags.AddAttributeError(
-			path.Root("substrings"),
-			"Invalid Substrings",
-			"Substrings must be provided as a list of strings.",
-		)
-		return nil, valueKnown, function.FuncErrorFromDiags(ctx, diags)
-	}
-
-	values := make([]string, 0, len(items))
-	for _, item := range items {
-		if item.IsNull() || item.IsUnknown() {
-			continue
-		}
-
-		values = append(values, item.ValueString())
-	}
-
-	return values, valueKnown, nil
 }
