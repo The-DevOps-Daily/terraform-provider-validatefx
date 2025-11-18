@@ -36,6 +36,10 @@ locals {
 - `default_datetime_layouts` (List of String) Optional default datetime layouts applied by `provider::validatefx::datetime` when call-site layouts are null/empty.
 - `default_timezone` (String) Optional default timezone (IANA identifier such as `UTC` or `America/New_York`) for datetime parsing when relevant.
 
+## Guides
+
+- [List Validators: Usage Patterns and Tips](guides/list-validators.md)
+
 ## Learn More
 
 For tutorials, articles, and updates from the maintainers, visit DevOps Daily:
