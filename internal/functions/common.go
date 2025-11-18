@@ -89,3 +89,51 @@ func stringFrom(v types.String) string {
 	}
 	return v.ValueString()
 }
+
+// stringListArgument extracts a list of strings from function arguments at the specified index.
+// It handles null, unknown, and invalid list scenarios consistently.
+// Returns the string slice, value state, and success boolean.
+func stringListArgument(
+	ctx context.Context,
+	req function.RunRequest,
+	resp *function.RunResponse,
+	index int,
+	paramName string,
+) ([]string, valueState, bool) {
+	var list types.List
+	if err := req.Arguments.GetArgument(ctx, index, &list); err != nil {
+		resp.Error = function.NewFuncError(err.Error())
+		return nil, valueKnown, false
+	}
+
+	if list.IsUnknown() {
+		return nil, valueUnknown, true
+	}
+
+	if list.IsNull() {
+		resp.Error = function.NewFuncError(paramName + " list must be provided")
+		return nil, valueKnown, false
+	}
+
+	var items []basetypes.StringValue
+	diags := list.ElementsAs(ctx, &items, false)
+	if diags.HasError() {
+		diags.AddAttributeError(
+			path.Root(paramName),
+			"Invalid "+paramName,
+			"Must be provided as a list of strings.",
+		)
+		resp.Error = function.FuncErrorFromDiags(ctx, diags)
+		return nil, valueKnown, false
+	}
+
+	values := make([]string, 0, len(items))
+	for _, item := range items {
+		if item.IsNull() || item.IsUnknown() {
+			continue
+		}
+		values = append(values, item.ValueString())
+	}
+
+	return values, valueKnown, true
+}

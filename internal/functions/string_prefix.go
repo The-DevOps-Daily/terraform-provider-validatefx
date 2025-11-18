@@ -65,7 +65,7 @@ func (stringPrefixFunction) Run(ctx context.Context, req function.RunRequest, re
 		return
 	}
 
-	prefixes, prefixesState, ok := prefixesList(ctx, req, resp)
+	prefixes, prefixesState, ok := stringListArgument(ctx, req, resp, 1, "prefixes")
 	if !ok {
 		return
 	}
@@ -103,52 +103,4 @@ func (stringPrefixFunction) Run(ctx context.Context, req function.RunRequest, re
 	}
 
 	resp.Result = function.NewResultData(basetypes.NewBoolValue(true))
-}
-
-func prefixesList(ctx context.Context, req function.RunRequest, resp *function.RunResponse) ([]string, valueState, bool) {
-	var prefixes types.List
-	if err := req.Arguments.GetArgument(ctx, 1, &prefixes); err != nil {
-		resp.Error = function.NewFuncError(err.Error())
-		return nil, valueKnown, false
-	}
-
-	values, state, funcErr := preparePrefixValues(ctx, prefixes)
-	if funcErr != nil {
-		resp.Error = funcErr
-		return nil, valueKnown, false
-	}
-
-	return values, state, true
-}
-
-func preparePrefixValues(ctx context.Context, list types.List) ([]string, valueState, *function.FuncError) {
-	if list.IsUnknown() {
-		return nil, valueUnknown, nil
-	}
-
-	if list.IsNull() {
-		return nil, valueKnown, function.NewFuncError("prefixes list must be provided")
-	}
-
-	var items []basetypes.StringValue
-	diags := list.ElementsAs(ctx, &items, false)
-	if diags.HasError() {
-		diags.AddAttributeError(
-			path.Root("prefixes"),
-			"Invalid Prefixes",
-			"Prefixes must be provided as a list of strings.",
-		)
-		return nil, valueKnown, function.FuncErrorFromDiags(ctx, diags)
-	}
-
-	values := make([]string, 0, len(items))
-	for _, item := range items {
-		if item.IsNull() || item.IsUnknown() {
-			continue
-		}
-
-		values = append(values, item.ValueString())
-	}
-
-	return values, valueKnown, nil
 }
