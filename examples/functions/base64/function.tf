@@ -10,13 +10,23 @@ terraform {
 provider "validatefx" {}
 
 locals {
-  valid_base64   = provider::validatefx::base64("U29sdmVkIQ==")
-  invalid_base64 = provider::validatefx::base64("invalid base64")
+  # Valid Base64 encoded strings
+  test_strings = [
+    "U29sdmVkIQ==",     # "Solved!"
+    "SGVsbG8gV29ybGQh", # "Hello World!"
+    "VGVycmFmb3Jt",     # "Terraform"
+  ]
+
+  # Validate each string
+  validation_results = [
+    for str in local.test_strings : {
+      value = str
+      valid = provider::validatefx::base64(str)
+    }
+  ]
 }
 
 output "base64_results" {
-  value = {
-    valid   = local.valid_base64
-    invalid = local.invalid_base64
-  }
+  description = "Base64 validation results for test strings"
+  value       = local.validation_results
 }
