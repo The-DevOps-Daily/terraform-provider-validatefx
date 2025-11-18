@@ -1,3 +1,10 @@
+---
+page_title: "List Validators: Usage Patterns and Tips"
+subcategory: "Guides"
+description: |-
+  Learn how to use the list-focused string validators (in_list, not_in_list, set_equals) exposed by the validatefx provider.
+---
+
 # List Validators: Usage Patterns and Tips
 
 This guide explains how to choose and use the list-focused string validators exposed by the validatefx provider.
@@ -58,6 +65,7 @@ locals {
 When comparing collections rather than a single value, use the helpers designed for lists:
 
 - `provider::validatefx::set_equals(values, expected)` verifies two lists are equal as sets (order-insensitive, duplicates ignored).
+- `provider::validatefx::list_subset(subset, superset)` checks if all elements in subset exist in superset.
 - `provider::validatefx::in_list` and `not_in_list` are not suitable for whole-list comparisons; they validate a single string.
 
 Example (set equality):
@@ -68,6 +76,17 @@ locals {
   actual_roles  = ["writer", "reader"]
 
   roles_match = provider::validatefx::set_equals(local.actual_roles, local.desired_roles)
+}
+```
+
+Example (subset check):
+
+```terraform
+locals {
+  permissions = ["read", "write", "delete"]
+  required    = ["read", "write"]
+
+  has_required = provider::validatefx::list_subset(local.required, local.permissions)
 }
 ```
 
@@ -82,4 +101,3 @@ locals {
 - "Invalid Argument Data Position" during function execution indicates a missing argument. Ensure you pass all required arguments. For functions with optional trailing parameters (e.g., `in_list` custom message), pass `null` when you don't supply a value.
 - "Invalid Allowed Values" errors indicate the list element type is not string. Ensure lists are `list(string)` and elements are not null/unknown.
 - Integration tests in this repo only include passing cases. If you want to see failing diagnostics locally, create a small Terraform module and run `terraform apply` to surface the errors.
-

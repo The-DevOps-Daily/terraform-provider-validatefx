@@ -49,3 +49,6 @@ terraform-provider-validatefx
 # Coverage reports
 coverage.out
 *.coverprofile
+
+# Legacy template location (use templates/ instead of docs/templates/)
+docs/templates/
