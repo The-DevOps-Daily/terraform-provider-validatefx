@@ -164,3 +164,40 @@ func TestPublicIPFunctionDefinition(t *testing.T) {
 		t.Errorf("expected 3 parameters, got %d", len(resp.Definition.Parameters))
 	}
 }
+
+// TestPublicIPOptValidatorDescription tests the Description and MarkdownDescription methods
+// of the publicIPOptValidator wrapper to ensure they don't panic and return valid strings.
+func TestPublicIPOptValidatorDescription(t *testing.T) {
+	tests := []struct {
+		name             string
+		excludeLinkLocal bool
+		excludeReserved  bool
+	}{
+		{name: "no exclusions", excludeLinkLocal: false, excludeReserved: false},
+		{name: "exclude link-local", excludeLinkLocal: true, excludeReserved: false},
+		{name: "exclude reserved", excludeLinkLocal: false, excludeReserved: true},
+		{name: "exclude both", excludeLinkLocal: true, excludeReserved: true},
+	}
+
+	ctx := context.Background()
+	for _, tc := range tests {
+		t.Run(tc.name, func(t *testing.T) {
+			validator := publicIPWithOptions(tc.excludeLinkLocal, tc.excludeReserved)
+
+			desc := validator.Description(ctx)
+			if desc == "" {
+				t.Error("Description() returned empty string")
+			}
+
+			mdDesc := validator.MarkdownDescription(ctx)
+			if mdDesc == "" {
+				t.Error("MarkdownDescription() returned empty string")
+			}
+
+			// Ensure MarkdownDescription returns the same as Description
+			if mdDesc != desc {
+				t.Errorf("MarkdownDescription() = %q, want %q", mdDesc, desc)
+			}
+		})
+	}
+}
