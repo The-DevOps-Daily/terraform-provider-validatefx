@@ -47,6 +47,14 @@ func TestAssertFunction(t *testing.T) {
 			},
 			expectUnknown: true,
 		},
+		{
+			name: "null condition",
+			args: []attr.Value{
+				types.BoolNull(),
+				types.StringValue("null condition error"),
+			},
+			expectError: true,
+		},
 	}
 
 	for _, tc := range cases {
@@ -88,5 +96,28 @@ func TestAssertFunction(t *testing.T) {
 				t.Fatalf("expected %t, got %t", tc.expectTrue, boolVal.ValueBool())
 			}
 		})
+	}
+}
+
+func TestAssertFunction_Metadata(t *testing.T) {
+	fn := NewAssertFunction()
+	resp := &function.MetadataResponse{}
+	fn.Metadata(context.Background(), function.MetadataRequest{}, resp)
+
+	if resp.Name != "assert" {
+		t.Errorf("expected name 'assert', got %q", resp.Name)
+	}
+}
+
+func TestAssertFunction_Definition(t *testing.T) {
+	fn := NewAssertFunction()
+	resp := &function.DefinitionResponse{}
+	fn.Definition(context.Background(), function.DefinitionRequest{}, resp)
+
+	if resp.Definition.Return == nil {
+		t.Fatal("expected return definition, got nil")
+	}
+	if len(resp.Definition.Parameters) != 2 {
+		t.Errorf("expected 2 parameters, got %d", len(resp.Definition.Parameters))
 	}
 }
