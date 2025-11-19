@@ -111,3 +111,97 @@ func TestBetweenFunction(t *testing.T) {
 		})
 	}
 }
+
+func TestBetweenFunction_NullValue(t *testing.T) {
+	fn := NewBetweenFunction()
+	ctx := context.Background()
+
+	args := []attr.Value{
+		types.StringNull(),
+		types.StringValue("5"),
+		types.StringValue("10"),
+	}
+
+	resp := &function.RunResponse{}
+	fn.Run(ctx, function.RunRequest{Arguments: function.NewArgumentsData(args)}, resp)
+
+	if resp.Error != nil {
+		t.Fatalf("unexpected error for null value: %s", resp.Error)
+	}
+
+	boolVal, ok := resp.Result.Value().(basetypes.BoolValue)
+	if !ok {
+		t.Fatalf("expected BoolValue result")
+	}
+	if !boolVal.IsUnknown() {
+		t.Fatalf("expected unknown result for null value")
+	}
+}
+
+func TestBetweenFunction_UnknownMin(t *testing.T) {
+	fn := NewBetweenFunction()
+	ctx := context.Background()
+
+	args := []attr.Value{
+		types.StringValue("7"),
+		types.StringUnknown(),
+		types.StringValue("10"),
+	}
+
+	resp := &function.RunResponse{}
+	fn.Run(ctx, function.RunRequest{Arguments: function.NewArgumentsData(args)}, resp)
+
+	if resp.Error != nil {
+		t.Fatalf("unexpected error for unknown min: %s", resp.Error)
+	}
+
+	// Should still execute validation (stringFrom handles unknown)
+	result, ok := resp.Result.Value().(basetypes.BoolValue)
+	if !ok {
+		t.Fatalf("expected BoolValue result")
+	}
+	if result.IsUnknown() {
+		t.Fatalf("did not expect unknown result")
+	}
+}
+
+func TestBetweenFunction_InvalidValue(t *testing.T) {
+	fn := NewBetweenFunction()
+	ctx := context.Background()
+
+	args := []attr.Value{
+		types.StringValue("not-a-number"),
+		types.StringValue("5"),
+		types.StringValue("10"),
+	}
+
+	resp := &function.RunResponse{}
+	fn.Run(ctx, function.RunRequest{Arguments: function.NewArgumentsData(args)}, resp)
+
+	if resp.Error == nil {
+		t.Fatalf("expected error for invalid value")
+	}
+}
+
+func TestBetweenFunction_Metadata(t *testing.T) {
+	fn := NewBetweenFunction()
+	resp := &function.MetadataResponse{}
+	fn.Metadata(context.Background(), function.MetadataRequest{}, resp)
+
+	if resp.Name != "between" {
+		t.Errorf("expected name 'between', got %q", resp.Name)
+	}
+}
+
+func TestBetweenFunction_Definition(t *testing.T) {
+	fn := NewBetweenFunction()
+	resp := &function.DefinitionResponse{}
+	fn.Definition(context.Background(), function.DefinitionRequest{}, resp)
+
+	if resp.Definition.Return == nil {
+		t.Fatal("expected return definition, got nil")
+	}
+	if len(resp.Definition.Parameters) != 3 {
+		t.Errorf("expected 3 parameters, got %d", len(resp.Definition.Parameters))
+	}
+}
