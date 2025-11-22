@@ -59,6 +59,7 @@ func ProviderFunctionFactories() []func() function.Function {
 		NewARNFunction,
 		NewAWSRegionFunction,
 		NewGCPRegionFunction,
+		NewAzureLocationFunction,
 		NewIPRangeSizeFunction,
 	}
 }
