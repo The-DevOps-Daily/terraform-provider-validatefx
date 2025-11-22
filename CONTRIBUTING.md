@@ -67,6 +67,61 @@ Run the project automation after making changes to guarantee consistency:
 - `make docs` — refreshes `docs/functions/*.md` using `tfplugindocs` (required after schema/function changes).
 - `make validate` — runs the full validation pipeline (fmt, docs, and coverage checks) invoked by CI.
 
+## Fuzz Testing
+
+Go ships with native fuzzing support starting from Go 1.18. We include fuzz tests for all validators to harden them against edge cases and unexpected inputs.
+
+### Running Fuzz Tests
+
+Run a targeted fuzz test (10 seconds):
+
+```bash
+go test ./internal/validators -run FuzzEmail -fuzz FuzzEmail -fuzztime=10s
+```
+
+Run all fuzz tests in the validators package (1 minute):
+
+```bash
+go test ./internal/validators -fuzz Fuzz -fuzztime=1m
+```
+
+Run fuzz tests for specific validators:
+
+```bash
+# Email validator
+go test ./internal/validators -run FuzzEmail -fuzz FuzzEmail -fuzztime=30s
+
+# URL validator
+go test ./internal/validators -run FuzzURL -fuzz FuzzURL -fuzztime=30s
+
+# JSON validator
+go test ./internal/validators -run FuzzJSON -fuzz FuzzJSON -fuzztime=30s
+```
+
+### Fuzz Test Requirements
+
+When adding a new validator, you must include a corresponding fuzz test:
+
+1. Create `internal/validators/<name>_fuzz_test.go`
+2. Implement a `Fuzz<Name>` function that exercises the validator with random inputs
+3. Seed the fuzzer with both valid and invalid examples
+4. The `make validate` command enforces this requirement via `scripts/check-fuzz-coverage.go`
+
+### Understanding Fuzz Failures
+
+When the fuzzer finds a failure, it:
+
+1. Minimizes the input to the smallest failing case
+2. Writes it to `testdata/fuzz/<FuzzFunction>/` as a corpus entry
+3. Re-runs that corpus entry in future test runs to prevent regressions
+
+If a fuzz test fails:
+
+1. Examine the failing input in the corpus file
+2. Fix the validator to handle that case correctly
+3. Add a unit test for the specific case to document the fix
+4. Re-run the fuzz test to verify the fix
+
 ## Pull Request Checklist
 
 Before opening a PR, please ensure:
