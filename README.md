@@ -81,6 +81,7 @@ Example usage in `examples/basic/main.tf`.
 | `arn` | Validate that a string is an AWS ARN. |
 | `assert` | Assert a condition with a custom error message. |
 | `aws_region` | Validate that a string is a valid AWS region code. |
+| `azure_location` | Validate that a string is a valid Azure location. |
 | `base32` | Validate that a string is Base32 encoded. |
 | `base64` | Validate that a string is Base64 encoded. |
 | `between` | Validate that a numeric string falls between inclusive minimum and maximum bounds. |

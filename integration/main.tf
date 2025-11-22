@@ -631,6 +631,35 @@ locals {
       valid       = provider::validatefx::gcp_region("southamerica-east1")
     },
   ]
+
+  # Azure Location checks
+  azure_location_checks = [
+    {
+      description = "Valid East US location"
+      value       = "eastus"
+      valid       = provider::validatefx::azure_location("eastus")
+    },
+    {
+      description = "Valid West Europe location"
+      value       = "westeurope"
+      valid       = provider::validatefx::azure_location("westeurope")
+    },
+    {
+      description = "Valid Southeast Asia location"
+      value       = "southeastasia"
+      valid       = provider::validatefx::azure_location("southeastasia")
+    },
+    {
+      description = "Valid Australia East location"
+      value       = "australiaeast"
+      valid       = provider::validatefx::azure_location("australiaeast")
+    },
+    {
+      description = "Valid US Gov Virginia location"
+      value       = "usgovvirginia"
+      valid       = provider::validatefx::azure_location("usgovvirginia")
+    },
+  ]
   aws_region_checks = [
     {
       description = "Valid US East region"
@@ -880,4 +909,9 @@ output "validatefx_aws_region" {
 
 output "validatefx_gcp_region" {
   value = local.gcp_region_checks
+}
+
+
+output "validatefx_azure_location" {
+  value = local.azure_location_checks
 }
