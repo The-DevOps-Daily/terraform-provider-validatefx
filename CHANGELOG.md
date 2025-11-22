@@ -6,6 +6,38 @@
 
 - None.
 
+## [0.8.0] - 2025-11-22
+
+### What's Changed
+
+### 🚀 Features
+
+- feat: add Azure location validator (#408) @bobbyonmagic
+- feat: add GCP region validator (#407) @bobbyonmagic
+- feat: add AWS region validator (#406) @bobbyonmagic
+
+### 🧪 Testing
+
+- test: add comprehensive ARN function tests (#405) @bobbyonmagic
+- test: improve in_list helper function coverage (#404) @bobbyonmagic
+- test: add comprehensive tests for between function (#403) @bobbyonmagic
+- test: add missing edge case tests for assert function (#402) @bobbyonmagic
+- test: add comprehensive tests for cidr_overlap function (#401) @bobbyonmagic
+- test: add comprehensive tests for private_ip helper functions (#400) @bobbyonmagic
+- test: add Description method tests for publicIPOptValidator (#399) @bobbyonmagic
+- test: improve Description method coverage for validators (#398) @bobbyonmagic
+
+### 🧰 Maintenance
+
+- chore: simplify guides documentation following best practices (#397) @bobbyonmagic
+
+### 📚 Documentation
+
+- docs: improve guides documentation and contributor workflow (#396) @bobbyonmagic
+
+### Contributors
+@bobbyonmagic
+
 ## [0.7.0] - 2025-11-18
 
 ### What's Changed
