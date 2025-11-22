@@ -602,6 +602,35 @@ locals {
 
   provider_version = provider::validatefx::version()
   # AWS Region checks
+
+  # GCP Region checks
+  gcp_region_checks = [
+    {
+      description = "Valid US Central region"
+      value       = "us-central1"
+      valid       = provider::validatefx::gcp_region("us-central1")
+    },
+    {
+      description = "Valid Europe West region"
+      value       = "europe-west1"
+      valid       = provider::validatefx::gcp_region("europe-west1")
+    },
+    {
+      description = "Valid Asia Southeast region"
+      value       = "asia-southeast1"
+      valid       = provider::validatefx::gcp_region("asia-southeast1")
+    },
+    {
+      description = "Valid Australia Southeast region"
+      value       = "australia-southeast1"
+      valid       = provider::validatefx::gcp_region("australia-southeast1")
+    },
+    {
+      description = "Valid South America East region"
+      value       = "southamerica-east1"
+      valid       = provider::validatefx::gcp_region("southamerica-east1")
+    },
+  ]
   aws_region_checks = [
     {
       description = "Valid US East region"
@@ -846,4 +875,9 @@ output "validatefx_port_number" {
 
 output "validatefx_aws_region" {
   value = local.aws_region_checks
+}
+
+
+output "validatefx_gcp_region" {
+  value = local.gcp_region_checks
 }
