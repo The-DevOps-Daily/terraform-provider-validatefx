@@ -632,6 +632,40 @@ locals {
     },
   ]
 
+  # GCP Zone checks
+  gcp_zone_checks = [
+    {
+      description = "Valid US Central zone"
+      value       = "us-central1-a"
+      valid       = provider::validatefx::gcp_zone("us-central1-a")
+    },
+    {
+      description = "Valid US East zone"
+      value       = "us-east1-b"
+      valid       = provider::validatefx::gcp_zone("us-east1-b")
+    },
+    {
+      description = "Valid Europe West zone"
+      value       = "europe-west1-b"
+      valid       = provider::validatefx::gcp_zone("europe-west1-b")
+    },
+    {
+      description = "Valid Asia East zone"
+      value       = "asia-east1-a"
+      valid       = provider::validatefx::gcp_zone("asia-east1-a")
+    },
+    {
+      description = "Valid Australia Southeast zone"
+      value       = "australia-southeast1-a"
+      valid       = provider::validatefx::gcp_zone("australia-southeast1-a")
+    },
+    {
+      description = "Valid Africa South zone"
+      value       = "africa-south1-a"
+      valid       = provider::validatefx::gcp_zone("africa-south1-a")
+    },
+  ]
+
   # Azure Location checks
   azure_location_checks = [
     {
@@ -909,41 +943,6 @@ output "validatefx_aws_region" {
 
 output "validatefx_gcp_region" {
   value = local.gcp_region_checks
-}
-
-  # GCP Zone checks
-  gcp_zone_checks = [
-    {
-      description = "Valid US Central zone"
-      value       = "us-central1-a"
-      valid       = provider::validatefx::gcp_zone("us-central1-a")
-    },
-    {
-      description = "Valid US East zone"
-      value       = "us-east1-b"
-      valid       = provider::validatefx::gcp_zone("us-east1-b")
-    },
-    {
-      description = "Valid Europe West zone"
-      value       = "europe-west1-b"
-      valid       = provider::validatefx::gcp_zone("europe-west1-b")
-    },
-    {
-      description = "Valid Asia East zone"
-      value       = "asia-east1-a"
-      valid       = provider::validatefx::gcp_zone("asia-east1-a")
-    },
-    {
-      description = "Valid Australia Southeast zone"
-      value       = "australia-southeast1-a"
-      valid       = provider::validatefx::gcp_zone("australia-southeast1-a")
-    },
-    {
-      description = "Valid Africa South zone"
-      value       = "africa-south1-a"
-      valid       = provider::validatefx::gcp_zone("africa-south1-a")
-    },
-  ]
 }
 
 output "validatefx_gcp_zone" {
