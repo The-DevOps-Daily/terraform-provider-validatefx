@@ -601,6 +601,34 @@ locals {
   )
 
   provider_version = provider::validatefx::version()
+  # AWS Region checks
+  aws_region_checks = [
+    {
+      description = "Valid US East region"
+      value       = "us-east-1"
+      valid       = provider::validatefx::aws_region("us-east-1")
+    },
+    {
+      description = "Valid EU West region"
+      value       = "eu-west-1"
+      valid       = provider::validatefx::aws_region("eu-west-1")
+    },
+    {
+      description = "Valid Asia Pacific region"
+      value       = "ap-southeast-1"
+      valid       = provider::validatefx::aws_region("ap-southeast-1")
+    },
+    {
+      description = "Valid US GovCloud region"
+      value       = "us-gov-west-1"
+      valid       = provider::validatefx::aws_region("us-gov-west-1")
+    },
+    {
+      description = "Valid China region"
+      value       = "cn-north-1"
+      valid       = provider::validatefx::aws_region("cn-north-1")
+    },
+  ]
 }
 
 locals {
@@ -813,4 +841,9 @@ output "validatefx_port_range" {
 
 output "validatefx_port_number" {
   value = local.port_number_checks
+}
+
+
+output "validatefx_aws_region" {
+  value = local.aws_region_checks
 }
