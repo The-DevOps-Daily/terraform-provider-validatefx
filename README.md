@@ -92,6 +92,7 @@ Example usage in `examples/basic/main.tf`.
 | `email` | Validate that a string is an RFC 5322 compliant email address. |
 | `exactly_one_valid` | Return true when exactly one validation check evaluates to true. |
 | `fqdn` | Validate that a string is a fully qualified domain name (FQDN). |
+| `gcp_region` | Validate that a string is a valid GCP region. |
 | `has_prefix` | Validate that a string starts with one of the provided prefixes. |
 | `has_suffix` | Validate that a string ends with one of the provided suffixes. |
 | `hex` | Validate that a string contains only hexadecimal characters. |
