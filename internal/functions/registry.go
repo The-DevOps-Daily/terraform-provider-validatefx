@@ -57,6 +57,7 @@ func ProviderFunctionFactories() []func() function.Function {
 		NewSubnetFunction,
 		NewPublicIPFunction,
 		NewARNFunction,
+		NewAWSRegionFunction,
 		NewIPRangeSizeFunction,
 	}
 }
