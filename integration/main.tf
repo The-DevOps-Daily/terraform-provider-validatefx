@@ -732,6 +732,30 @@ locals {
     },
   ]
 
+  # Slug checks
+  slug_checks = [
+    {
+      description = "Valid simple slug"
+      value       = "my-application"
+      valid       = provider::validatefx::slug("my-application")
+    },
+    {
+      description = "Valid slug with digits"
+      value       = "web-server-01"
+      valid       = provider::validatefx::slug("web-server-01")
+    },
+    {
+      description = "Valid slug with version"
+      value       = "api-v2"
+      valid       = provider::validatefx::slug("api-v2")
+    },
+    {
+      description = "Valid multi-word slug"
+      value       = "data-pipeline-prod"
+      valid       = provider::validatefx::slug("data-pipeline-prod")
+    },
+  ]
+
   aws_region_checks = [
     {
       description = "Valid US East region"
@@ -997,4 +1021,8 @@ output "validatefx_azure_location" {
 
 output "validatefx_mime_type" {
   value = local.mime_type_checks
+}
+
+output "validatefx_slug" {
+  value = local.slug_checks
 }
