@@ -121,6 +121,7 @@ Example usage in `examples/basic/main.tf`.
 | `semver` | Validate that a string follows Semantic Versioning (SemVer 2.0.0). |
 | `semver_range` | Validate that a string is a valid semantic version range expression. |
 | `set_equals` | Validate that two string lists contain the same elements regardless of order. |
+| `size_between` | Validate that a numeric string falls within an inclusive size range. |
 | `slug` | Validate that a string is a valid slug. |
 | `ssh_public_key` | Validate that a string is a valid SSH public key. |
 | `string_contains` | Validate that a string contains at least one of the provided substrings. |
