@@ -873,6 +873,25 @@ locals {
     },
   ]
 
+  # Non-empty list checks
+  non_empty_list_checks = [
+    {
+      description = "Single element list"
+      values      = ["item"]
+      valid       = provider::validatefx::non_empty_list(["item"])
+    },
+    {
+      description = "Multiple elements list"
+      values      = ["apple", "banana", "cherry"]
+      valid       = provider::validatefx::non_empty_list(["apple", "banana", "cherry"])
+    },
+    {
+      description = "Many elements list"
+      values      = ["one", "two", "three", "four", "five"]
+      valid       = provider::validatefx::non_empty_list(["one", "two", "three", "four", "five"])
+    },
+  ]
+
   aws_region_checks = [
     {
       description = "Valid US East region"
@@ -1158,4 +1177,8 @@ output "validatefx_size_between" {
 
 output "validatefx_map_keys_match" {
   value = local.map_keys_match_checks
+}
+
+output "validatefx_non_empty_list" {
+  value = local.non_empty_list_checks
 }
