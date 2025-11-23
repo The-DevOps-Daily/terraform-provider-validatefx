@@ -18,6 +18,12 @@ locals {
     "d9428888-122b-11e1-b85c-61cd3cbb3210",
   ]
 
+  uuidv4_only_values = [
+    "550e8400-e29b-41d4-a716-446655440000",
+    "f47ac10b-58cc-4372-a567-0e02b2c3d479",
+    "123e4567-e89b-42d3-a456-426614174000",
+  ]
+
   base64_values = [
     "U29sdmVkIQ==",
   ]
@@ -153,6 +159,13 @@ locals {
     for value in local.uuids : {
       value = value
       valid = provider::validatefx::uuid(value)
+    }
+  ]
+
+  uuidv4_only_results = [
+    for value in local.uuidv4_only_values : {
+      value = value
+      valid = provider::validatefx::uuidv4_only(value)
     }
   ]
 
@@ -743,6 +756,10 @@ output "validatefx_email" {
 
 output "validatefx_uuid" {
   value = local.uuid_results
+}
+
+output "validatefx_uuidv4_only" {
+  value = local.uuidv4_only_results
 }
 
 output "validatefx_base64" {

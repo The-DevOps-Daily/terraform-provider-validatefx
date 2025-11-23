@@ -14,6 +14,7 @@ func ProviderFunctionFactories() []func() function.Function {
 		NewAssertFunction,
 		NewEmailFunction,
 		NewUUIDFunction,
+		NewUUIDv4OnlyFunction,
 		NewBase64Function,
 		NewBase32Function,
 		NewCreditCardFunction,

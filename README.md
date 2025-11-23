@@ -126,6 +126,7 @@ Example usage in `examples/basic/main.tf`.
 | `url` | Validate that a string is an HTTP(S) URL. |
 | `username` | Validate that a string is a valid username. |
 | `uuid` | Validate that a string is an RFC 4122 UUID (versions 1-5). |
+| `uuidv4_only` | Validate that a string is a UUID version 4. |
 | `version` | Return the provider version string. |
 
 
