@@ -17,15 +17,15 @@ func NonNegativeNumber() frameworkvalidator.String {
 
 type nonNegativeNumberValidator struct{}
 
-func (v *nonNegativeNumberValidator) Description(_ context.Context) string {
+func (nonNegativeNumberValidator) Description(_ context.Context) string {
 	return "Value must be a non-negative number (zero or greater)"
 }
 
-func (v *nonNegativeNumberValidator) MarkdownDescription(ctx context.Context) string {
+func (v nonNegativeNumberValidator) MarkdownDescription(ctx context.Context) string {
 	return v.Description(ctx)
 }
 
-func (v *nonNegativeNumberValidator) ValidateString(_ context.Context, req frameworkvalidator.StringRequest, resp *frameworkvalidator.StringResponse) {
+func (nonNegativeNumberValidator) ValidateString(_ context.Context, req frameworkvalidator.StringRequest, resp *frameworkvalidator.StringResponse) {
 	if req.ConfigValue.IsNull() || req.ConfigValue.IsUnknown() {
 		return
 	}

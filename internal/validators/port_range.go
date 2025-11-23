@@ -23,15 +23,15 @@ func PortRange() frameworkvalidator.String {
 
 type portRangeValidator struct{}
 
-func (v *portRangeValidator) Description(_ context.Context) string {
+func (portRangeValidator) Description(_ context.Context) string {
 	return "string must be a valid port range (start-end) with values 0..65535 and start <= end"
 }
 
-func (v *portRangeValidator) MarkdownDescription(ctx context.Context) string {
+func (v portRangeValidator) MarkdownDescription(ctx context.Context) string {
 	return v.Description(ctx)
 }
 
-func (v *portRangeValidator) ValidateString(_ context.Context, req frameworkvalidator.StringRequest, resp *frameworkvalidator.StringResponse) {
+func (portRangeValidator) ValidateString(_ context.Context, req frameworkvalidator.StringRequest, resp *frameworkvalidator.StringResponse) {
 	if req.ConfigValue.IsNull() || req.ConfigValue.IsUnknown() {
 		return
 	}
