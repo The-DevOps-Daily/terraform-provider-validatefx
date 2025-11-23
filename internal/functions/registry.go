@@ -34,6 +34,7 @@ func ProviderFunctionFactories() []func() function.Function {
 		NewMACAddressFunction,
 		NewMIMETypeFunction,
 		NewSlugFunction,
+		NewPositiveNumberFunction,
 		NewURLFunction,
 		NewBetweenFunction,
 		NewInListFunction,
