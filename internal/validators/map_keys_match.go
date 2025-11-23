@@ -33,6 +33,8 @@ func NewMapKeysMatch(allowedKeys, requiredKeys []string) *MapKeysMatchValidator 
 }
 
 // Validate checks if the provided map keys satisfy the allowed/required constraints.
+//
+//nolint:cyclop
 func (v *MapKeysMatchValidator) Validate(keys []string) error {
 	if v == nil {
 		return fmt.Errorf("validator not initialized")

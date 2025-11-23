@@ -66,11 +66,11 @@ func TestMapKeysMatchFunction(t *testing.T) {
 
 		// Null and unknown
 		{
-			name:          "null map",
-			inputMap:      types.MapNull(basetypes.StringType{}),
-			allowedKeys:   listValue([]string{"a"}),
-			requiredKeys:  listValue([]string{}),
-			expectError:   true,
+			name:         "null map",
+			inputMap:     types.MapNull(basetypes.StringType{}),
+			allowedKeys:  listValue([]string{"a"}),
+			requiredKeys: listValue([]string{}),
+			expectError:  true,
 		},
 		{
 			name:          "unknown map",

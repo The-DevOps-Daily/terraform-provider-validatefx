@@ -836,6 +836,43 @@ locals {
     },
   ]
 
+  # Map keys match checks
+  map_keys_match_checks = [
+    {
+      description   = "All keys allowed"
+      map_keys      = { name = "server", port = "8080" }
+      allowed_keys  = ["name", "port", "protocol"]
+      required_keys = []
+      valid = provider::validatefx::map_keys_match(
+        { name = "server", port = "8080" },
+        ["name", "port", "protocol"],
+        []
+      )
+    },
+    {
+      description   = "Required keys present"
+      map_keys      = { name = "server", port = "8080" }
+      allowed_keys  = ["name", "port", "protocol"]
+      required_keys = ["name", "port"]
+      valid = provider::validatefx::map_keys_match(
+        { name = "server", port = "8080" },
+        ["name", "port", "protocol"],
+        ["name", "port"]
+      )
+    },
+    {
+      description   = "Empty allowed list"
+      map_keys      = { name = "server", extra = "value" }
+      allowed_keys  = []
+      required_keys = ["name"]
+      valid = provider::validatefx::map_keys_match(
+        { name = "server", extra = "value" },
+        [],
+        ["name"]
+      )
+    },
+  ]
+
   aws_region_checks = [
     {
       description = "Valid US East region"
@@ -1117,4 +1154,8 @@ output "validatefx_non_negative_number" {
 
 output "validatefx_size_between" {
   value = local.size_between_checks
+}
+
+output "validatefx_map_keys_match" {
+  value = local.map_keys_match_checks
 }

@@ -56,6 +56,7 @@ func (mapKeysMatchFunction) Definition(_ context.Context, _ function.DefinitionR
 	}
 }
 
+//nolint:cyclop
 func (mapKeysMatchFunction) Run(ctx context.Context, req function.RunRequest, resp *function.RunResponse) {
 	// Get map parameter
 	var inputMap types.Map
@@ -87,7 +88,7 @@ func (mapKeysMatchFunction) Run(ctx context.Context, req function.RunRequest, re
 	}
 
 	// Get allowed keys
-	allowedKeys, allowedState, ok := collectStringList(ctx, req, resp, 1, "allowed_keys")
+	allowedKeys, allowedState, ok := stringListArgument(ctx, req, resp, 1, "allowed_keys")
 	if !ok {
 		return
 	}
@@ -98,7 +99,7 @@ func (mapKeysMatchFunction) Run(ctx context.Context, req function.RunRequest, re
 	}
 
 	// Get required keys
-	requiredKeys, requiredState, ok := collectStringList(ctx, req, resp, 2, "required_keys")
+	requiredKeys, requiredState, ok := stringListArgument(ctx, req, resp, 2, "required_keys")
 	if !ok {
 		return
 	}
