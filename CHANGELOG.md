@@ -6,6 +6,31 @@
 
 - None.
 
+## [0.10.0] - 2025-11-23
+
+### What's Changed
+
+### 🚀 Features
+
+- feat: add mutually_exclusive validator (#424) @bobbyonmagic
+- feat: add non_empty_list validator (#423) @bobbyonmagic
+- feat: add map_keys_match validator (#422) @bobbyonmagic
+- feat: add size_between validator (#421) @bobbyonmagic
+- feat: add non_negative_number validator (#420) @bobbyonmagic
+- feat: add positive_number validator (#419) @bobbyonmagic
+
+### 📚 Documentation
+
+- feat: add mutually_exclusive validator (#424) @bobbyonmagic
+- feat: add non_empty_list validator (#423) @bobbyonmagic
+- feat: add map_keys_match validator (#422) @bobbyonmagic
+- feat: add size_between validator (#421) @bobbyonmagic
+- feat: add non_negative_number validator (#420) @bobbyonmagic
+- feat: add positive_number validator (#419) @bobbyonmagic
+
+### Contributors
+@bobbyonmagic
+
 ## [0.9.0] - 2025-11-04
 
 ### What's Changed
