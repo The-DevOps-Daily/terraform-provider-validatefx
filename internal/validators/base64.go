@@ -10,6 +10,7 @@ import (
 
 var _ frameworkvalidator.String = Base64Validator()
 
+// Base64Validator returns a validator that verifies a string is Base64-encoded.
 func Base64Validator() frameworkvalidator.String {
 	return base64Validator{}
 }
