@@ -58,6 +58,8 @@ func (v *betweenValidator) ValidateString(_ context.Context, req frameworkvalida
 	}
 }
 
+// EvaluateBetween checks if a numeric string value falls within the specified inclusive range.
+// It returns a success boolean and optional diagnostics for bounds or value errors.
 func EvaluateBetween(value, minRaw, maxRaw string) (bool, *BetweenDiagnostic, *BetweenDiagnostic) {
 	value = strings.TrimSpace(value)
 	minRaw = strings.TrimSpace(minRaw)
