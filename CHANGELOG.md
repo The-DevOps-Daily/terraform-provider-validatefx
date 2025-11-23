@@ -6,6 +6,29 @@
 
 - None.
 
+## [0.9.0] - 2025-11-04
+
+### What's Changed
+
+### 🚀 Features
+
+- feat: add slug validator (#417) @bobbyonmagic
+- feat: add mime_type validator (#416) @bobbyonmagic
+- feat: add uuidv4_only validator (#412) @bobbyonmagic
+- feat/gcp zone validator (#411) @bobbyonmagic
+
+### 🧰 Maintenance
+
+- refactor: fix context usage in validator MarkdownDescription methods (#414) @bobbyonmagic
+
+### 📚 Documentation
+
+- docs: add missing godoc comments to exported validator functions (#415) @bobbyonmagic
+- docs: move fuzz tests section to CONTRIBUTING.md and add link in README (#410) @bobbyonmagic
+
+### Contributors
+@bobbyonmagic
+
 ## [0.8.0] - 2025-11-22
 
 ### What's Changed
