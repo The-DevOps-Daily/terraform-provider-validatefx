@@ -780,6 +780,30 @@ locals {
     },
   ]
 
+  # Non-negative number checks
+  non_negative_number_checks = [
+    {
+      description = "Valid zero"
+      value       = "0"
+      valid       = provider::validatefx::non_negative_number("0")
+    },
+    {
+      description = "Valid positive integer"
+      value       = "42"
+      valid       = provider::validatefx::non_negative_number("42")
+    },
+    {
+      description = "Valid positive decimal"
+      value       = "3.14"
+      valid       = provider::validatefx::non_negative_number("3.14")
+    },
+    {
+      description = "Valid zero decimal"
+      value       = "0.0"
+      valid       = provider::validatefx::non_negative_number("0.0")
+    },
+  ]
+
   aws_region_checks = [
     {
       description = "Valid US East region"
@@ -1053,4 +1077,8 @@ output "validatefx_slug" {
 
 output "validatefx_positive_number" {
   value = local.positive_number_checks
+}
+
+output "validatefx_non_negative_number" {
+  value = local.non_negative_number_checks
 }

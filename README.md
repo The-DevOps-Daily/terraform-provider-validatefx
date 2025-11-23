@@ -109,6 +109,7 @@ Example usage in `examples/basic/main.tf`.
 | `mac_address` | Validate that a string is a MAC address in colon, dash, or compact format. |
 | `matches_regex` | Validate that a string matches a provided regular expression. |
 | `mime_type` | Validate that a string is a valid MIME type. |
+| `non_negative_number` | Validate that a string represents a non-negative number. |
 | `not_in_list` | Validate that a string does not match any of the provided disallowed values. |
 | `password_strength` | Checks if a password meets strength requirements |
 | `phone` | Validate that a string is an E.164 compliant phone number. |
