@@ -37,6 +37,7 @@ func ProviderFunctionFactories() []func() function.Function {
 		NewPositiveNumberFunction,
 		NewNonNegativeNumberFunction,
 		NewSizeBetweenFunction,
+		NewMapKeysMatchFunction,
 		NewURLFunction,
 		NewBetweenFunction,
 		NewInListFunction,

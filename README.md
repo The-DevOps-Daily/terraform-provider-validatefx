@@ -107,6 +107,7 @@ Example usage in `examples/basic/main.tf`.
 | `jwt` | Validate that a string is a well-formed JSON Web Token (JWT). |
 | `list_subset` | Validate that all elements of a list/set are contained in a reference list. |
 | `mac_address` | Validate that a string is a MAC address in colon, dash, or compact format. |
+| `map_keys_match` | Validate that map keys match allowed or required keys. |
 | `matches_regex` | Validate that a string matches a provided regular expression. |
 | `mime_type` | Validate that a string is a valid MIME type. |
 | `non_negative_number` | Validate that a string represents a non-negative number. |
