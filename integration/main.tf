@@ -804,6 +804,38 @@ locals {
     },
   ]
 
+  # Size between checks
+  size_between_checks = [
+    {
+      description = "Value in range"
+      value       = "5"
+      min         = "1"
+      max         = "10"
+      valid       = provider::validatefx::size_between("5", "1", "10")
+    },
+    {
+      description = "Value at minimum"
+      value       = "1"
+      min         = "1"
+      max         = "10"
+      valid       = provider::validatefx::size_between("1", "1", "10")
+    },
+    {
+      description = "Value at maximum"
+      value       = "10"
+      min         = "1"
+      max         = "10"
+      valid       = provider::validatefx::size_between("10", "1", "10")
+    },
+    {
+      description = "Decimal in range"
+      value       = "0.5"
+      min         = "0"
+      max         = "1"
+      valid       = provider::validatefx::size_between("0.5", "0", "1")
+    },
+  ]
+
   aws_region_checks = [
     {
       description = "Valid US East region"
@@ -1081,4 +1113,8 @@ output "validatefx_positive_number" {
 
 output "validatefx_non_negative_number" {
   value = local.non_negative_number_checks
+}
+
+output "validatefx_size_between" {
+  value = local.size_between_checks
 }
