@@ -21,8 +21,8 @@ func (ipValidator) Description(_ context.Context) string {
 	return "value must be a valid IP address"
 }
 
-func (ipValidator) MarkdownDescription(_ context.Context) string {
-	return ipValidator{}.Description(nil)
+func (v ipValidator) MarkdownDescription(ctx context.Context) string {
+	return v.Description(ctx)
 }
 
 func (ipValidator) ValidateString(_ context.Context, req frameworkvalidator.StringRequest, resp *frameworkvalidator.StringResponse) {

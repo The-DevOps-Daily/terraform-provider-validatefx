@@ -22,8 +22,8 @@ func (cidrValidator) Description(_ context.Context) string {
 	return "value must be a valid IPv4 or IPv6 CIDR block"
 }
 
-func (cidrValidator) MarkdownDescription(_ context.Context) string {
-	return cidrValidator{}.Description(nil)
+func (v cidrValidator) MarkdownDescription(ctx context.Context) string {
+	return v.Description(ctx)
 }
 
 func (cidrValidator) ValidateString(_ context.Context, req frameworkvalidator.StringRequest, resp *frameworkvalidator.StringResponse) {

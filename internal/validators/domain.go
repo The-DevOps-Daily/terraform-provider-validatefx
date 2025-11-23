@@ -27,8 +27,8 @@ func (domainValidator) Description(_ context.Context) string {
 	return "value must be a valid domain name"
 }
 
-func (domainValidator) MarkdownDescription(_ context.Context) string {
-	return domainValidator{}.Description(nil)
+func (v domainValidator) MarkdownDescription(ctx context.Context) string {
+	return v.Description(ctx)
 }
 
 func (domainValidator) ValidateString(_ context.Context, req frameworkvalidator.StringRequest, resp *frameworkvalidator.StringResponse) {

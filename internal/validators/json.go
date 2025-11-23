@@ -21,8 +21,8 @@ func (jsonValidator) Description(_ context.Context) string {
 	return "value must be a valid JSON object"
 }
 
-func (jsonValidator) MarkdownDescription(_ context.Context) string {
-	return jsonValidator{}.Description(nil)
+func (v jsonValidator) MarkdownDescription(ctx context.Context) string {
+	return v.Description(ctx)
 }
 
 func (jsonValidator) ValidateString(_ context.Context, req frameworkvalidator.StringRequest, resp *frameworkvalidator.StringResponse) {

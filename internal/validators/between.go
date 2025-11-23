@@ -28,8 +28,8 @@ func (v *betweenValidator) Description(_ context.Context) string {
 	return "value must be a number between the configured minimum and maximum"
 }
 
-func (v *betweenValidator) MarkdownDescription(_ context.Context) string {
-	return v.Description(nil)
+func (v *betweenValidator) MarkdownDescription(ctx context.Context) string {
+	return v.Description(ctx)
 }
 
 func (v *betweenValidator) ValidateString(_ context.Context, req frameworkvalidator.StringRequest, resp *frameworkvalidator.StringResponse) {

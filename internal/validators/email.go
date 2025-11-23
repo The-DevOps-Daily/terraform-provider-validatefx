@@ -21,8 +21,8 @@ func (emailValidator) Description(_ context.Context) string {
 	return "value must be a valid email address"
 }
 
-func (emailValidator) MarkdownDescription(_ context.Context) string {
-	return emailValidator{}.Description(nil)
+func (v emailValidator) MarkdownDescription(ctx context.Context) string {
+	return v.Description(ctx)
 }
 
 func (emailValidator) ValidateString(_ context.Context, req frameworkvalidator.StringRequest, resp *frameworkvalidator.StringResponse) {

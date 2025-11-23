@@ -19,8 +19,8 @@ func (sshPublicKeyValidator) Description(_ context.Context) string {
 	return "value must be a valid SSH public key in authorized_keys format"
 }
 
-func (sshPublicKeyValidator) MarkdownDescription(ctx context.Context) string {
-	return sshPublicKeyValidator{}.Description(ctx)
+func (v sshPublicKeyValidator) MarkdownDescription(ctx context.Context) string {
+	return v.Description(ctx)
 }
 
 func (sshPublicKeyValidator) ValidateString(_ context.Context, req frameworkvalidator.StringRequest, resp *frameworkvalidator.StringResponse) {
