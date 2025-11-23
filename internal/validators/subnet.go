@@ -20,8 +20,8 @@ func (subnetValidator) Description(_ context.Context) string {
 	return "value must be a subnet address in CIDR notation (IP equals network address)"
 }
 
-func (subnetValidator) MarkdownDescription(ctx context.Context) string {
-	return subnetValidator{}.Description(ctx)
+func (v subnetValidator) MarkdownDescription(ctx context.Context) string {
+	return v.Description(ctx)
 }
 
 func (subnetValidator) ValidateString(_ context.Context, req frameworkvalidator.StringRequest, resp *frameworkvalidator.StringResponse) {

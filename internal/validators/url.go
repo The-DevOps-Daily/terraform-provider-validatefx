@@ -22,8 +22,8 @@ func (urlValidator) Description(context.Context) string {
 	return "value must be a valid URL including scheme and host"
 }
 
-func (urlValidator) MarkdownDescription(context.Context) string {
-	return urlValidator{}.Description(nil)
+func (v urlValidator) MarkdownDescription(ctx context.Context) string {
+	return v.Description(ctx)
 }
 
 func (urlValidator) ValidateString(_ context.Context, req frameworkvalidator.StringRequest, resp *frameworkvalidator.StringResponse) {

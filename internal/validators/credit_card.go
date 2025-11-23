@@ -22,8 +22,8 @@ func (creditCardValidator) Description(_ context.Context) string {
 	return "value must be a valid credit card number (Luhn algorithm)"
 }
 
-func (creditCardValidator) MarkdownDescription(_ context.Context) string {
-	return creditCardValidator{}.Description(nil)
+func (v creditCardValidator) MarkdownDescription(ctx context.Context) string {
+	return v.Description(ctx)
 }
 
 func (creditCardValidator) ValidateString(_ context.Context, req frameworkvalidator.StringRequest, resp *frameworkvalidator.StringResponse) {

@@ -18,8 +18,8 @@ func (passwordStrength) Description(_ context.Context) string {
 	return "value must be a strong password (min 8, upper, lower, number, special)"
 }
 
-func (passwordStrength) MarkdownDescription(ctx context.Context) string {
-	return passwordStrength{}.Description(ctx)
+func (v passwordStrength) MarkdownDescription(ctx context.Context) string {
+	return v.Description(ctx)
 }
 
 func (passwordStrength) ValidateString(_ context.Context, req frameworkvalidator.StringRequest, resp *frameworkvalidator.StringResponse) {

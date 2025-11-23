@@ -21,8 +21,8 @@ func (uuidValidator) Description(_ context.Context) string {
 	return "value must be a valid UUID (versions 1-5)"
 }
 
-func (uuidValidator) MarkdownDescription(_ context.Context) string {
-	return uuidValidator{}.Description(nil)
+func (v uuidValidator) MarkdownDescription(ctx context.Context) string {
+	return v.Description(ctx)
 }
 
 func (uuidValidator) ValidateString(_ context.Context, req frameworkvalidator.StringRequest, resp *frameworkvalidator.StringResponse) {

@@ -21,8 +21,8 @@ func (v matchesRegexValidator) Description(_ context.Context) string {
 	return fmt.Sprintf("value must match regex pattern %q", v.pattern)
 }
 
-func (v matchesRegexValidator) MarkdownDescription(_ context.Context) string {
-	return v.Description(nil)
+func (v matchesRegexValidator) MarkdownDescription(ctx context.Context) string {
+	return v.Description(ctx)
 }
 
 func (v matchesRegexValidator) ValidateString(_ context.Context, req frameworkvalidator.StringRequest, resp *frameworkvalidator.StringResponse) {

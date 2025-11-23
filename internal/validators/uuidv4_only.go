@@ -21,8 +21,8 @@ func (uuidv4OnlyValidator) Description(_ context.Context) string {
 	return "value must be a valid UUID version 4"
 }
 
-func (uuidv4OnlyValidator) MarkdownDescription(_ context.Context) string {
-	return uuidv4OnlyValidator{}.Description(nil)
+func (v uuidv4OnlyValidator) MarkdownDescription(ctx context.Context) string {
+	return v.Description(ctx)
 }
 
 func (uuidv4OnlyValidator) ValidateString(_ context.Context, req frameworkvalidator.StringRequest, resp *frameworkvalidator.StringResponse) {

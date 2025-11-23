@@ -21,8 +21,8 @@ func (macAddressValidator) Description(_ context.Context) string {
 	return "value must be a valid MAC address"
 }
 
-func (macAddressValidator) MarkdownDescription(_ context.Context) string {
-	return macAddressValidator{}.Description(nil)
+func (v macAddressValidator) MarkdownDescription(ctx context.Context) string {
+	return v.Description(ctx)
 }
 
 func (macAddressValidator) ValidateString(_ context.Context, req frameworkvalidator.StringRequest, resp *frameworkvalidator.StringResponse) {
