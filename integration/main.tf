@@ -707,6 +707,31 @@ locals {
       valid       = provider::validatefx::azure_location("usgovvirginia")
     },
   ]
+
+  # MIME Type checks
+  mime_type_checks = [
+    {
+      description = "Valid application/json MIME type"
+      value       = "application/json"
+      valid       = provider::validatefx::mime_type("application/json")
+    },
+    {
+      description = "Valid text/html MIME type"
+      value       = "text/html"
+      valid       = provider::validatefx::mime_type("text/html")
+    },
+    {
+      description = "Valid image/svg+xml MIME type with subtype"
+      value       = "image/svg+xml"
+      valid       = provider::validatefx::mime_type("image/svg+xml")
+    },
+    {
+      description = "Valid text/plain with charset parameter"
+      value       = "text/plain; charset=utf-8"
+      valid       = provider::validatefx::mime_type("text/plain; charset=utf-8")
+    },
+  ]
+
   aws_region_checks = [
     {
       description = "Valid US East region"
@@ -968,4 +993,8 @@ output "validatefx_gcp_zone" {
 
 output "validatefx_azure_location" {
   value = local.azure_location_checks
+}
+
+output "validatefx_mime_type" {
+  value = local.mime_type_checks
 }

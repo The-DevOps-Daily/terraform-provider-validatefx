@@ -32,6 +32,7 @@ func ProviderFunctionFactories() []func() function.Function {
 		NewStringLengthFunction,
 		NewPhoneFunction,
 		NewMACAddressFunction,
+		NewMIMETypeFunction,
 		NewURLFunction,
 		NewBetweenFunction,
 		NewInListFunction,
