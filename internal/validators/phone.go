@@ -26,7 +26,7 @@ func (phoneValidator) Description(_ context.Context) string {
 
 // MarkdownDescription returns a markdown-formatted description of the validator.
 func (phoneValidator) MarkdownDescription(_ context.Context) string {
-	return phoneValidator{}.Description(nil)
+	return "value must be a valid E.164 phone number"
 }
 
 // ValidateString performs the actual phone number validation.

@@ -22,7 +22,7 @@ func (jsonValidator) Description(_ context.Context) string {
 }
 
 func (jsonValidator) MarkdownDescription(_ context.Context) string {
-	return jsonValidator{}.Description(nil)
+	return "value must be valid JSON"
 }
 
 func (jsonValidator) ValidateString(_ context.Context, req frameworkvalidator.StringRequest, resp *frameworkvalidator.StringResponse) {

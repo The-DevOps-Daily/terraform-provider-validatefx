@@ -22,7 +22,7 @@ func (uuidv4OnlyValidator) Description(_ context.Context) string {
 }
 
 func (uuidv4OnlyValidator) MarkdownDescription(_ context.Context) string {
-	return uuidv4OnlyValidator{}.Description(nil)
+	return "value must be a valid UUID version 4"
 }
 
 func (uuidv4OnlyValidator) ValidateString(_ context.Context, req frameworkvalidator.StringRequest, resp *frameworkvalidator.StringResponse) {

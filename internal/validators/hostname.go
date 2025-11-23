@@ -25,7 +25,7 @@ func (hostnameValidator) Description(_ context.Context) string {
 }
 
 func (hostnameValidator) MarkdownDescription(_ context.Context) string {
-	return hostnameValidator{}.Description(nil)
+	return "value must be a valid hostname (RFC 1123)"
 }
 
 func (hostnameValidator) ValidateString(_ context.Context, req frameworkvalidator.StringRequest, resp *frameworkvalidator.StringResponse) {

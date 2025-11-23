@@ -23,7 +23,7 @@ func (creditCardValidator) Description(_ context.Context) string {
 }
 
 func (creditCardValidator) MarkdownDescription(_ context.Context) string {
-	return creditCardValidator{}.Description(nil)
+	return "value must be a valid credit card number"
 }
 
 func (creditCardValidator) ValidateString(_ context.Context, req frameworkvalidator.StringRequest, resp *frameworkvalidator.StringResponse) {

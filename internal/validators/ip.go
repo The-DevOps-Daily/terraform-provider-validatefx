@@ -22,7 +22,7 @@ func (ipValidator) Description(_ context.Context) string {
 }
 
 func (ipValidator) MarkdownDescription(_ context.Context) string {
-	return ipValidator{}.Description(nil)
+	return "value must be a valid IPv4 or IPv6 address"
 }
 
 func (ipValidator) ValidateString(_ context.Context, req frameworkvalidator.StringRequest, resp *frameworkvalidator.StringResponse) {
