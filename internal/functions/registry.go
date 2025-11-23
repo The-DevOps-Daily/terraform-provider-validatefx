@@ -33,6 +33,7 @@ func ProviderFunctionFactories() []func() function.Function {
 		NewPhoneFunction,
 		NewMACAddressFunction,
 		NewMIMETypeFunction,
+		NewSlugFunction,
 		NewURLFunction,
 		NewBetweenFunction,
 		NewInListFunction,
