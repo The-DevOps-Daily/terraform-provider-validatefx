@@ -15,18 +15,18 @@ locals {
   ]
 
   uuids = [
-	    "d9428888-122b-11e1-b85c-61cd3cbb3210",
-	  ]
+    "d9428888-122b-11e1-b85c-61cd3cbb3210",
+  ]
 
-	  uuidv4_only_values = [
-	    "550e8400-e29b-41d4-a716-446655440000",
-	    "f47ac10b-58cc-4372-a567-0e02b2c3d479",
-	    "123e4567-e89b-42d3-a456-426614174000",
-	  ]
+  uuidv4_only_values = [
+    "550e8400-e29b-41d4-a716-446655440000",
+    "f47ac10b-58cc-4372-a567-0e02b2c3d479",
+    "123e4567-e89b-42d3-a456-426614174000",
+  ]
 
-	  base64_values = [
-	    "U29sdmVkIQ==",
-	  ]
+  base64_values = [
+    "U29sdmVkIQ==",
+  ]
 
   credit_cards = [
     "4532015112830366",
@@ -160,17 +160,17 @@ locals {
       value = value
       valid = provider::validatefx::uuid(value)
     }
-	  ]
+  ]
 
-	  uuidv4_only_results = [
-	    for value in local.uuidv4_only_values : {
-	      value = value
-	      valid = provider::validatefx::uuidv4_only(value)
-	    }
-	  ]
+  uuidv4_only_results = [
+    for value in local.uuidv4_only_values : {
+      value = value
+      valid = provider::validatefx::uuidv4_only(value)
+    }
+  ]
 
-	  base64_results = [
-	    for value in local.base64_values : {
+  base64_results = [
+    for value in local.base64_values : {
       value = value
       valid = provider::validatefx::base64(value)
     }
