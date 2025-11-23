@@ -1179,6 +1179,35 @@ output "validatefx_map_keys_match" {
   value = local.map_keys_match_checks
 }
 
+locals {
+  mutually_exclusive_checks = [
+    {
+      description = "Only one deployment method"
+      values      = ["", "docker", ""]
+      valid       = provider::validatefx::mutually_exclusive(["", "docker", ""])
+    },
+    {
+      description = "Only one auth method"
+      values      = ["password", "", ""]
+      valid       = provider::validatefx::mutually_exclusive(["password", "", ""])
+    },
+    {
+      description = "Only one database backend"
+      values      = ["", "", "postgres"]
+      valid       = provider::validatefx::mutually_exclusive(["", "", "postgres"])
+    },
+    {
+      description = "Only one storage option"
+      values      = ["", "s3", "", ""]
+      valid       = provider::validatefx::mutually_exclusive(["", "s3", "", ""])
+    },
+  ]
+}
+
+output "validatefx_mutually_exclusive" {
+  value = local.mutually_exclusive_checks
+}
+
 output "validatefx_non_empty_list" {
   value = local.non_empty_list_checks
 }
