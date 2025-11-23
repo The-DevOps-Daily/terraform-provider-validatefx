@@ -114,6 +114,7 @@ Example usage in `examples/basic/main.tf`.
 | `phone` | Validate that a string is an E.164 compliant phone number. |
 | `port_number` | Validate that a string is a valid TCP/UDP port number (1..65535). |
 | `port_range` | Validate that a string is a valid port range (start-end). |
+| `positive_number` | Validate that a string represents a positive number. |
 | `private_ip` | Validate that an IP address is private (RFC1918 / IPv6 ULA). |
 | `public_ip` | Validate that an IP address is public (not private). |
 | `semver` | Validate that a string follows Semantic Versioning (SemVer 2.0.0). |

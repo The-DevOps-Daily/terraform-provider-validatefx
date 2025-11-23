@@ -756,6 +756,30 @@ locals {
     },
   ]
 
+  # Positive number checks
+  positive_number_checks = [
+    {
+      description = "Valid positive integer"
+      value       = "42"
+      valid       = provider::validatefx::positive_number("42")
+    },
+    {
+      description = "Valid positive decimal"
+      value       = "3.14"
+      valid       = provider::validatefx::positive_number("3.14")
+    },
+    {
+      description = "Valid small positive"
+      value       = "0.001"
+      valid       = provider::validatefx::positive_number("0.001")
+    },
+    {
+      description = "Valid large positive"
+      value       = "9999.99"
+      valid       = provider::validatefx::positive_number("9999.99")
+    },
+  ]
+
   aws_region_checks = [
     {
       description = "Valid US East region"
@@ -1025,4 +1049,8 @@ output "validatefx_mime_type" {
 
 output "validatefx_slug" {
   value = local.slug_checks
+}
+
+output "validatefx_positive_number" {
+  value = local.positive_number_checks
 }
