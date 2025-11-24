@@ -16,15 +16,15 @@ func PublicIP() frameworkvalidator.String { return &publicIPValidator{} }
 
 type publicIPValidator struct{}
 
-func (v *publicIPValidator) Description(_ context.Context) string {
+func (publicIPValidator) Description(_ context.Context) string {
 	return "string must be a public IP address (not RFC1918/ULA)"
 }
 
-func (v *publicIPValidator) MarkdownDescription(ctx context.Context) string {
+func (v publicIPValidator) MarkdownDescription(ctx context.Context) string {
 	return v.Description(ctx)
 }
 
-func (v *publicIPValidator) ValidateString(_ context.Context, req frameworkvalidator.StringRequest, resp *frameworkvalidator.StringResponse) {
+func (publicIPValidator) ValidateString(_ context.Context, req frameworkvalidator.StringRequest, resp *frameworkvalidator.StringResponse) {
 	if req.ConfigValue.IsNull() || req.ConfigValue.IsUnknown() {
 		return
 	}

@@ -17,15 +17,15 @@ func PortNumber() frameworkvalidator.String { return &portNumberValidator{} }
 
 type portNumberValidator struct{}
 
-func (v *portNumberValidator) Description(_ context.Context) string {
+func (portNumberValidator) Description(_ context.Context) string {
 	return "string must be a valid port number (1..65535)"
 }
 
-func (v *portNumberValidator) MarkdownDescription(ctx context.Context) string {
+func (v portNumberValidator) MarkdownDescription(ctx context.Context) string {
 	return v.Description(ctx)
 }
 
-func (v *portNumberValidator) ValidateString(_ context.Context, req frameworkvalidator.StringRequest, resp *frameworkvalidator.StringResponse) {
+func (portNumberValidator) ValidateString(_ context.Context, req frameworkvalidator.StringRequest, resp *frameworkvalidator.StringResponse) {
 	if req.ConfigValue.IsNull() || req.ConfigValue.IsUnknown() {
 		return
 	}

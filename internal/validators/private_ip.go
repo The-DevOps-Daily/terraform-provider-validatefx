@@ -18,15 +18,15 @@ func PrivateIP() frameworkvalidator.String {
 
 type privateIPValidator struct{}
 
-func (v *privateIPValidator) Description(_ context.Context) string {
+func (privateIPValidator) Description(_ context.Context) string {
 	return "string must be a private IP address (RFC1918 for IPv4 or unique local address for IPv6)"
 }
 
-func (v *privateIPValidator) MarkdownDescription(ctx context.Context) string {
+func (v privateIPValidator) MarkdownDescription(ctx context.Context) string {
 	return v.Description(ctx)
 }
 
-func (v *privateIPValidator) ValidateString(_ context.Context, req frameworkvalidator.StringRequest, resp *frameworkvalidator.StringResponse) {
+func (privateIPValidator) ValidateString(_ context.Context, req frameworkvalidator.StringRequest, resp *frameworkvalidator.StringResponse) {
 	if req.ConfigValue.IsNull() || req.ConfigValue.IsUnknown() {
 		return
 	}

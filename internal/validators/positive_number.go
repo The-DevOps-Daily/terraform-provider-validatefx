@@ -17,15 +17,15 @@ func PositiveNumber() frameworkvalidator.String {
 
 type positiveNumberValidator struct{}
 
-func (v *positiveNumberValidator) Description(_ context.Context) string {
+func (positiveNumberValidator) Description(_ context.Context) string {
 	return "Value must be a positive number (greater than zero)"
 }
 
-func (v *positiveNumberValidator) MarkdownDescription(ctx context.Context) string {
+func (v positiveNumberValidator) MarkdownDescription(ctx context.Context) string {
 	return v.Description(ctx)
 }
 
-func (v *positiveNumberValidator) ValidateString(_ context.Context, req frameworkvalidator.StringRequest, resp *frameworkvalidator.StringResponse) {
+func (positiveNumberValidator) ValidateString(_ context.Context, req frameworkvalidator.StringRequest, resp *frameworkvalidator.StringResponse) {
 	if req.ConfigValue.IsNull() || req.ConfigValue.IsUnknown() {
 		return
 	}

@@ -21,15 +21,15 @@ func Slug() frameworkvalidator.String {
 
 type slugValidator struct{}
 
-func (v *slugValidator) Description(_ context.Context) string {
+func (slugValidator) Description(_ context.Context) string {
 	return "Value must be a valid slug (lowercase letters, digits, and hyphens; no leading/trailing or consecutive hyphens)"
 }
 
-func (v *slugValidator) MarkdownDescription(ctx context.Context) string {
+func (v slugValidator) MarkdownDescription(ctx context.Context) string {
 	return v.Description(ctx)
 }
 
-func (v *slugValidator) ValidateString(_ context.Context, req frameworkvalidator.StringRequest, resp *frameworkvalidator.StringResponse) {
+func (slugValidator) ValidateString(_ context.Context, req frameworkvalidator.StringRequest, resp *frameworkvalidator.StringResponse) {
 	if req.ConfigValue.IsNull() || req.ConfigValue.IsUnknown() {
 		return
 	}

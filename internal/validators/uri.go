@@ -19,13 +19,13 @@ func URI() frameworkvalidator.String {
 
 type uriValidator struct{}
 
-func (v *uriValidator) Description(_ context.Context) string {
+func (uriValidator) Description(_ context.Context) string {
 	return "string must be a valid URI with a non-empty scheme and host (when required)"
 }
 
-func (v *uriValidator) MarkdownDescription(ctx context.Context) string { return v.Description(ctx) }
+func (v uriValidator) MarkdownDescription(ctx context.Context) string { return v.Description(ctx) }
 
-func (v *uriValidator) ValidateString(_ context.Context, req frameworkvalidator.StringRequest, resp *frameworkvalidator.StringResponse) {
+func (uriValidator) ValidateString(_ context.Context, req frameworkvalidator.StringRequest, resp *frameworkvalidator.StringResponse) {
 	if req.ConfigValue.IsNull() || req.ConfigValue.IsUnknown() {
 		return
 	}
