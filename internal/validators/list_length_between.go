@@ -4,6 +4,8 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/hashicorp/terraform-plugin-framework/diag"
+	"github.com/hashicorp/terraform-plugin-framework/path"
 	frameworkvalidator "github.com/hashicorp/terraform-plugin-framework/schema/validator"
 )
 
@@ -58,22 +60,7 @@ func (v *ListLengthBetweenValidator) ValidateList(_ context.Context, req framewo
 
 	length := len(req.ConfigValue.Elements())
 
-	if length < v.min {
-		resp.Diagnostics.AddAttributeError(
-			req.Path,
-			"List Too Short",
-			fmt.Sprintf("List must have at least %d elements, got %d.", v.min, length),
-		)
-		return
-	}
-
-	if length > v.max {
-		resp.Diagnostics.AddAttributeError(
-			req.Path,
-			"List Too Long",
-			fmt.Sprintf("List must have at most %d elements, got %d.", v.max, length),
-		)
-	}
+	v.validateLength(length, req.Path, &resp.Diagnostics, "List")
 }
 
 // ValidateSet validates a set attribute value.
@@ -84,20 +71,25 @@ func (v *ListLengthBetweenValidator) ValidateSet(_ context.Context, req framewor
 
 	length := len(req.ConfigValue.Elements())
 
+	v.validateLength(length, req.Path, &resp.Diagnostics, "Set")
+}
+
+// validateLength is a helper that validates length and adds diagnostics.
+func (v *ListLengthBetweenValidator) validateLength(length int, p path.Path, diags *diag.Diagnostics, typeName string) {
 	if length < v.min {
-		resp.Diagnostics.AddAttributeError(
-			req.Path,
-			"Set Too Small",
-			fmt.Sprintf("Set must have at least %d elements, got %d.", v.min, length),
+		diags.AddAttributeError(
+			p,
+			fmt.Sprintf("%s Too Short", typeName),
+			fmt.Sprintf("%s must have at least %d elements, got %d.", typeName, v.min, length),
 		)
 		return
 	}
 
 	if length > v.max {
-		resp.Diagnostics.AddAttributeError(
-			req.Path,
-			"Set Too Large",
-			fmt.Sprintf("Set must have at most %d elements, got %d.", v.max, length),
+		diags.AddAttributeError(
+			p,
+			fmt.Sprintf("%s Too Long", typeName),
+			fmt.Sprintf("%s must have at most %d elements, got %d.", typeName, v.max, length),
 		)
 	}
 }
