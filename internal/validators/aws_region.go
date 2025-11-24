@@ -2,7 +2,6 @@ package validators
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 )
@@ -72,15 +71,8 @@ func (awsRegionValidator) ValidateString(_ context.Context, req validator.String
 	}
 
 	value := req.ConfigValue.ValueString()
-	if value == "" {
-		return
-	}
 
-	if !validAWSRegions[value] {
-		resp.Diagnostics.AddAttributeError(
-			req.Path,
-			"Invalid AWS Region",
-			fmt.Sprintf("Value %q is not a valid AWS region code.", value),
-		)
+	if diag := validateStringInMap(value, validAWSRegions, req.Path, "Invalid AWS Region", "AWS region code"); diag != nil {
+		resp.Diagnostics.Append(diag)
 	}
 }

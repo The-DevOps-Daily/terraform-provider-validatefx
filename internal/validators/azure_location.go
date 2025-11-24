@@ -2,7 +2,6 @@ package validators
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 )
@@ -92,15 +91,8 @@ func (azureLocationValidator) ValidateString(_ context.Context, req validator.St
 	}
 
 	value := req.ConfigValue.ValueString()
-	if value == "" {
-		return
-	}
 
-	if !validAzureLocations[value] {
-		resp.Diagnostics.AddAttributeError(
-			req.Path,
-			"Invalid Azure Location",
-			fmt.Sprintf("Value %q is not a valid Azure location.", value),
-		)
+	if diag := validateStringInMap(value, validAzureLocations, req.Path, "Invalid Azure Location", "Azure location"); diag != nil {
+		resp.Diagnostics.Append(diag)
 	}
 }

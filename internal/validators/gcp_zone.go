@@ -2,7 +2,6 @@ package validators
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 )
@@ -194,15 +193,8 @@ func (gcpZoneValidator) ValidateString(_ context.Context, req validator.StringRe
 	}
 
 	value := req.ConfigValue.ValueString()
-	if value == "" {
-		return
-	}
 
-	if !validGCPZones[value] {
-		resp.Diagnostics.AddAttributeError(
-			req.Path,
-			"Invalid GCP Zone",
-			fmt.Sprintf("Value %q is not a valid GCP zone.", value),
-		)
+	if diag := validateStringInMap(value, validGCPZones, req.Path, "Invalid GCP Zone", "GCP zone"); diag != nil {
+		resp.Diagnostics.Append(diag)
 	}
 }
