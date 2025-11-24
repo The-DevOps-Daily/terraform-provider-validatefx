@@ -24,16 +24,20 @@ func (base64Validator) Description(_ context.Context) string {
 func (v base64Validator) MarkdownDescription(ctx context.Context) string { return v.Description(ctx) }
 
 func (base64Validator) ValidateString(_ context.Context, req frameworkvalidator.StringRequest, resp *frameworkvalidator.StringResponse) {
-	if req.ConfigValue.IsNull() || req.ConfigValue.IsUnknown() || req.ConfigValue.ValueString() == "" {
+	if req.ConfigValue.IsNull() || req.ConfigValue.IsUnknown() {
 		return
 	}
 
-	if _, err := base64.StdEncoding.DecodeString(req.ConfigValue.ValueString()); err != nil {
+	value := req.ConfigValue.ValueString()
+	if value == "" {
+		return
+	}
+
+	if _, err := base64.StdEncoding.DecodeString(value); err != nil {
 		resp.Diagnostics.AddAttributeError(
 			req.Path,
 			"Invalid base64 string",
-			fmt.Sprintf("Value %q is not a valid base64 string", req.ConfigValue.ValueString()),
+			fmt.Sprintf("Value %q is not a valid base64 string", value),
 		)
 	}
-
 }

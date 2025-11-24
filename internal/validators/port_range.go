@@ -36,13 +36,14 @@ func (portRangeValidator) ValidateString(_ context.Context, req frameworkvalidat
 		return
 	}
 
-	raw := strings.TrimSpace(req.ConfigValue.ValueString())
+	value := req.ConfigValue.ValueString()
+	raw := strings.TrimSpace(value)
 	m := portRangeRegexp.FindStringSubmatch(raw)
 	if len(m) != 3 {
 		resp.Diagnostics.AddAttributeError(
 			req.Path,
 			"Invalid Port Range",
-			fmt.Sprintf("Value %q must match the form 'start-end' using ports 0..65535.", req.ConfigValue.ValueString()),
+			fmt.Sprintf("Value %q must match the form 'start-end' using ports 0..65535.", value),
 		)
 		return
 	}
@@ -54,7 +55,7 @@ func (portRangeValidator) ValidateString(_ context.Context, req frameworkvalidat
 		resp.Diagnostics.AddAttributeError(
 			req.Path,
 			"Invalid Port Range",
-			fmt.Sprintf("Invalid port range %q: start and end must be within 0..65535 and start <= end.", req.ConfigValue.ValueString()),
+			fmt.Sprintf("Invalid port range %q: start and end must be within 0..65535 and start <= end.", value),
 		)
 		return
 	}

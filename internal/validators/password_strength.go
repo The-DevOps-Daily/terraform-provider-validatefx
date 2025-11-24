@@ -23,11 +23,15 @@ func (v passwordStrength) MarkdownDescription(ctx context.Context) string {
 }
 
 func (passwordStrength) ValidateString(_ context.Context, req frameworkvalidator.StringRequest, resp *frameworkvalidator.StringResponse) {
-	if req.ConfigValue.IsNull() || req.ConfigValue.IsUnknown() || req.ConfigValue.ValueString() == "" {
+	if req.ConfigValue.IsNull() || req.ConfigValue.IsUnknown() {
 		return
 	}
 
 	s := req.ConfigValue.ValueString()
+	if s == "" {
+		return
+	}
+
 	if len(s) < 8 {
 		resp.Diagnostics.AddAttributeError(req.Path, "Weak Password", "password must be at least 8 characters long")
 		return
