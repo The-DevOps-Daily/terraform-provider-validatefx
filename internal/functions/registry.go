@@ -72,6 +72,7 @@ func ProviderFunctionFactories() []func() function.Function {
 		NewGCPZoneFunction,
 		NewAzureLocationFunction,
 		NewIPRangeSizeFunction,
+		NewListLengthBetweenFunction,
 	}
 }
 
