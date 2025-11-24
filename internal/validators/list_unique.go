@@ -34,20 +34,14 @@ func (v ListUniqueValidator) MarkdownDescription(ctx context.Context) string {
 // Validate performs the validation on the given values.
 func (ListUniqueValidator) Validate(values []string) error {
 	seen := make(map[string]struct{}, len(values))
+	duplicateSet := make(map[string]struct{})
 	var duplicates []string
 
 	for _, value := range values {
 		if _, exists := seen[value]; exists {
-			// Only add to duplicates list once
-			found := false
-			for _, dup := range duplicates {
-				if dup == value {
-					found = true
-					break
-				}
-			}
-			if !found {
+			if _, alreadyRecorded := duplicateSet[value]; !alreadyRecorded {
 				duplicates = append(duplicates, value)
+				duplicateSet[value] = struct{}{}
 			}
 		} else {
 			seen[value] = struct{}{}
@@ -76,6 +70,7 @@ func (ListUniqueValidator) ValidateList(ctx context.Context, req frameworkvalida
 	}
 
 	seen := make(map[string]struct{}, len(items))
+	duplicateSet := make(map[string]struct{})
 	var duplicates []string
 
 	for _, item := range items {
@@ -84,16 +79,9 @@ func (ListUniqueValidator) ValidateList(ctx context.Context, req frameworkvalida
 		}
 		value := item.ValueString()
 		if _, exists := seen[value]; exists {
-			// Only add to duplicates list once
-			found := false
-			for _, dup := range duplicates {
-				if dup == value {
-					found = true
-					break
-				}
-			}
-			if !found {
+			if _, alreadyRecorded := duplicateSet[value]; !alreadyRecorded {
 				duplicates = append(duplicates, value)
+				duplicateSet[value] = struct{}{}
 			}
 		} else {
 			seen[value] = struct{}{}
