@@ -19,15 +19,20 @@ func (base32Validator) Description(_ context.Context) string             { retur
 func (v base32Validator) MarkdownDescription(ctx context.Context) string { return v.Description(ctx) }
 
 func (base32Validator) ValidateString(_ context.Context, req frameworkvalidator.StringRequest, resp *frameworkvalidator.StringResponse) {
-	if req.ConfigValue.IsNull() || req.ConfigValue.IsUnknown() || req.ConfigValue.ValueString() == "" {
+	if req.ConfigValue.IsNull() || req.ConfigValue.IsUnknown() {
 		return
 	}
 
-	if _, err := base32.StdEncoding.DecodeString(req.ConfigValue.ValueString()); err != nil {
+	value := req.ConfigValue.ValueString()
+	if value == "" {
+		return
+	}
+
+	if _, err := base32.StdEncoding.DecodeString(value); err != nil {
 		resp.Diagnostics.AddAttributeError(
 			req.Path,
 			"Invalid Base32 string",
-			fmt.Sprintf("Value %q is not a valid Base32 string", req.ConfigValue.ValueString()),
+			fmt.Sprintf("Value %q is not a valid Base32 string", value),
 		)
 	}
 }
