@@ -1274,6 +1274,35 @@ output "validatefx_list_length_between" {
   value = local.list_length_between_checks
 }
 
+locals {
+  list_unique_checks = [
+    {
+      description = "All unique elements"
+      values      = ["a", "b", "c"]
+      valid       = provider::validatefx::list_unique(["a", "b", "c"])
+    },
+    {
+      description = "Single element"
+      values      = ["single"]
+      valid       = provider::validatefx::list_unique(["single"])
+    },
+    {
+      description = "Empty list"
+      values      = []
+      valid       = provider::validatefx::list_unique([])
+    },
+    {
+      description = "Unique resource names"
+      values      = ["web-1", "web-2", "db-1"]
+      valid       = provider::validatefx::list_unique(["web-1", "web-2", "db-1"])
+    },
+  ]
+}
+
+output "validatefx_list_unique" {
+  value = local.list_unique_checks
+}
+
 output "validatefx_non_empty_list" {
   value = local.non_empty_list_checks
 }
