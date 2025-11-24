@@ -6,6 +6,36 @@
 
 - None.
 
+## [0.11.0] - 2025-11-24
+
+### What's Changed
+
+- refactor: extract common string normalization logic to reduce duplication (#427) @bobbyonmagic
+- refactor: standardize validator receiver types for consistency (#426) @bobbyonmagic
+
+### 🚀 Features
+
+- feat: add dependent_value validator (#434) @bobbyonmagic
+- feat: add list_unique validator (#433) @bobbyonmagic
+- feat: add list_length_between validator (#432) @bobbyonmagic
+- feat: add resource_name validator (#428) @bobbyonmagic
+
+### 🧰 Maintenance
+
+- chore(deps): bump golang.org/x/crypto from 0.41.0 to 0.45.0 (#431) @dependabot[bot]
+- chore(deps): bump actions/upload-artifact from 4 to 5 (#430) @dependabot[bot]
+- chore(deps): bump actions/checkout from 4 to 6 (#429) @dependabot[bot]
+
+### 📚 Documentation
+
+- feat: add dependent_value validator (#434) @bobbyonmagic
+- feat: add list_unique validator (#433) @bobbyonmagic
+- feat: add list_length_between validator (#432) @bobbyonmagic
+- feat: add resource_name validator (#428) @bobbyonmagic
+
+### Contributors
+@bobbyonmagic, @dependabot[bot]
+
 ## [0.10.0] - 2025-11-23
 
 ### What's Changed
