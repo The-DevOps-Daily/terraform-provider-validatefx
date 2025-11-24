@@ -1237,6 +1237,43 @@ output "validatefx_resource_name" {
   value = local.resource_name_checks
 }
 
+locals {
+  list_length_between_checks = [
+    {
+      description = "List at minimum length"
+      values      = ["a", "b"]
+      min         = "2"
+      max         = "5"
+      valid       = provider::validatefx::list_length_between(["a", "b"], "2", "5")
+    },
+    {
+      description = "List at maximum length"
+      values      = ["a", "b", "c", "d", "e"]
+      min         = "2"
+      max         = "5"
+      valid       = provider::validatefx::list_length_between(["a", "b", "c", "d", "e"], "2", "5")
+    },
+    {
+      description = "List in middle of range"
+      values      = ["a", "b", "c"]
+      min         = "2"
+      max         = "5"
+      valid       = provider::validatefx::list_length_between(["a", "b", "c"], "2", "5")
+    },
+    {
+      description = "Empty list with zero minimum"
+      values      = []
+      min         = "0"
+      max         = "10"
+      valid       = provider::validatefx::list_length_between([], "0", "10")
+    },
+  ]
+}
+
+output "validatefx_list_length_between" {
+  value = local.list_length_between_checks
+}
+
 output "validatefx_non_empty_list" {
   value = local.non_empty_list_checks
 }

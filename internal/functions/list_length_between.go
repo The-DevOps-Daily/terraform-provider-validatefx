@@ -32,10 +32,10 @@ func (listLengthBetweenFunction) Definition(_ context.Context, _ function.Defini
 		Return:              function.BoolReturn{},
 		Parameters: []function.Parameter{
 			function.ListParameter{
-				Name:               "values",
-				AllowNullValue:     true,
-				AllowUnknownValues: true,
-				ElementType:        basetypes.StringType{},
+				Name:                "values",
+				AllowNullValue:      true,
+				AllowUnknownValues:  true,
+				ElementType:         basetypes.StringType{},
 				MarkdownDescription: "List to validate.",
 			},
 			function.StringParameter{
@@ -50,6 +50,7 @@ func (listLengthBetweenFunction) Definition(_ context.Context, _ function.Defini
 	}
 }
 
+//nolint:cyclop
 func (listLengthBetweenFunction) Run(ctx context.Context, req function.RunRequest, resp *function.RunResponse) {
 	var values basetypes.ListValue
 	var minStr basetypes.StringValue

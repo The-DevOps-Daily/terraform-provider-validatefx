@@ -105,6 +105,7 @@ Example usage in `examples/basic/main.tf`.
 | `ip_range_size` | Validate that a CIDR's prefix length falls within an allowed inclusive range. |
 | `json` | Validate that a string decodes to a JSON object. |
 | `jwt` | Validate that a string is a well-formed JSON Web Token (JWT). |
+| `list_length_between` | Validate that a list has a length between minimum and maximum bounds. |
 | `list_subset` | Validate that all elements of a list/set are contained in a reference list. |
 | `mac_address` | Validate that a string is a MAC address in colon, dash, or compact format. |
 | `map_keys_match` | Validate that map keys match allowed or required keys. |
