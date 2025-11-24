@@ -40,6 +40,7 @@ func ProviderFunctionFactories() []func() function.Function {
 		NewMapKeysMatchFunction,
 		NewMutuallyExclusiveFunction,
 		NewNonEmptyListFunction,
+		NewResourceNameFunction,
 		NewURLFunction,
 		NewBetweenFunction,
 		NewInListFunction,

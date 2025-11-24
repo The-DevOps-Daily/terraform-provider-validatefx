@@ -121,6 +121,7 @@ Example usage in `examples/basic/main.tf`.
 | `positive_number` | Validate that a string represents a positive number. |
 | `private_ip` | Validate that an IP address is private (RFC1918 / IPv6 ULA). |
 | `public_ip` | Validate that an IP address is public (not private). |
+| `resource_name` | Validate that a string is a valid Terraform resource name. |
 | `semver` | Validate that a string follows Semantic Versioning (SemVer 2.0.0). |
 | `semver_range` | Validate that a string is a valid semantic version range expression. |
 | `set_equals` | Validate that two string lists contain the same elements regardless of order. |

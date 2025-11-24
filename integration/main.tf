@@ -1208,6 +1208,35 @@ output "validatefx_mutually_exclusive" {
   value = local.mutually_exclusive_checks
 }
 
+locals {
+  resource_name_checks = [
+    {
+      description = "Simple resource name"
+      value       = "myresource"
+      valid       = provider::validatefx::resource_name("myresource")
+    },
+    {
+      description = "Resource with underscores"
+      value       = "my_resource_name"
+      valid       = provider::validatefx::resource_name("my_resource_name")
+    },
+    {
+      description = "Resource with hyphens"
+      value       = "my-resource-name"
+      valid       = provider::validatefx::resource_name("my-resource-name")
+    },
+    {
+      description = "AWS-style resource name"
+      value       = "aws_s3_bucket_2024"
+      valid       = provider::validatefx::resource_name("aws_s3_bucket_2024")
+    },
+  ]
+}
+
+output "validatefx_resource_name" {
+  value = local.resource_name_checks
+}
+
 output "validatefx_non_empty_list" {
   value = local.non_empty_list_checks
 }

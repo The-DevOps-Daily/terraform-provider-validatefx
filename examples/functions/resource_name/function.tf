@@ -1,0 +1,47 @@
+terraform {
+  required_providers {
+    validatefx = {
+      source  = "The-DevOps-Daily/validatefx"
+      version = ">= 0.0.1"
+    }
+  }
+}
+
+provider "validatefx" {}
+
+locals {
+  # Example 1: Simple resource name
+  name1  = "myresource"
+  valid1 = provider::validatefx::resource_name(local.name1)
+
+  # Example 2: Resource name with underscores
+  name2  = "my_resource_name"
+  valid2 = provider::validatefx::resource_name(local.name2)
+
+  # Example 3: Resource name with hyphens
+  name3  = "my-resource-name"
+  valid3 = provider::validatefx::resource_name(local.name3)
+
+  # Example 4: AWS-style resource name
+  name4  = "aws_s3_bucket_2024"
+  valid4 = provider::validatefx::resource_name(local.name4)
+
+  # Example 5: Private resource (starts with underscore)
+  name5  = "_private_resource"
+  valid5 = provider::validatefx::resource_name(local.name5)
+
+  # Example 6: Resource with digits
+  name6  = "resource123"
+  valid6 = provider::validatefx::resource_name(local.name6)
+}
+
+output "validation_results" {
+  value = {
+    simple_resource      = local.valid1
+    with_underscores     = local.valid2
+    with_hyphens         = local.valid3
+    aws_style            = local.valid4
+    private_resource     = local.valid5
+    resource_with_digits = local.valid6
+  }
+}
