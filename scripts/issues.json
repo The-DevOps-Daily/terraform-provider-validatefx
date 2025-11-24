@@ -1,22 +1,162 @@
 [
   {
-    "title": "Add CIDR block validator function",
-    "body": "Implement a new `provider::validatefx::cidr` function that validates IPv4 and IPv6 CIDR blocks.\n\nRequirements:\n- Add a core validator under `internal/validators/` with success, failure, and null/unknown test cases.\n- Expose the validator as a Terraform function with docs, examples, and integration coverage.\n- Ensure diagnostics clearly identify malformed CIDR prefixes and mask ranges.",
-    "labels": ["enhancement"]
-  },
-  {
-    "title": "Add MAC address validator function",
-    "body": "Introduce a `provider::validatefx::mac_address` validator that supports colon, dash, and compact formats.\n\nDefinition of done:\n- Shared helper that normalizes case and separators before validation.\n- Unit tests covering valid and invalid examples, including too-short/long addresses.\n- Terraform function, docs, and examples mirroring other string validators.",
+    "title": "Add JSON schema validator",
+    "body": "Implement a validator that checks if a JSON string matches a provided JSON schema.\n\nRequirements:\n- Support JSON Schema Draft 7\n- Add unit tests with valid and invalid schema examples\n- Expose as Terraform function with comprehensive docs\n- Provide clear error messages showing which part of schema failed",
     "labels": ["enhancement", "good first issue"]
   },
   {
-    "title": "Add hostname validator aligned with RFC 1123",
-    "body": "Provide a hostname validator that enforces RFC 1123 label and length requirements.\n\nTasks:\n- Support multi-label hostnames, punycode prefixes, and reject underscores.\n- Add unit tests and integration cases demonstrating accepted and rejected hostnames.\n- Document edge cases (e.g., trailing dots) in the function reference.",
+    "title": "Add date-only validator",
+    "body": "Create a validator for date strings without time components (YYYY-MM-DD format).\n\nTasks:\n- Validate date format and ranges (e.g., month 1-12, day appropriate for month)\n- Support configurable date format patterns\n- Add min_date and max_date optional constraints\n- Include examples for birthdate validation",
+    "labels": ["enhancement", "datetime"]
+  },
+  {
+    "title": "Add time-only validator",
+    "body": "Implement a validator for time strings without date components (HH:MM:SS format).\n\nRequirements:\n- Support 12h and 24h formats\n- Optionally validate seconds and milliseconds\n- Provide timezone support\n- Add examples for schedule/cron-like validations",
+    "labels": ["enhancement", "datetime"]
+  },
+  {
+    "title": "Add cron expression validator",
+    "body": "Create a validator for cron expression strings.\n\nFeatures:\n- Support standard 5-field and extended 6-field (with seconds) cron syntax\n- Validate ranges, steps, lists\n- Provide descriptive error messages for invalid expressions\n- Include AWS EventBridge schedule expression support",
+    "labels": ["enhancement", "good first issue"]
+  },
+  {
+    "title": "Add duration validator",
+    "body": "Implement a validator for duration strings (e.g., '2h30m', '1d', '500ms').\n\nTasks:\n- Support Go duration format and ISO 8601 duration format\n- Add optional min/max duration constraints\n- Validate unit combinations\n- Provide examples for timeout and TTL validations",
+    "labels": ["enhancement", "datetime"]
+  },
+  {
+    "title": "Add past_datetime validator",
+    "body": "Create a validator ensuring datetime is in the past.\n\nRequirements:\n- Compare against current time at validation\n- Support optional offset (e.g., must be at least 24h in past)\n- Handle timezone considerations\n- Add examples for audit log timestamps",
+    "labels": ["enhancement", "datetime"]
+  },
+  {
+    "title": "Add future_datetime validator",
+    "body": "Implement a validator ensuring datetime is in the future.\n\nTasks:\n- Compare against current time at validation\n- Support optional offset (e.g., must be at least 1h in future)\n- Handle timezone considerations\n- Provide examples for scheduled events",
+    "labels": ["enhancement", "datetime"]
+  },
+  {
+    "title": "Add timezone validator",
+    "body": "Create a validator for timezone identifiers (IANA/Olson database).\n\nFeatures:\n- Validate against standard IANA timezone database\n- Support both full names (America/New_York) and abbreviations (EST)\n- Add examples for multi-region deployments",
+    "labels": ["enhancement", "datetime", "good first issue"]
+  },
+  {
+    "title": "Add credit card expiry validator",
+    "body": "Implement validator for credit card expiry dates (MM/YY or MM/YYYY).\n\nRequirements:\n- Validate format and ensure date is not in the past\n- Support both 2-digit and 4-digit years\n- Handle month validation (01-12)\n- Provide clear error messages",
+    "labels": ["enhancement", "good first issue"]
+  },
+  {
+    "title": "Add ISBN validator",
+    "body": "Create a validator for ISBN-10 and ISBN-13 book identifiers.\n\nTasks:\n- Support both ISBN-10 and ISBN-13 formats\n- Validate check digits\n- Handle hyphens and spaces in input\n- Add comprehensive test coverage",
+    "labels": ["enhancement", "good first issue"]
+  },
+  {
+    "title": "Add ISSN validator",
+    "body": "Implement a validator for ISSN (International Standard Serial Number).\n\nFeatures:\n- Validate 8-digit ISSN format\n- Check the check digit\n- Support hyphenated format (XXXX-XXXX)\n- Include examples for journal/periodical metadata",
+    "labels": ["enhancement", "good first issue"]
+  },
+  {
+    "title": "Add EAN/UPC barcode validator",
+    "body": "Create validators for EAN-8, EAN-13, UPC-A, and UPC-E barcodes.\n\nRequirements:\n- Support multiple barcode formats\n- Validate check digits\n- Provide format-specific error messages\n- Add examples for product catalog validation",
     "labels": ["enhancement"]
   },
   {
-    "title": "Add ISO 8601 datetime validator with optional layouts",
-    "body": "Create a configurable validator that accepts ISO 8601 datetimes with optional layout overrides.\n\nExpectations:\n- Default to strict RFC 3339 format but allow callers to provide alternative layouts.\n- Produce diagnostics that highlight the first invalid segment (date vs time component).\n- Include examples showing usage with Terraform variables and locals.",
+    "title": "Add IBAN validator",
+    "body": "Implement validator for International Bank Account Numbers.\n\nTasks:\n- Validate IBAN format and mod-97 check\n- Support country-specific length validation\n- Handle spaces in input\n- Provide country code validation",
     "labels": ["enhancement"]
+  },
+  {
+    "title": "Add BIC/SWIFT code validator",
+    "body": "Create a validator for BIC/SWIFT bank codes.\n\nFeatures:\n- Validate 8 or 11 character format\n- Check country code and bank code\n- Support both BIC8 and BIC11\n- Add examples for payment processing",
+    "labels": ["enhancement", "good first issue"]
+  },
+  {
+    "title": "Add SSN validator",
+    "body": "Implement US Social Security Number validator.\n\nRequirements:\n- Validate format (XXX-XX-XXXX)\n- Check against known invalid ranges\n- Support both hyphenated and non-hyphenated input\n- Include privacy/security best practices in docs",
+    "labels": ["enhancement"]
+  },
+  {
+    "title": "Add VAT number validator",
+    "body": "Create a validator for EU VAT numbers.\n\nTasks:\n- Support country-specific VAT formats\n- Validate check digits where applicable\n- Handle prefix validation (e.g., GB, DE, FR)\n- Provide comprehensive country coverage",
+    "labels": ["enhancement"]
+  },
+  {
+    "title": "Add latitude/longitude validator",
+    "body": "Implement validators for geographic coordinates.\n\nFeatures:\n- Validate latitude (-90 to 90) and longitude (-180 to 180)\n- Support decimal degrees and DMS formats\n- Add precision validation\n- Include examples for location-based resources",
+    "labels": ["enhancement", "good first issue"]
+  },
+  {
+    "title": "Add color validator",
+    "body": "Create a validator for color codes (hex, RGB, RGBA, HSL).\n\nRequirements:\n- Support multiple color formats\n- Validate hex codes (#RGB, #RRGGBB, #RRGGBBAA)\n- Validate RGB/RGBA value ranges\n- Add examples for UI/design configurations",
+    "labels": ["enhancement", "good first issue"]
+  },
+  {
+    "title": "Add file extension validator",
+    "body": "Implement a validator for file extensions.\n\nTasks:\n- Accept list of allowed extensions\n- Case-insensitive matching\n- Support with or without leading dot\n- Add examples for S3 key validation",
+    "labels": ["enhancement", "good first issue"]
+  },
+  {
+    "title": "Add MIME type pattern validator",
+    "body": "Extend mime_type validator with pattern matching (e.g., 'image/*').\n\nFeatures:\n- Support wildcard patterns\n- Add category validation (image, video, audio, etc.)\n- Validate parameters (charset, boundary)\n- Include comprehensive media type examples",
+    "labels": ["enhancement"]
+  },
+  {
+    "title": "Add Kubernetes resource name validator",
+    "body": "Create validator for Kubernetes resource names (RFC 1123 DNS subdomain).\n\nRequirements:\n- Max 253 characters\n- Lowercase alphanumeric, hyphens, dots\n- Must start/end with alphanumeric\n- Add examples for K8s Terraform modules",
+    "labels": ["enhancement", "kubernetes"]
+  },
+  {
+    "title": "Add Kubernetes label validator",
+    "body": "Implement validators for K8s label keys and values.\n\nTasks:\n- Validate key format (optional prefix + name)\n- Validate value constraints\n- Check length limits\n- Support annotation validation",
+    "labels": ["enhancement", "kubernetes"]
+  },
+  {
+    "title": "Add Docker image tag validator",
+    "body": "Create a validator for Docker image tags.\n\nFeatures:\n- Validate tag format restrictions\n- Check length limits (max 128 chars)\n- Support registry/repository prefixes\n- Add examples for container deployments",
+    "labels": ["enhancement", "good first issue"]
+  },
+  {
+    "title": "Add SemVer constraint validator",
+    "body": "Extend semver validation to support constraint expressions.\n\nRequirements:\n- Support npm-style semver ranges (^, ~, >, <, etc.)\n- Validate constraint syntax\n- Add version compatibility checking\n- Include examples for dependency management",
+    "labels": ["enhancement"]
+  },
+  {
+    "title": "Add environment name validator",
+    "body": "Implement a validator for environment names (dev, staging, prod, etc.).\n\nTasks:\n- Accept configurable list of valid environments\n- Case-insensitive matching\n- Support environment hierarchies\n- Add examples for multi-environment setups",
+    "labels": ["enhancement", "good first issue"]
+  },
+  {
+    "title": "Add ASN (Autonomous System Number) validator",
+    "body": "Create a validator for BGP Autonomous System Numbers.\n\nFeatures:\n- Support 2-byte ASN (1-65535)\n- Support 4-byte ASN\n- Validate reserved ranges\n- Add examples for network infrastructure",
+    "labels": ["enhancement", "network"]
+  },
+  {
+    "title": "Add VLAN ID validator",
+    "body": "Implement a validator for VLAN identifiers (1-4094).\n\nRequirements:\n- Validate range (1-4094, excluding reserved)\n- Support VLAN ID lists and ranges\n- Check for conflicts\n- Add examples for network segmentation",
+    "labels": ["enhancement", "network", "good first issue"]
+  },
+  {
+    "title": "Add country code validator",
+    "body": "Create a validator for ISO 3166-1 country codes.\n\nTasks:\n- Support alpha-2, alpha-3, and numeric codes\n- Validate against current ISO 3166-1 list\n- Handle deprecated codes\n- Add examples for multi-region configurations",
+    "labels": ["enhancement", "locale"]
+  },
+  {
+    "title": "Add language code validator",
+    "body": "Implement validator for ISO 639 language codes.\n\nFeatures:\n- Support ISO 639-1 (2-letter) and ISO 639-2 (3-letter)\n- Validate language-region combinations (en-US)\n- Support IETF BCP 47 language tags\n- Include i18n use case examples",
+    "labels": ["enhancement", "locale"]
+  },
+  {
+    "title": "Add currency code validator",
+    "body": "Create a validator for ISO 4217 currency codes.\n\nRequirements:\n- Validate 3-letter alphabetic codes\n- Support numeric codes\n- Check against active currency list\n- Add examples for pricing configurations",
+    "labels": ["enhancement", "locale", "good first issue"]
+  },
+  {
+    "title": "Add semantic versioning comparison function",
+    "body": "Extend semver support with comparison capabilities.\n\nTasks:\n- Add semver_greater_than function\n- Add semver_less_than function\n- Support version range checking\n- Include upgrade path validation examples",
+    "labels": ["enhancement"]
+  },
+  {
+    "title": "Add percentage validator",
+    "body": "Implement a validator for percentage values.\n\nFeatures:\n- Support 0-100 range by default\n- Allow custom ranges\n- Handle decimal precision\n- Add examples for quota/threshold validations",
+    "labels": ["enhancement", "numeric", "good first issue"]
   }
 ]
