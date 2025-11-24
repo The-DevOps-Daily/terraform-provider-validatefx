@@ -6,6 +6,21 @@
 
 - None.
 
+## [0.11.1] - 2025-11-24
+
+### What's Changed
+
+- refactor: extract common numeric parsing helpers to reduce duplication (#436) @bobbyonmagic
+- refactor: extract map-based validation helper to reduce duplication (#437) @bobbyonmagic
+
+### 🧰 Maintenance
+
+- refactor: extract common numeric parsing helpers (#436) @bobbyonmagic
+- refactor: extract map-based validation helper (#437) @bobbyonmagic
+
+### Contributors
+@bobbyonmagic
+
 ## [0.11.0] - 2025-11-24
 
 ### What's Changed
