@@ -62,6 +62,8 @@ func (ListUniqueValidator) Validate(values []string) error {
 }
 
 // ValidateList validates a list attribute value.
+//
+//nolint:cyclop
 func (ListUniqueValidator) ValidateList(ctx context.Context, req frameworkvalidator.ListRequest, resp *frameworkvalidator.ListResponse) {
 	if req.ConfigValue.IsNull() || req.ConfigValue.IsUnknown() {
 		return

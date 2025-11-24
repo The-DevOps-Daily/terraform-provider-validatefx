@@ -31,10 +31,10 @@ func (listUniqueFunction) Definition(_ context.Context, _ function.DefinitionReq
 		Return:              function.BoolReturn{},
 		Parameters: []function.Parameter{
 			function.ListParameter{
-				Name:               "values",
-				AllowNullValue:     true,
-				AllowUnknownValues: true,
-				ElementType:        basetypes.StringType{},
+				Name:                "values",
+				AllowNullValue:      true,
+				AllowUnknownValues:  true,
+				ElementType:         basetypes.StringType{},
 				MarkdownDescription: "List to validate.",
 			},
 		},
