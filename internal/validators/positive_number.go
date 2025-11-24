@@ -2,7 +2,6 @@ package validators
 
 import (
 	"context"
-	"strconv"
 
 	frameworkvalidator "github.com/hashicorp/terraform-plugin-framework/schema/validator"
 )
@@ -32,14 +31,9 @@ func (positiveNumberValidator) ValidateString(_ context.Context, req frameworkva
 
 	value := req.ConfigValue.ValueString()
 
-	// Try to parse as float64 to handle both integers and decimals
-	num, err := strconv.ParseFloat(value, 64)
-	if err != nil {
-		resp.Diagnostics.AddAttributeError(
-			req.Path,
-			"Invalid Number",
-			"Value must be a valid number.",
-		)
+	num, diag := parseFloat64(value, req.Path)
+	if diag != nil {
+		resp.Diagnostics.Append(diag)
 		return
 	}
 

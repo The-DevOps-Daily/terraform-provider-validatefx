@@ -2,8 +2,6 @@ package validators
 
 import (
 	"context"
-	"fmt"
-	"strconv"
 	"strings"
 
 	frameworkvalidator "github.com/hashicorp/terraform-plugin-framework/schema/validator"
@@ -31,13 +29,9 @@ func (portNumberValidator) ValidateString(_ context.Context, req frameworkvalida
 	}
 
 	s := strings.TrimSpace(req.ConfigValue.ValueString())
-	n, err := strconv.Atoi(s)
-	if err != nil || n < 1 || n > 65535 {
-		resp.Diagnostics.AddAttributeError(
-			req.Path,
-			"Invalid Port Number",
-			fmt.Sprintf("Value %q must be an integer between 1 and 65535.", req.ConfigValue.ValueString()),
-		)
+	_, diag := parseIntInRange(s, 1, 65535, req.Path, "Port Number")
+	if diag != nil {
+		resp.Diagnostics.Append(diag)
 		return
 	}
 }
