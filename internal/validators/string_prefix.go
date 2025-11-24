@@ -13,7 +13,7 @@ var _ frameworkvalidator.String = (*stringPrefixValidator)(nil)
 
 // StringPrefix returns a validator ensuring a string starts with one of the provided prefixes.
 func StringPrefix(prefixes []string, ignoreCase bool) frameworkvalidator.String {
-	display, normalized := normalizePrefixes(prefixes, ignoreCase)
+	display, normalized := normalizeStringList(prefixes, ignoreCase)
 	return &stringPrefixValidator{
 		prefixes:   display,
 		normalized: normalized,
@@ -65,33 +65,4 @@ func (v *stringPrefixValidator) ValidateString(_ context.Context, req frameworkv
 		"Invalid Prefix",
 		fmt.Sprintf("Value %q must start with one of: %s", value, strings.Join(v.prefixes, ", ")),
 	)
-}
-
-func normalizePrefixes(values []string, lower bool) ([]string, []string) {
-	display := make([]string, 0, len(values))
-	normalized := make([]string, 0, len(values))
-	seen := make(map[string]struct{}, len(values))
-
-	for _, raw := range values {
-		trimmed := strings.TrimSpace(raw)
-		if trimmed == "" {
-			continue
-		}
-
-		key := trimmed
-		if lower {
-			key = strings.ToLower(trimmed)
-		}
-
-		if _, exists := seen[key]; exists {
-			continue
-		}
-
-		seen[key] = struct{}{}
-
-		display = append(display, trimmed)
-		normalized = append(normalized, key)
-	}
-
-	return display, normalized
 }

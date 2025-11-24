@@ -105,7 +105,7 @@ func TestStringContainsValidator(t *testing.T) {
 func TestPrepareSubstringCandidates(t *testing.T) {
 	t.Parallel()
 
-	display, normalized := prepareSubstringCandidates([]string{" Foo ", "bar", "foo"}, true)
+	display, normalized := normalizeStringList([]string{" Foo ", "bar", "foo"}, true)
 
 	if len(display) != 2 {
 		t.Fatalf("expected 2 display values, got %d", len(display))
