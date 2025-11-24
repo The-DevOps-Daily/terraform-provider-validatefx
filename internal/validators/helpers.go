@@ -67,3 +67,20 @@ func parseIntInRange(value string, min, max int, attrPath path.Path, fieldName s
 	}
 	return num, nil
 }
+
+// validateStringInMap checks if a string value exists in a predefined map of valid values.
+// Returns a diagnostic error if the value is not found in the map.
+func validateStringInMap(value string, validValues map[string]bool, attrPath path.Path, errorTitle, fieldType string) diag.Diagnostic {
+	if value == "" {
+		return nil
+	}
+
+	if !validValues[value] {
+		return diag.NewAttributeErrorDiagnostic(
+			attrPath,
+			errorTitle,
+			fmt.Sprintf("Value %q is not a valid %s.", value, fieldType),
+		)
+	}
+	return nil
+}
