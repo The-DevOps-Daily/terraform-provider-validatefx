@@ -15,8 +15,8 @@ func FuzzDependentValue(f *testing.F) {
 	f.Add("enabled", "cfg") // both set
 
 	// Invalid seeds
-	f.Add("value", "")  // condition set, dependent empty
-	f.Add("true", "")   // condition true, dependent empty
+	f.Add("value", "") // condition set, dependent empty
+	f.Add("true", "")  // condition true, dependent empty
 
 	f.Fuzz(func(t *testing.T, condition, dependent string) {
 		validator := NewDependentValue()

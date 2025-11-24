@@ -89,6 +89,7 @@ Example usage in `examples/basic/main.tf`.
 | `cidr_overlap` | Validate that provided CIDR blocks do not overlap. |
 | `credit_card` | Validate that a string is a credit card number using the Luhn algorithm. |
 | `datetime` | Validate that a string is an ISO 8601 / RFC 3339 datetime. |
+| `dependent_value` | Validate a dependent relationship between two values. |
 | `domain` | Validate that a string is a compliant domain name. |
 | `email` | Validate that a string is an RFC 5322 compliant email address. |
 | `exactly_one_valid` | Return true when exactly one validation check evaluates to true. |

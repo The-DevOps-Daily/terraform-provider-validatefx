@@ -1,0 +1,53 @@
+terraform {
+  required_providers {
+    validatefx = {
+      source  = "The-DevOps-Daily/validatefx"
+      version = ">= 0.0.1"
+    }
+  }
+}
+
+provider "validatefx" {}
+
+locals {
+  # Example 1: Both values empty (valid)
+  condition1 = ""
+  dependent1 = ""
+  valid1     = provider::validatefx::dependent_value(local.condition1, local.dependent1)
+
+  # Example 2: Both values set (valid)
+  enable_backup = "true"
+  backup_config = "daily"
+  valid2        = provider::validatefx::dependent_value(local.enable_backup, local.backup_config)
+
+  # Example 3: Condition empty, dependent set (valid - dependent can be set independently)
+  monitoring_enabled = ""
+  alert_email        = "admin@example.com"
+  valid3             = provider::validatefx::dependent_value(local.monitoring_enabled, local.alert_email)
+
+  # Example 4: Validate encryption requires key
+  enable_encryption = "yes"
+  encryption_key    = "arn:aws:kms:us-east-1:123456789012:key/abc"
+  valid4            = provider::validatefx::dependent_value(local.enable_encryption, local.encryption_key)
+
+  # Example 5: Validate custom domain requires certificate
+  use_custom_domain = "enabled"
+  ssl_certificate   = "arn:aws:acm:us-east-1:123456789012:certificate/abc"
+  valid5            = provider::validatefx::dependent_value(local.use_custom_domain, local.ssl_certificate)
+
+  # Example 6: Feature flag with configuration
+  feature_enabled = "active"
+  feature_params  = "{config: value}"
+  valid6          = provider::validatefx::dependent_value(local.feature_enabled, local.feature_params)
+}
+
+output "validation_results" {
+  value = {
+    both_empty                  = local.valid1
+    both_set                    = local.valid2
+    condition_empty             = local.valid3
+    encryption_requires_key     = local.valid4
+    custom_domain_requires_cert = local.valid5
+    feature_requires_params     = local.valid6
+  }
+}

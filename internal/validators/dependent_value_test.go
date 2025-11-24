@@ -9,10 +9,10 @@ func TestDependentValue(t *testing.T) {
 	t.Parallel()
 
 	testCases := []struct {
-		name           string
-		condition      string
-		dependent      string
-		expectError    bool
+		name        string
+		condition   string
+		dependent   string
+		expectError bool
 	}{
 		// Valid cases
 		{

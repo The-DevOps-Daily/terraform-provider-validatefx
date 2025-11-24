@@ -1303,6 +1303,39 @@ output "validatefx_list_unique" {
   value = local.list_unique_checks
 }
 
+locals {
+  dependent_value_checks = [
+    {
+      description = "Both values empty"
+      condition   = ""
+      dependent   = ""
+      valid       = provider::validatefx::dependent_value("", "")
+    },
+    {
+      description = "Both values set"
+      condition   = "enabled"
+      dependent   = "config"
+      valid       = provider::validatefx::dependent_value("enabled", "config")
+    },
+    {
+      description = "Condition empty, dependent set"
+      condition   = ""
+      dependent   = "value"
+      valid       = provider::validatefx::dependent_value("", "value")
+    },
+    {
+      description = "Encryption requires key"
+      condition   = "yes"
+      dependent   = "key-arn"
+      valid       = provider::validatefx::dependent_value("yes", "key-arn")
+    },
+  ]
+}
+
+output "validatefx_dependent_value" {
+  value = local.dependent_value_checks
+}
+
 output "validatefx_non_empty_list" {
   value = local.non_empty_list_checks
 }
