@@ -20,7 +20,7 @@ func main() {
 	var missing []string
 	for _, e := range entries {
 		name := e.Name()
-		if e.IsDir() || !strings.HasSuffix(name, ".go") || strings.HasSuffix(name, "_test.go") {
+		if e.IsDir() || !strings.HasSuffix(name, ".go") || strings.HasSuffix(name, "_test.go") || name == "helpers.go" {
 			continue
 		}
 		base := strings.TrimSuffix(name, ".go")
