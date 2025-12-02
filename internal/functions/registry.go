@@ -18,6 +18,7 @@ func ProviderFunctionFactories() []func() function.Function {
 		NewBase64Function,
 		NewBase32Function,
 		NewCreditCardFunction,
+		NewCreditCardExpiryFunction,
 		NewDependentValueFunction,
 		NewDomainFunction,
 		NewHostnameFunction,
