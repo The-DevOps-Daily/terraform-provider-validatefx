@@ -1356,3 +1356,95 @@ output "validatefx_dependent_value" {
 output "validatefx_non_empty_list" {
   value = local.non_empty_list_checks
 }
+
+locals {
+  k8s_label_key_checks = [
+    {
+      description = "Valid simple key"
+      key         = "app"
+      valid       = provider::validatefx::k8s_label_key("app")
+    },
+    {
+      description = "Valid key with prefix"
+      key         = "kubernetes.io/name"
+      valid       = provider::validatefx::k8s_label_key("kubernetes.io/name")
+    },
+    {
+      description = "Valid key with subdomain prefix"
+      key         = "example.com/app-name"
+      valid       = provider::validatefx::k8s_label_key("example.com/app-name")
+    },
+    {
+      description = "Valid key with dashes"
+      key         = "app-name"
+      valid       = provider::validatefx::k8s_label_key("app-name")
+    },
+  ]
+}
+
+output "validatefx_k8s_label_key" {
+  value = local.k8s_label_key_checks
+}
+
+locals {
+  k8s_label_value_checks = [
+    {
+      description = "Valid simple value"
+      value       = "production"
+      valid       = provider::validatefx::k8s_label_value("production")
+    },
+    {
+      description = "Empty value is valid"
+      value       = ""
+      valid       = provider::validatefx::k8s_label_value("")
+    },
+    {
+      description = "Valid value with dash"
+      value       = "prod-env"
+      valid       = provider::validatefx::k8s_label_value("prod-env")
+    },
+    {
+      description = "Valid value with underscore"
+      value       = "app_v1"
+      valid       = provider::validatefx::k8s_label_value("app_v1")
+    },
+    {
+      description = "Valid mixed case value"
+      value       = "Production"
+      valid       = provider::validatefx::k8s_label_value("Production")
+    },
+  ]
+}
+
+output "validatefx_k8s_label_value" {
+  value = local.k8s_label_value_checks
+}
+
+locals {
+  k8s_annotation_value_checks = [
+    {
+      description = "Empty annotation"
+      value       = ""
+      valid       = provider::validatefx::k8s_annotation_value("")
+    },
+    {
+      description = "Simple annotation"
+      value       = "This is a simple annotation"
+      valid       = provider::validatefx::k8s_annotation_value("This is a simple annotation")
+    },
+    {
+      description = "Annotation with special chars"
+      value       = "annotation@example.com: value!"
+      valid       = provider::validatefx::k8s_annotation_value("annotation@example.com: value!")
+    },
+    {
+      description = "Annotation with newlines"
+      value       = "line1\nline2"
+      valid       = provider::validatefx::k8s_annotation_value("line1\nline2")
+    },
+  ]
+}
+
+output "validatefx_k8s_annotation_value" {
+  value = local.k8s_annotation_value_checks
+}

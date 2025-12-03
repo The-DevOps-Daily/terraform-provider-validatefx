@@ -76,6 +76,9 @@ func ProviderFunctionFactories() []func() function.Function {
 		NewIPRangeSizeFunction,
 		NewListLengthBetweenFunction,
 		NewListUniqueFunction,
+		NewK8sLabelKeyFunction,
+		NewK8sLabelValueFunction,
+		NewK8sAnnotationValueFunction,
 	}
 }
 
