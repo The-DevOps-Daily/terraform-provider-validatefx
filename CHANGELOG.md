@@ -6,6 +6,39 @@
 
 - None.
 
+## [0.11.2] - 2025-11-24
+
+### What's Changed
+
+- Add credit card expiry validator (#449) (#475) @Danielchinasa
+- Feature: K8s label validator (#474) @ignorant05
+- feat: Complete K8s label validator implementation (#462) (#476) @bobbyonmagic
+- refactor: optimize duplicate detection in ListUniqueValidator (#473) @bobbyonmagic
+- refactor: extract common length validation logic in ListLengthBetweenValidator (#440) @bobbyonmagic
+- refactor: standardize empty string handling and reduce repeated method calls (#439) @bobbyonmagic
+- refactor: extract map-based validation helper (#437) @bobbyonmagic
+
+### 🚀 Features
+
+- Add credit card expiry validator (#449) (#475) @Danielchinasa
+- Feature: K8s label validator (#474) @ignorant05
+- feat: Complete K8s label validator implementation (#462) (#476) @bobbyonmagic
+
+### 🧰 Maintenance
+
+- refactor: optimize duplicate detection in ListUniqueValidator (#473) @bobbyonmagic
+- refactor: extract common length validation logic in ListLengthBetweenValidator (#440) @bobbyonmagic
+- refactor: standardize empty string handling and reduce repeated method calls (#439) @bobbyonmagic
+- refactor: extract map-based validation helper (#437) @bobbyonmagic
+- chore: update CHANGELOG.md for v0.11.1 release (#438) @bobbyonmagic
+
+### 📚 Documentation
+
+- chore: update CHANGELOG.md for v0.11.1 release (#438) @bobbyonmagic
+
+### Contributors
+@Danielchinasa, @bobbyonmagic and @ignorant05
+
 ## [0.11.1] - 2025-11-24
 
 ### What's Changed
