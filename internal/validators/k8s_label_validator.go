@@ -20,7 +20,8 @@ const (
 	MaxAnnotationValueLength = 262144
 )
 
-func validateKey(key string) error {
+// ValidateLabelKey validates a Kubernetes label key (with optional prefix/name format).
+func ValidateLabelKey(key string) error {
 	if key == "" {
 		return errors.New("Key not valid")
 	}

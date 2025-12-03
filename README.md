@@ -88,6 +88,7 @@ Example usage in `examples/basic/main.tf`.
 | `cidr` | Validate that a string is an IPv4 or IPv6 CIDR block. |
 | `cidr_overlap` | Validate that provided CIDR blocks do not overlap. |
 | `credit_card` | Validate that a string is a credit card number using the Luhn algorithm. |
+| `credit_card_expiry` | Validate that a string is a valid credit card expiry date in MM/YY or MM/YYYY format and not in the past. |
 | `datetime` | Validate that a string is an ISO 8601 / RFC 3339 datetime. |
 | `dependent_value` | Validate a dependent relationship between two values. |
 | `domain` | Validate that a string is a compliant domain name. |
@@ -106,6 +107,9 @@ Example usage in `examples/basic/main.tf`.
 | `ip_range_size` | Validate that a CIDR's prefix length falls within an allowed inclusive range. |
 | `json` | Validate that a string decodes to a JSON object. |
 | `jwt` | Validate that a string is a well-formed JSON Web Token (JWT). |
+| `k8s_annotation_value` | Validates Kubernetes annotation value format |
+| `k8s_label_key` | Validates Kubernetes label key format |
+| `k8s_label_value` | Validates Kubernetes label value format |
 | `list_length_between` | Validate that a list has a length between minimum and maximum bounds. |
 | `list_subset` | Validate that all elements of a list/set are contained in a reference list. |
 | `list_unique` | Validate that all list elements are unique. |
