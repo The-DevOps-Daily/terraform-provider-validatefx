@@ -32,6 +32,12 @@ locals {
     "4532015112830366",
   ]
 
+  credit_card_expiry_dates = [
+    "12/25",
+    "01/2030",
+    "06/99",
+  ]
+
   phone_numbers = [
     "+14155552671",
   ]
@@ -180,6 +186,13 @@ locals {
     for value in local.credit_cards : {
       value = value
       valid = provider::validatefx::credit_card(value)
+    }
+  ]
+
+  credit_card_expiry_results = [
+    for value in local.credit_card_expiry_dates : {
+      value = value
+      valid = provider::validatefx::credit_card_expiry(value)
     }
   ]
 
@@ -953,6 +966,10 @@ output "validatefx_base64" {
 
 output "validatefx_credit_card" {
   value = local.credit_card_results
+}
+
+output "validatefx_credit_card_expiry" {
+  value = local.credit_card_expiry_results
 }
 
 output "validatefx_domain" {
